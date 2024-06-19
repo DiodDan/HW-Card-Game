@@ -12,8 +12,8 @@ public class App {
         Deck deck = new Deck();
         List<Hand> hands = deck.getRandomHands();
 
-        Hand hand1 = hands.getFirst();
-        Hand hand2 = hands.getLast();
+        Hand hand1 = hands.get(0);
+        Hand hand2 = hands.get(hands.size() - 1);
 
         for (int i = 0; i < 26; i++) {
             try {

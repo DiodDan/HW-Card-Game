@@ -25,8 +25,8 @@ public class CardCanvas extends Canvas {
         this.cardImages.add(cardImage);
         this.repaint();
         this.setSize(
-                this.cardImages.getFirst().getWidth(null),
-                this.cardImages.getFirst().getHeight(null) + (cardImages.size() - 1) * settings.getCardDistance()
+                this.cardImages.get(0).getWidth(null),
+                this.cardImages.get(0).getHeight(null) + (cardImages.size() - 1) * settings.getCardDistance()
         );
     }
     public void clearAndSetBack() {
@@ -34,8 +34,8 @@ public class CardCanvas extends Canvas {
         this.cardImages.add(cardLoader.loadCardBack());
         this.repaint();
         this.setSize(
-                this.cardImages.getFirst().getWidth(null),
-                this.cardImages.getFirst().getHeight(null) + cardImages.size() * settings.getCardDistance()
+                this.cardImages.get(0).getWidth(null),
+                this.cardImages.get(0).getHeight(null) + cardImages.size() * settings.getCardDistance()
         );
     }
 }

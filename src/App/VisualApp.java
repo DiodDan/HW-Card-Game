@@ -19,8 +19,8 @@ import javax.imageio.ImageIO;
 public class VisualApp {
     Deck deck = new Deck();
     List<Hand> hands = deck.getRandomHands();
-    Hand hand1 = hands.getFirst();
-    Hand hand2 = hands.getLast();
+    Hand hand1 = hands.get(0);
+    Hand hand2 = hands.get(hands.size() - 1);
     Settings settings = new Settings();
     Frame frame = new Frame(settings.getTitle());
 
@@ -82,8 +82,8 @@ public class VisualApp {
             this.cardsOnTable1.add(this.hand1.drawCard());
             this.cardsOnTable2.add(this.hand2.drawCard());
 
-            this.cardCanvas1.addCardImage(cardsOnTable1.getLast().getImage());
-            this.cardCanvas2.addCardImage(cardsOnTable2.getLast().getImage());
+            this.cardCanvas1.addCardImage(cardsOnTable1.get(this.cardsOnTable1.size() - 1).getImage());
+            this.cardCanvas2.addCardImage(cardsOnTable2.get(this.cardsOnTable2.size() - 1).getImage());
 
 
             if (this.getCardsSum(this.cardsOnTable1) != this.getCardsSum(this.cardsOnTable2)) {

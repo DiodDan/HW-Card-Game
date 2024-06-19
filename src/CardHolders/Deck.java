@@ -27,7 +27,7 @@ public class Deck {
 
     public Card drawCard() throws Exception {
         try {
-            return this.cards.removeLast();
+            return this.cards.remove(this.cards.size() - 1);
         } catch (java.util.NoSuchElementException e) {
             throw new Exception(e);
         }
