@@ -10,7 +10,7 @@ import java.io.IOException;
 public class CardLoaderVisual {
     public static void main(String[] args) {
         try {
-            BufferedImage img = ImageIO.read(new File("src/VisualEngine/cards.png"));
+            BufferedImage img = ImageIO.read(new File("Images/cards.png"));
             int cardsInSuitAmount = 13;
             int cardsAmount = 52;
             Double scale = 3.4;

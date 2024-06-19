@@ -20,7 +20,7 @@ public class CardLoader {
 
     public Image loadCardBack() {
         try {
-            BufferedImage img = ImageIO.read(new File("src/VisualEngine/cards.png"));
+            BufferedImage img = ImageIO.read(new File("Images/cards.png"));
             Image[] scaledBacks = new Image[3];
             scaledBacks[0] = img.getSubimage(12, 495, this.subImageWidth, this.subImageHeight).getScaledInstance((int) (this.subImageWidth * this.scale), (int) (this.subImageHeight * this.scale), Image.SCALE_SMOOTH);
             scaledBacks[1] = img.getSubimage(76, 495, this.subImageWidth, this.subImageHeight).getScaledInstance((int) (this.subImageWidth * this.scale), (int) (this.subImageHeight * this.scale), Image.SCALE_SMOOTH);
@@ -33,7 +33,7 @@ public class CardLoader {
 
     public HashMap<Suit, Image[]> loadCardImages() throws RuntimeException {
         try {
-            BufferedImage img = ImageIO.read(new File("src/VisualEngine/cards.png"));
+            BufferedImage img = ImageIO.read(new File("Images/cards.png"));
 
             Image[] scaledImages = new Image[this.cardsAmount];
             Image[] scaledBacks = new Image[3];

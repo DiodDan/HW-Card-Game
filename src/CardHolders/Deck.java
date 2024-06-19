@@ -18,9 +18,10 @@ public class Deck {
         CardLoader cardLoader = new CardLoader();
         HashMap<Suit, Image[]> cardImages = cardLoader.loadCardImages();
         for (Suit suit : Suit.values()) {
-            for (int i = 1; i < 14; i++) {
+            for (int i = 2; i < 14; i++) {
                 this.cards.add(new Card(suit, i, cardImages.get(suit)[i - 1]));
             }
+            this.cards.add(new Card(suit, 14, cardImages.get(suit)[0]));
         }
     }
 
