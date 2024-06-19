@@ -1,17 +1,20 @@
 package Cards;
 
 
-
 import CustomEnums.Suit;
+
+import java.awt.*;
 
 
 public class Card {
     private final Suit suit;
     private final int value;
+    private final Image image;
 
-    public Card(Suit name, int value) {
+    public Card(Suit name, int value, Image image) {
         this.suit = name;
         this.value = value;
+        this.image = image;
     }
 
     public Suit getName() {
@@ -20,6 +23,10 @@ public class Card {
 
     public int getValue() {
         return this.value;
+    }
+
+    public Image getImage() {
+        return this.image;
     }
 
     public String getCardInfo() {
