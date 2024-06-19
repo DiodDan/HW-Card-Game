@@ -12,6 +12,7 @@ import CardHolders.Deck;
 import CardHolders.Hand;
 import Cards.Card;
 import CustomComponents.CardCanvas;
+import Predictor.Predictor;
 import VisualEngine.CardLoader;
 
 import javax.imageio.ImageIO;
@@ -56,7 +57,16 @@ public class VisualApp {
                 handCount2.setText("Player 2: " + this.hand2.getCardAmount() + " cards");
                 return;
             }
-
+            if (this.hand1.getCardAmount() == 0) {
+                this.statusLabel.setText("Player 2 wins the game!");
+                this.button.setEnabled(false);
+                return;
+            }
+            if (this.hand2.getCardAmount() == 0) {
+                this.statusLabel.setText("Player 1 wins the game!");
+                this.button.setEnabled(false);
+                return;
+            }
             // draw new cards
             this.cardsOnTable1.add(this.hand1.drawCard());
             this.cardsOnTable2.add(this.hand2.drawCard());
@@ -104,6 +114,9 @@ public class VisualApp {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Predictor predictor = new Predictor();
+        System.out.println(predictor.predictWinner(this.hand1, this.hand2).toString());
+
 
         this.cardCanvas1.setBackground(settings.getBgColor());
         this.cardCanvas1.setLocation(50, 150);

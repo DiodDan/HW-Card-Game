@@ -30,4 +30,8 @@ public class Hand {
     public int getCardAmount(){
         return this.cards.size();
     }
+
+    public Hand copy(){
+        return new Hand(new ArrayList<Card>(this.cards));
+    }
 }
