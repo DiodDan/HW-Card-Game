@@ -1,6 +1,7 @@
 package App;
 
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -13,8 +14,10 @@ import CardHolders.Hand;
 import Cards.Card;
 import CustomComponents.CardCanvas;
 import Predictor.Predictor;
+import ProgressEngine.StateEngine;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 
 public class VisualApp {
     Deck deck = new Deck();
@@ -38,8 +41,13 @@ public class VisualApp {
 
     Button turnButton = new Button("Pull Cards");
     Button spoilerButton = new Button("Spoiler");
+    Button resturtButton = new Button("Restart Game");
+    Button saveButton = new Button("Save Game");
+    Button loadButton = new Button("Load Game");
 
     Predictor predictor = new Predictor();
+
+    StateEngine stateSaver = new StateEngine();
 
     private int getCardsSum(List<Card> cards) {
         int sum = 0;
@@ -47,6 +55,52 @@ public class VisualApp {
             sum += card.getValue();
         }
         return sum;
+    }
+
+    private void restartGame() {
+        this.deck = new Deck();
+        this.hands = deck.getRandomHands();
+        this.hand1 = hands.get(0);
+        this.hand2 = hands.get(hands.size() - 1);
+        this.cardCanvas1.clearAndSetBack();
+        this.cardCanvas2.clearAndSetBack();
+        this.handCount1.setText("Player 1: " + this.hand1.getCardAmount() + " cards");
+        this.handCount2.setText("Player 2: " + this.hand2.getCardAmount() + " cards");
+        this.statusLabel.setText("Game in progress...");
+        this.turnButton.setLabel("Pull Cards");
+        this.turnButton.setEnabled(true);
+    }
+
+    private void saveGame() {
+        String userInput = JOptionPane.showInputDialog("Enter name for this save:");
+        try {
+            this.stateSaver.saveState(this.hand1, this.hand2, userInput);
+        } catch (Exception e) {
+            System.out.println("Error saving the game");
+        }
+    }
+
+    private void loadGame() {
+
+        Object[] options = this.stateSaver.getAvailableSaves();
+        Object selectedValue = JOptionPane.showInputDialog(null, "Choose load name", "Input", JOptionPane.INFORMATION_MESSAGE, null, options, null);
+
+        try {
+            this.hands = this.stateSaver.loadState(selectedValue.toString());
+            this.hand1 = hands.get(0);
+            this.hand2 = hands.get(hands.size() - 1);
+            this.cardsOnTable1.clear();
+            this.cardsOnTable2.clear();
+            this.cardCanvas1.clearAndSetBack();
+            this.cardCanvas2.clearAndSetBack();
+            handCount1.setText("Player 1: " + this.hand1.getCardAmount() + " cards");
+            handCount2.setText("Player 2: " + this.hand2.getCardAmount() + " cards");
+        } catch (Exception e) {
+//            System.out.println("Error loading the game");
+            throw new RuntimeException("Error loading the game");
+        }
+
+
     }
 
     public void showSpoiler() {
@@ -117,6 +171,38 @@ public class VisualApp {
 
     public void runGame() {
         // ############################### Main GUI setup ###################################
+        this.setupFrame();
+
+        this.setupCanvas(this.cardCanvas1, 50, 150);
+        this.setupCanvas(this.cardCanvas2, 550, 150);
+
+        this.setupLabel(handCount1, 50, 100, 200, 50, 20);
+        this.setupLabel(handCount2, 550, 100, 200, 50, 20);
+        this.setupLabel(statusLabel, 200, 670, 400, 50, 20);
+        this.setupLabel(spoilerLabel, 300, 300, 200, 30, 20);
+
+
+        this.setupButton(this.spoilerButton, 50, 40, 125, 30, 20, e -> this.showSpoiler());
+        this.setupButton(this.resturtButton, 200, 40, 125, 30, 20, e -> this.restartGame());
+        this.setupButton(this.loadButton, 350, 40, 125, 30, 20, e -> this.loadGame());
+        this.setupButton(this.saveButton, 500, 40, 125, 30, 20, e -> this.saveGame());
+
+
+        this.setupButton(this.turnButton, 170, 730, 400, 50, 30, e -> this.drawCard());
+    }
+
+    private void setupButton(Button button, int x, int y, int width, int height, int textSize, ActionListener actionListener) {
+        button.setSize(width, height);
+        button.setLocation(x, y);
+        button.setFont(new Font("Arial", Font.PLAIN, textSize));
+        button.setBackground(this.settings.getButtonBgColor());
+        button.setForeground(this.settings.getButtonFgColor());
+        button.addActionListener(actionListener);
+        this.frame.add(button);
+    }
+
+    private void setupFrame() {
+        // set icon for the frame
         try {
             Image icon = ImageIO.read(new File("Images/gameIcon.png")); // Replace with your icon file path
             this.frame.setIconImage(icon);
@@ -124,67 +210,11 @@ public class VisualApp {
             e.printStackTrace();
         }
 
-
-        this.cardCanvas1.setBackground(settings.getBgColor());
-        this.cardCanvas1.setLocation(50, 150);
-        this.cardCanvas1.clearAndSetBack();
-        this.frame.add(this.cardCanvas1);
-
-        this.cardCanvas2.setBackground(settings.getBgColor());
-        this.cardCanvas2.setLocation(550, 150);
-        this.cardCanvas2.clearAndSetBack();
-        this.frame.add(this.cardCanvas2);
-
-        this.handCount1.setSize(200, 50);
-        this.handCount1.setLocation(50, 100);
-        this.handCount1.setFont(new Font("Yu Gothic UI", Font.PLAIN, 20));
-        this.handCount1.setBackground(settings.getBgColor());
-        this.handCount1.setForeground(settings.getTextColor());
-        this.frame.add(this.handCount1);
-
-        this.handCount2.setSize(200, 50);
-        this.handCount2.setLocation(550, 100);
-        this.handCount2.setFont(new Font("Yu Gothic UI", Font.PLAIN, 20));
-        this.handCount2.setBackground(settings.getBgColor());
-        this.handCount2.setForeground(settings.getTextColor());
-        this.frame.add(this.handCount2);
-
-        this.statusLabel.setSize(400, 50);
-        this.statusLabel.setLocation(200, 670);
-        this.statusLabel.setFont(new Font("Yu Gothic UI", Font.PLAIN, 20));
-        this.statusLabel.setBackground(settings.getBgColor());
-        this.statusLabel.setForeground(settings.getTextColor());
-        this.frame.add(this.statusLabel);
-
-        this.spoilerLabel.setSize(200, 30);
-        this.spoilerLabel.setLocation(200, 50);
-        this.spoilerLabel.setFont(new Font("Yu Gothic UI", Font.PLAIN, 20));
-        this.spoilerLabel.setBackground(settings.getBgColor());
-        this.spoilerLabel.setForeground(settings.getTextColor());
-        this.frame.add(this.spoilerLabel);
-
+        // set frame settings
         this.frame.setSize(this.settings.getWidth(), this.settings.getHeight());
         this.frame.setLayout(null);
         this.frame.setVisible(true);
-
         this.frame.setBackground(settings.getBgColor());
-
-
-        this.turnButton.setSize(400, 50);
-        this.turnButton.setLocation(170, 730);
-        this.turnButton.setFont(new Font("Arial", Font.PLAIN, 30));
-        this.turnButton.setBackground(Color.RED);
-        this.turnButton.setForeground(Color.BLACK);
-        this.turnButton.addActionListener(e -> this.drawCard());
-        this.frame.add(this.turnButton);
-
-        this.spoilerButton.setSize(150, 30);
-        this.spoilerButton.setLocation(30, 40);
-        this.spoilerButton.setFont(new Font("Arial", Font.PLAIN, 20));
-        this.spoilerButton.setBackground(Color.RED);
-        this.spoilerButton.setForeground(Color.BLACK);
-        this.spoilerButton.addActionListener(e -> this.showSpoiler());
-        this.frame.add(this.spoilerButton);
 
         // add window listener to handle window closing event
         this.frame.addWindowListener(new WindowAdapter() {
@@ -192,6 +222,22 @@ public class VisualApp {
                 System.exit(0);
             }
         });
+    }
+
+    private void setupLabel(Label label, int x, int y, int width, int height, int size) {
+        label.setSize(width, height);
+        label.setLocation(x, y);
+        label.setFont(new Font("Yu Gothic UI", Font.PLAIN, 20));
+        label.setBackground(this.settings.getBgColor());
+        label.setForeground(this.settings.getTextColor());
+        this.frame.add(label);
+    }
+
+    private void setupCanvas(CardCanvas cardCanvas, int x, int y) {
+        cardCanvas.setBackground(this.settings.getBgColor());
+        cardCanvas.setLocation(x, y);
+        cardCanvas.clearAndSetBack();
+        this.frame.add(cardCanvas);
     }
 
     public static void main(String[] args) {

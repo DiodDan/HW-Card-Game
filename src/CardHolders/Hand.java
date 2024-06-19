@@ -34,4 +34,12 @@ public class Hand {
     public Hand copy(){
         return new Hand(new ArrayList<Card>(this.cards));
     }
+
+    public String serialize(){
+        StringBuilder serialized = new StringBuilder();
+        for (Card card : this.cards){
+            serialized.append(card.getCardInfo()).append(";");
+        }
+        return serialized.toString();
+    }
 }

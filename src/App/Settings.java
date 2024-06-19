@@ -9,6 +9,9 @@ public class Settings {
     private final int cardDistance = 50;
     private final Color bgColor = new Color(30, 7, 0);
     private final Color textColor = new Color(255, 144, 22);
+    private final Color buttonBgColor = new Color(188, 13, 0);
+    private final Color buttonFgColor = new Color(0, 0, 0);
+    private final String savePrefix = "saves/";
 
     public int getWidth() {
         return this.width;
@@ -30,5 +33,14 @@ public class Settings {
     }
     public Color getTextColor() {
         return this.textColor;
+    }
+    public Color getButtonBgColor() {
+        return this.buttonBgColor;
+    }
+    public Color getButtonFgColor() {
+        return this.buttonFgColor;
+    }
+    public String getSavePrefix() {
+        return this.savePrefix;
     }
 }
