@@ -30,7 +30,7 @@ public class VisualApp {
     Label handCount1 = new Label("Player 1: " + this.hand1.getCardAmount() + " cards");
     Label handCount2 = new Label("Player 2: " + this.hand2.getCardAmount() + " cards");
 
-    Label statusLabel = new Label("Player 1's turn");
+    Label statusLabel = new Label("Game in progress...");
     Label spoilerLabel = new Label("");
 
     List<Card> cardsOnTable1 = new ArrayList<>();

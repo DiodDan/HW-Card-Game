@@ -11,6 +11,13 @@
 
 
 # Task Definitions
-- [X] Create Hand class
-- [X] Create Deck class
-- [X] Create Images system for drawing cards
+- [X] Create Hand class (Danila)
+- [X] Create Deck class (Danila)
+- [X] Create Images system for drawing cards (Danila)
+- [X] Create system for drawing cards on screen (Danila)
+- [X] Create system for game process (Danila)
+- [X] Create Predictions system (Danila)
+- [X] Create Spoiler system (Danila)
+- [ ] Create menu button
+- [ ] Create Restart button
+- [ ] Create Save system

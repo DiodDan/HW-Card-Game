@@ -46,6 +46,9 @@ public class Predictor {
                     cardsOnTable2.clear();
                 }
                 steps++;
+                if (steps > 10000) {
+                    return new Prediction(0, 99999999);
+                }
             } catch (Exception e) {
                 System.out.println(e);
             }

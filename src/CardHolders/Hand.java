@@ -16,7 +16,7 @@ public class Hand {
 
     public Card drawCard() throws Exception{
         try{
-            return this.cards.remove(this.cards.size() - 1);
+            return this.cards.remove(0);
         }
         catch (java.util.NoSuchElementException e){
             throw new Exception(e);

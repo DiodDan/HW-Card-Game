@@ -7,7 +7,7 @@ public class Settings {
     private final int height = 800;
     private final String title = "Card Game";
     private final int cardDistance = 50;
-    private final Color bgColor = new Color(27, 4, 0);
+    private final Color bgColor = new Color(30, 7, 0);
     private final Color textColor = new Color(255, 144, 22);
 
     public int getWidth() {
