@@ -13,7 +13,6 @@ import CardHolders.Hand;
 import Cards.Card;
 import CustomComponents.CardCanvas;
 import Predictor.Predictor;
-import VisualEngine.CardLoader;
 
 import javax.imageio.ImageIO;
 
@@ -32,11 +31,15 @@ public class VisualApp {
     Label handCount2 = new Label("Player 2: " + this.hand2.getCardAmount() + " cards");
 
     Label statusLabel = new Label("Player 1's turn");
+    Label spoilerLabel = new Label("");
 
-    List<Card> cardsOnTable1 = new ArrayList<Card>();
-    List<Card> cardsOnTable2 = new ArrayList<Card>();
+    List<Card> cardsOnTable1 = new ArrayList<>();
+    List<Card> cardsOnTable2 = new ArrayList<>();
 
-    Button button = new Button("Pull Cards");
+    Button turnButton = new Button("Pull Cards");
+    Button spoilerButton = new Button("Spoiler");
+
+    Predictor predictor = new Predictor();
 
     private int getCardsSum(List<Card> cards) {
         int sum = 0;
@@ -46,10 +49,18 @@ public class VisualApp {
         return sum;
     }
 
+    public void showSpoiler() {
+        if (this.spoilerLabel.getText().isEmpty()) {
+            this.spoilerLabel.setText(predictor.predictWinner(this.hand1, this.hand2).toString());
+        } else {
+            this.spoilerLabel.setText("");
+        }
+    }
+
     public void drawCard() {
         try {
-            if (this.button.getLabel().equals("Next round")) {
-                this.button.setLabel("Pull Cards");
+            if (this.turnButton.getLabel().equals("Next round")) {
+                this.turnButton.setLabel("Pull Cards");
                 this.statusLabel.setText("Game in progress...");
                 this.cardCanvas1.clearAndSetBack();
                 this.cardCanvas2.clearAndSetBack();
@@ -59,12 +70,12 @@ public class VisualApp {
             }
             if (this.hand1.getCardAmount() == 0) {
                 this.statusLabel.setText("Player 2 wins the game!");
-                this.button.setEnabled(false);
+                this.turnButton.setEnabled(false);
                 return;
             }
             if (this.hand2.getCardAmount() == 0) {
                 this.statusLabel.setText("Player 1 wins the game!");
-                this.button.setEnabled(false);
+                this.turnButton.setEnabled(false);
                 return;
             }
             // draw new cards
@@ -74,33 +85,31 @@ public class VisualApp {
             this.cardCanvas1.addCardImage(cardsOnTable1.getLast().getImage());
             this.cardCanvas2.addCardImage(cardsOnTable2.getLast().getImage());
 
-            System.out.println(this.getCardsSum(this.cardsOnTable1));
-            System.out.println(this.getCardsSum(this.cardsOnTable2));
+
             if (this.getCardsSum(this.cardsOnTable1) != this.getCardsSum(this.cardsOnTable2)) {
                 if (this.getCardsSum(this.cardsOnTable1) > this.getCardsSum(this.cardsOnTable2)) {
                     this.statusLabel.setText("Player 1 wins the round!");
-                    for(Card card : this.cardsOnTable1)
+                    for (Card card : this.cardsOnTable1)
                         this.hand1.putCard(card);
                     this.cardsOnTable1.clear();
-                    for(Card card : this.cardsOnTable2)
+                    for (Card card : this.cardsOnTable2)
                         this.hand1.putCard(card);
                     this.cardsOnTable2.clear();
                 } else {
                     this.statusLabel.setText("Player 2 wins the round!");
-                    for(Card card : this.cardsOnTable1)
+                    for (Card card : this.cardsOnTable1)
                         this.hand2.putCard(card);
                     this.cardsOnTable1.clear();
-                    for(Card card : this.cardsOnTable2)
+                    for (Card card : this.cardsOnTable2)
                         this.hand2.putCard(card);
                     this.cardsOnTable2.clear();
                 }
-                this.button.setLabel("Next round");
+                this.turnButton.setLabel("Next round");
             } else {
                 this.statusLabel.setText("Draw! Each player gets one more card.");
             }
 
 
-//            System.out.println(card.getCardInfo());
         } catch (Exception e) {
             System.out.println("No more cards in hand");
         }
@@ -114,8 +123,6 @@ public class VisualApp {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Predictor predictor = new Predictor();
-        System.out.println(predictor.predictWinner(this.hand1, this.hand2).toString());
 
 
         this.cardCanvas1.setBackground(settings.getBgColor());
@@ -149,6 +156,13 @@ public class VisualApp {
         this.statusLabel.setForeground(settings.getTextColor());
         this.frame.add(this.statusLabel);
 
+        this.spoilerLabel.setSize(200, 30);
+        this.spoilerLabel.setLocation(200, 50);
+        this.spoilerLabel.setFont(new Font("Yu Gothic UI", Font.PLAIN, 20));
+        this.spoilerLabel.setBackground(settings.getBgColor());
+        this.spoilerLabel.setForeground(settings.getTextColor());
+        this.frame.add(this.spoilerLabel);
+
         this.frame.setSize(this.settings.getWidth(), this.settings.getHeight());
         this.frame.setLayout(null);
         this.frame.setVisible(true);
@@ -156,23 +170,21 @@ public class VisualApp {
         this.frame.setBackground(settings.getBgColor());
 
 
-        this.button.setSize(400, 50);
-        this.button.setLocation(170, 730);
-        this.button.setFont(new Font("Arial", Font.PLAIN, 30));
-        this.button.setBackground(Color.RED);
-        this.button.setForeground(Color.BLACK);
-        this.button.addActionListener(e -> this.drawCard());
+        this.turnButton.setSize(400, 50);
+        this.turnButton.setLocation(170, 730);
+        this.turnButton.setFont(new Font("Arial", Font.PLAIN, 30));
+        this.turnButton.setBackground(Color.RED);
+        this.turnButton.setForeground(Color.BLACK);
+        this.turnButton.addActionListener(e -> this.drawCard());
+        this.frame.add(this.turnButton);
 
-
-        this.frame.add(button);
-        // ############################### End of Main GUI setup ###################################
-
-
-        // ############################### Main Logic ###################################
-
-
-        // ############################### End of Main Logic ###################################
-
+        this.spoilerButton.setSize(150, 30);
+        this.spoilerButton.setLocation(30, 40);
+        this.spoilerButton.setFont(new Font("Arial", Font.PLAIN, 20));
+        this.spoilerButton.setBackground(Color.RED);
+        this.spoilerButton.setForeground(Color.BLACK);
+        this.spoilerButton.addActionListener(e -> this.showSpoiler());
+        this.frame.add(this.spoilerButton);
 
         // add window listener to handle window closing event
         this.frame.addWindowListener(new WindowAdapter() {
