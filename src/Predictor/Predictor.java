@@ -7,12 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Predictor {
-    private int getCardsSum(List<Card> cards) {
-        int sum = 0;
-        for (Card card : cards) {
-            sum += card.getValue();
-        }
-        return sum;
+    private int getLastCardValue(List<Card> cards) {
+        return cards.get(cards.size() - 1).getValue();
     }
 
     public Prediction predictWinner(Hand hand1, Hand hand2) {
@@ -27,14 +23,24 @@ public class Predictor {
             try {
                 cardsOnTable1.add(hand1_c.drawCard());
                 cardsOnTable2.add(hand2_c.drawCard());
-                if (this.getCardsSum(cardsOnTable1) > this.getCardsSum(cardsOnTable2)) {
+                if (this.getLastCardValue(cardsOnTable1) > this.getLastCardValue(cardsOnTable2)) {
                     for (Card card : cardsOnTable1)
                         hand1_c.putCard(card);
                     cardsOnTable1.clear();
                     for (Card card : cardsOnTable2)
                         hand1_c.putCard(card);
                     cardsOnTable2.clear();
-                } else if(this.getCardsSum(cardsOnTable1) == this.getCardsSum(cardsOnTable2)) {
+                } else if (this.getLastCardValue(cardsOnTable1) == this.getLastCardValue(cardsOnTable2)) {
+                    if (hand1_c.getCardAmount() < 3) {
+                        return new Prediction(2, steps);
+                    } else if (hand2_c.getCardAmount() < 3) {
+                        return new Prediction(1, steps);
+                    } else {
+                        cardsOnTable1.add(hand1_c.drawCard());
+                        cardsOnTable1.add(hand1_c.drawCard());
+                        cardsOnTable2.add(hand2_c.drawCard());
+                        cardsOnTable2.add(hand2_c.drawCard());
+                    }
                     steps++;
                     continue;
                 } else {

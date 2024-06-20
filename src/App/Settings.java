@@ -6,7 +6,7 @@ public class Settings {
     private final int width = 800;
     private final int height = 800;
     private final String title = "Card Game";
-    private final int cardDistance = 50;
+    private final int cardDistance = 40;
     private final Color bgColor = new Color(30, 7, 0);
     private final Color textColor = new Color(255, 144, 22);
     private final Color buttonBgColor = new Color(188, 13, 0);

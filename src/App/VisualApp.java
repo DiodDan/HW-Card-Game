@@ -49,12 +49,8 @@ public class VisualApp {
 
     StateEngine stateSaver = new StateEngine();
 
-    private int getCardsSum(List<Card> cards) {
-        int sum = 0;
-        for (Card card : cards) {
-            sum += card.getValue();
-        }
-        return sum;
+    private int getLastCardValue(List<Card> cards) {
+        return cards.get(cards.size() - 1).getValue();
     }
 
     private void restartGame() {
@@ -140,8 +136,8 @@ public class VisualApp {
             this.cardCanvas2.addCardImage(cardsOnTable2.get(this.cardsOnTable2.size() - 1).getImage());
 
 
-            if (this.getCardsSum(this.cardsOnTable1) != this.getCardsSum(this.cardsOnTable2)) {
-                if (this.getCardsSum(this.cardsOnTable1) > this.getCardsSum(this.cardsOnTable2)) {
+            if (this.getLastCardValue(this.cardsOnTable1) != this.getLastCardValue(this.cardsOnTable2)) {
+                if (this.getLastCardValue(this.cardsOnTable1) > this.getLastCardValue(this.cardsOnTable2)) {
                     this.statusLabel.setText("Player 1 wins the round!");
                     for (Card card : this.cardsOnTable1)
                         this.hand1.putCard(card);
@@ -160,7 +156,22 @@ public class VisualApp {
                 }
                 this.turnButton.setLabel("Next round");
             } else {
-                this.statusLabel.setText("Draw! Each player gets one more card.");
+                if (this.hand1.getCardAmount() < 3) {
+                    this.statusLabel.setText("Player 2 wins the game!");
+                    this.turnButton.setEnabled(false);
+                } else if (this.hand2.getCardAmount() < 3) {
+                    this.statusLabel.setText("Player 1 wins the game!");
+                    this.turnButton.setEnabled(false);
+                }else{
+                    this.cardsOnTable1.add(this.hand1.drawCard());
+                    this.cardsOnTable1.add(this.hand1.drawCard());
+                    this.cardsOnTable2.add(this.hand2.drawCard());
+                    this.cardsOnTable2.add(this.hand2.drawCard());
+                    this.cardCanvas1.addCardBacks(2);
+                    this.cardCanvas2.addCardBacks(2);
+
+                    this.statusLabel.setText("Draw! Each player gets one more card.");
+                }
             }
 
 

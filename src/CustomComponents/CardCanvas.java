@@ -29,6 +29,18 @@ public class CardCanvas extends Canvas {
                 this.cardImages.get(0).getHeight(null) + (cardImages.size() - 1) * settings.getCardDistance()
         );
     }
+
+    public void addCardBacks(Integer amount) {
+        for (int i = 0; i < amount; i++) {
+            this.cardImages.add(cardLoader.loadCardBack());
+        }
+        this.repaint();
+        this.setSize(
+                this.cardImages.get(0).getWidth(null),
+                this.cardImages.get(0).getHeight(null) + (cardImages.size() - 1) * settings.getCardDistance()
+        );
+    }
+
     public void clearAndSetBack() {
         this.cardImages.clear();
         this.cardImages.add(cardLoader.loadCardBack());
