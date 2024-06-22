@@ -26,20 +26,23 @@ public class ProgressEngine {
     }
 
     private List<Card> deserializeHand(String serializedHand) {
-        List<Card> cards = new ArrayList<Card>();
+        List<Card> cards = new ArrayList<>();
         String[] cardStrings = serializedHand.split(";");
+
         for (String cardString : cardStrings) {
             String[] cardInfo = cardString.split(" ");
             Suit suit = Suit.valueOf(cardInfo[0]);
             int number = Integer.parseInt(cardInfo[1]);
-            if (number == 14){
-                cards.add(new Card(suit, number, this.cardImages.get(suit)[0]));
-            }else{
-                cards.add(new Card(suit, number, this.cardImages.get(suit)[number - 1]));
-            }
+
+            Image[] suitImages = this.cardImages.get(suit);
+            int index = (number == 14) ? 0 : number - 1;
+
+            cards.add(new Card(suit, number, suitImages[index]));
         }
+
         return cards;
     }
+
 
     public List<Hand> loadState(String loadName) throws IOException {
         // Load the state of the game
