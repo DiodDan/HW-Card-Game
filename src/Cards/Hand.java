@@ -1,8 +1,7 @@
-package CardHolders;
+package Cards;
 
 import java.util.ArrayList;
 import java.util.List;
-import Cards.Card;
 
 public class Hand {
     private final List<Card> cards;

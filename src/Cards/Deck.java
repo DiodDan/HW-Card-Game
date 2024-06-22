@@ -1,6 +1,5 @@
-package CardHolders;
+package Cards;
 
-import Cards.Card;
 import CustomEnums.Suit;
 import VisualEngine.CardLoader;
 

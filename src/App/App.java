@@ -2,9 +2,9 @@ package App;
 
 import Cards.Card;
 import java.util.List;
-import CardHolders.Deck;
+import Cards.Deck;
 
-import CardHolders.Hand;
+import Cards.Hand;
 
 public class App {
     public static void main(String[] args) {

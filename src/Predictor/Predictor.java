@@ -1,6 +1,6 @@
 package Predictor;
 
-import CardHolders.Hand;
+import Cards.Hand;
 import Cards.Card;
 
 import java.util.ArrayList;

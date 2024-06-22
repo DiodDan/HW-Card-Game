@@ -1,7 +1,7 @@
 package ProgressEngine;
 
 import App.Settings;
-import CardHolders.Hand;
+import Cards.Hand;
 import Cards.Card;
 import CustomEnums.Suit;
 import VisualEngine.CardLoader;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class StateEngine {
+public class ProgressEngine {
     Settings settings = new Settings();
     CardLoader cardLoader = new CardLoader();
     HashMap<Suit, Image[]> cardImages = cardLoader.loadCardImages();

@@ -9,12 +9,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import CardHolders.Deck;
-import CardHolders.Hand;
+import Cards.Deck;
+import Cards.Hand;
 import Cards.Card;
 import CustomComponents.CardCanvas;
 import Predictor.Predictor;
-import ProgressEngine.StateEngine;
+import ProgressEngine.ProgressEngine;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -47,7 +47,7 @@ public class VisualApp {
 
     Predictor predictor = new Predictor();
 
-    StateEngine stateSaver = new StateEngine();
+    ProgressEngine progressEngine = new ProgressEngine();
 
     private int getLastCardValue(List<Card> cards) {
         return cards.get(cards.size() - 1).getValue();
@@ -70,7 +70,7 @@ public class VisualApp {
     private void saveGame() {
         String userInput = JOptionPane.showInputDialog("Enter name for this save:");
         try {
-            this.stateSaver.saveState(this.hand1, this.hand2, userInput);
+            this.progressEngine.saveState(this.hand1, this.hand2, userInput);
         } catch (Exception e) {
             System.out.println("Error saving the game");
         }
@@ -78,11 +78,11 @@ public class VisualApp {
 
     private void loadGame() {
 
-        Object[] options = this.stateSaver.getAvailableSaves();
+        Object[] options = this.progressEngine.getAvailableSaves();
         Object selectedValue = JOptionPane.showInputDialog(null, "Choose load name", "Input", JOptionPane.INFORMATION_MESSAGE, null, options, null);
 
         try {
-            this.hands = this.stateSaver.loadState(selectedValue.toString());
+            this.hands = this.progressEngine.loadState(selectedValue.toString());
             this.hand1 = hands.get(0);
             this.hand2 = hands.get(hands.size() - 1);
             this.cardsOnTable1.clear();
@@ -182,7 +182,12 @@ public class VisualApp {
 
     public void runGame() {
         // ############################### Main GUI setup ###################################
-        this.setupFrame();
+        try {
+            this.setupFrame();
+        } catch (IOException e) {
+            System.out.println("Error setting up the frame");
+        }
+
 
         this.setupCanvas(this.cardCanvas1, 50, 150);
         this.setupCanvas(this.cardCanvas2, 550, 150);
@@ -190,16 +195,16 @@ public class VisualApp {
         this.setupLabel(handCount1, 50, 100, 200, 50, 20);
         this.setupLabel(handCount2, 550, 100, 200, 50, 20);
         this.setupLabel(statusLabel, 200, 670, 400, 50, 20);
-        this.setupLabel(spoilerLabel, 300, 300, 200, 30, 20);
+        this.setupLabel(spoilerLabel, 300, 300, 200, 30, 25);
 
 
-        this.setupButton(this.spoilerButton, 50, 40, 125, 30, 20, e -> this.showSpoiler());
-        this.setupButton(this.resturtButton, 200, 40, 125, 30, 20, e -> this.restartGame());
-        this.setupButton(this.loadButton, 350, 40, 125, 30, 20, e -> this.loadGame());
-        this.setupButton(this.saveButton, 500, 40, 125, 30, 20, e -> this.saveGame());
+        this.setupButton(this.spoilerButton, 50, 40, 125, 30, 20, _ -> this.showSpoiler());
+        this.setupButton(this.resturtButton, 200, 40, 125, 30, 20, _ -> this.restartGame());
+        this.setupButton(this.loadButton, 350, 40, 125, 30, 20, _ -> this.loadGame());
+        this.setupButton(this.saveButton, 500, 40, 125, 30, 20, _ -> this.saveGame());
 
 
-        this.setupButton(this.turnButton, 170, 730, 400, 50, 30, e -> this.drawCard());
+        this.setupButton(this.turnButton, 170, 730, 400, 50, 30, _ -> this.drawCard());
     }
 
     private void setupButton(Button button, int x, int y, int width, int height, int textSize, ActionListener actionListener) {
@@ -212,13 +217,13 @@ public class VisualApp {
         this.frame.add(button);
     }
 
-    private void setupFrame() {
+    private void setupFrame() throws IOException {
         // set icon for the frame
         try {
             Image icon = ImageIO.read(new File("Images/gameIcon.png")); // Replace with your icon file path
             this.frame.setIconImage(icon);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IOException("Error finding the icon file");
         }
 
         // set frame settings
@@ -238,7 +243,7 @@ public class VisualApp {
     private void setupLabel(Label label, int x, int y, int width, int height, int size) {
         label.setSize(width, height);
         label.setLocation(x, y);
-        label.setFont(new Font("Yu Gothic UI", Font.PLAIN, 20));
+        label.setFont(new Font("Yu Gothic UI", Font.PLAIN, size));
         label.setBackground(this.settings.getBgColor());
         label.setForeground(this.settings.getTextColor());
         this.frame.add(label);
