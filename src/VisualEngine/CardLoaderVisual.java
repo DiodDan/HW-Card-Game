@@ -8,12 +8,12 @@ import java.io.File;
 import java.io.IOException;
 
 public class CardLoaderVisual {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException{
         try {
             BufferedImage img = ImageIO.read(new File("Images/cards.png"));
             int cardsInSuitAmount = 13;
             int cardsAmount = 52;
-            Double scale = 3.4;
+            double scale = 3.4;
             int subImageWidth = 40;
             int subImageHeight = 66;
             int cardDistanceX = 24;
@@ -31,7 +31,7 @@ public class CardLoaderVisual {
             }
 
 
-            // Display one of the subimages
+            // Display one of the sub images
             JFrame frame = new JFrame();
             frame.getContentPane().setLayout(new FlowLayout());
             frame.setSize(1000, 800);
@@ -44,7 +44,7 @@ public class CardLoaderVisual {
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IOException(e);
         }
     }
 }
