@@ -11,20 +11,19 @@ import java.io.IOException;
 import java.util.HashMap;
 
 public class CardLoader {
-    Settings settings = new Settings();
-    int cardsInSuitAmount = 13;
-    int cardsAmount = 52;
-    int subImageWidth = this.settings.getSubImageWidth();
-    int subImageHeight = this.settings.getSubImageHeight();
-    double scale = this.settings.getCardScale();
-    int cardDistanceX = 24;
-    int cardDistanceY = 30;
+    private final Settings settings = new Settings();
+    private final int cardsInSuitAmount = 13;
+    private final int cardsAmount = 52;
+    private final int subImageWidth = this.settings.getSubImageWidth();
+    private final int subImageHeight = this.settings.getSubImageHeight();
+    private final double scale = this.settings.getCardScale();
+    private final int cardDistanceX = 24;
+    private final int cardDistanceY = 30;
 
     public Image loadCardBack() {
         try {
             BufferedImage img = ImageIO.read(new File("Images/cards.png"));
-            Image[] scaledBacks = new Image[3];
-            scaledBacks[0] = img.getSubimage(
+            return img.getSubimage(
                     12,
                     495,
                     this.subImageWidth,
@@ -33,25 +32,6 @@ public class CardLoader {
                     (int) (this.subImageHeight * this.scale),
                     Image.SCALE_SMOOTH
             );
-            scaledBacks[1] = img.getSubimage(
-                    76,
-                    495,
-                    this.subImageWidth,
-                    this.subImageHeight).getScaledInstance(
-                    (int) (this.subImageWidth * this.scale),
-                    (int) (this.subImageHeight * this.scale),
-                    Image.SCALE_SMOOTH
-            );
-            scaledBacks[2] = img.getSubimage(
-                    140,
-                    495,
-                    this.subImageWidth,
-                    this.subImageHeight).getScaledInstance(
-                    (int) (this.subImageWidth * this.scale),
-                    (int) (this.subImageHeight * this.scale),
-                    Image.SCALE_SMOOTH
-            );
-            return scaledBacks[0];
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

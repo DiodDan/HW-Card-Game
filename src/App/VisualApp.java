@@ -20,23 +20,23 @@ import javax.swing.*;
 
 public class VisualApp {
     // ############################### Game Logical Vars ###################################
-    Deck deck = new Deck();
+    private Deck deck = new Deck();
 
-    List<Hand> hands = deck.getRandomHands();
+    private List<Hand> hands = deck.getRandomHands();
 
-    Hand hand1 = hands.get(0);
-    Hand hand2 = hands.get(hands.size() - 1);
+    private Hand hand1 = hands.get(0);
+    private Hand hand2 = hands.get(hands.size() - 1);
 
-    Settings settings = new Settings();
+    private Settings settings = new Settings();
 
-    ProgressEngine progressEngine = new ProgressEngine();
+    private ProgressEngine progressEngine = new ProgressEngine();
 
-    Predictor predictor = new Predictor();
+    private Predictor predictor = new Predictor();
 
-    List<Card> cardsOnTable1 = new ArrayList<>();
-    List<Card> cardsOnTable2 = new ArrayList<>();
+    private List<Card> cardsOnTable1 = new ArrayList<>();
+    private List<Card> cardsOnTable2 = new ArrayList<>();
 
-    Timer autoplayTimer = new Timer(1000 / settings.getAutoPlayStepsPerSecond(), new ActionListener() {
+    private Timer autoplayTimer = new Timer(1000 / settings.getAutoPlayStepsPerSecond(), new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             drawCard();
@@ -44,24 +44,24 @@ public class VisualApp {
     });
 
     // ############################### GUI Vars ###################################
-    Frame frame = new Frame(settings.getTitle());
+    private Frame frame = new Frame(settings.getTitle());
 
-    CardCanvas cardCanvas1 = new CardCanvas();
-    CardCanvas cardCanvas2 = new CardCanvas();
+    private CardCanvas cardCanvas1 = new CardCanvas();
+    private CardCanvas cardCanvas2 = new CardCanvas();
 
-    Label handCount1 = new Label("Player 1: " + this.hand1.getCardAmount() + " cards");
-    Label handCount2 = new Label("Player 2: " + this.hand2.getCardAmount() + " cards");
-    Label statusLabel = new Label("Game in progress...");
-    Label spoilerLabel = new Label("");
+    private Label handCount1 = new Label("Player 1: " + this.hand1.getCardAmount() + " cards");
+    private Label handCount2 = new Label("Player 2: " + this.hand2.getCardAmount() + " cards");
+    private Label statusLabel = new Label("Game in progress...");
+    private Label spoilerLabel = new Label("");
 
 
-    Button turnButton = new Button("Pull Cards");
-    Button spoilerButton = new Button("Spoiler");
-    Button resturtButton = new Button("Restart Game");
-    Button saveButton = new Button("Save Game");
-    Button loadButton = new Button("Load Game");
+    private Button turnButton = new Button("Pull Cards");
+    private Button spoilerButton = new Button("Spoiler");
+    private Button resturtButton = new Button("Restart Game");
+    private Button saveButton = new Button("Save Game");
+    private Button loadButton = new Button("Load Game");
 
-    Checkbox switchButton = new Checkbox("Auto Play", false);
+    private Checkbox switchButton = new Checkbox("Auto Play", false);
 
 
     private int getLastCardValue(List<Card> cards) {

@@ -41,4 +41,10 @@ public class Hand {
         }
         return serialized.toString();
     }
+
+//    public void repaintCards(){
+//        for (Card card : this.cards){
+//
+//        }
+//    }
 }
