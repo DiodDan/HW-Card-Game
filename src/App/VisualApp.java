@@ -230,13 +230,13 @@ public class VisualApp {
         this.setupLabel(spoilerLabel, 300, 300, 200, 30, 19);
 
 
-        this.setupButton(this.spoilerButton, 50, 40, 125, 30, 20, _ -> this.showSpoiler());
-        this.setupButton(this.resturtButton, 200, 40, 125, 30, 20, _ -> this.restartGame());
-        this.setupButton(this.loadButton, 350, 40, 125, 30, 20, _ -> this.loadGame());
-        this.setupButton(this.saveButton, 500, 40, 125, 30, 20, _ -> this.saveGame());
+        this.setupButton(this.spoilerButton, 50, 40, 125, 30, 20, e -> this.showSpoiler());
+        this.setupButton(this.resturtButton, 200, 40, 125, 30, 20, e -> this.restartGame());
+        this.setupButton(this.loadButton, 350, 40, 125, 30, 20, e -> this.loadGame());
+        this.setupButton(this.saveButton, 500, 40, 125, 30, 20, e -> this.saveGame());
 
 
-        this.setupButton(this.turnButton, 170, 730, 400, 50, 30, _ -> this.drawCard());
+        this.setupButton(this.turnButton, 170, 730, 400, 50, 30, e -> this.drawCard());
 
         this.setupSwitchButton(this.switchButton, 50, 730, 100, 50, 20, e -> this.autoplayAction(e));
     }
