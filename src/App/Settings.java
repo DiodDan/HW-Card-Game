@@ -16,6 +16,7 @@ public class Settings {
     private final int subImageWidth = 40;
     private final int subImageHeight = 66;
     private final int maxCardsOnTable = 7;
+    private final int autoPlayStepsPerSecond = 10;
 
     public int getWidth() {
         return this.width;
@@ -67,5 +68,8 @@ public class Settings {
 
     public int getMaxCardsOnTable() {
         return this.maxCardsOnTable;
+    }
+    public int getAutoPlayStepsPerSecond() {
+        return this.autoPlayStepsPerSecond;
     }
 }

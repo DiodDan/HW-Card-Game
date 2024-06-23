@@ -1,13 +1,12 @@
 package App;
 
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import Cards.Deck;
 import Cards.Hand;
@@ -20,11 +19,31 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class VisualApp {
+    // ############################### Game Logical Vars ###################################
     Deck deck = new Deck();
+
     List<Hand> hands = deck.getRandomHands();
+
     Hand hand1 = hands.get(0);
     Hand hand2 = hands.get(hands.size() - 1);
+
     Settings settings = new Settings();
+
+    ProgressEngine progressEngine = new ProgressEngine();
+
+    Predictor predictor = new Predictor();
+
+    List<Card> cardsOnTable1 = new ArrayList<>();
+    List<Card> cardsOnTable2 = new ArrayList<>();
+
+    Timer autoplayTimer = new Timer(1000 / settings.getAutoPlayStepsPerSecond(), new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            drawCard();
+        }
+    });
+
+    // ############################### GUI Vars ###################################
     Frame frame = new Frame(settings.getTitle());
 
     CardCanvas cardCanvas1 = new CardCanvas();
@@ -32,12 +51,9 @@ public class VisualApp {
 
     Label handCount1 = new Label("Player 1: " + this.hand1.getCardAmount() + " cards");
     Label handCount2 = new Label("Player 2: " + this.hand2.getCardAmount() + " cards");
-
     Label statusLabel = new Label("Game in progress...");
     Label spoilerLabel = new Label("");
 
-    List<Card> cardsOnTable1 = new ArrayList<>();
-    List<Card> cardsOnTable2 = new ArrayList<>();
 
     Button turnButton = new Button("Pull Cards");
     Button spoilerButton = new Button("Spoiler");
@@ -45,9 +61,8 @@ public class VisualApp {
     Button saveButton = new Button("Save Game");
     Button loadButton = new Button("Load Game");
 
-    Predictor predictor = new Predictor();
+    Checkbox switchButton = new Checkbox("Auto Play", false);
 
-    ProgressEngine progressEngine = new ProgressEngine();
 
     private int getLastCardValue(List<Card> cards) {
         return cards.get(cards.size() - 1).getValue();
@@ -109,6 +124,16 @@ public class VisualApp {
 
     public void drawCard() {
         try {
+            if (Objects.equals(this.statusLabel.getText(), "Draw! Each player gets one more card.")) {
+                this.cardsOnTable1.add(this.hand1.drawCard());
+                this.cardsOnTable1.add(this.hand1.drawCard());
+                this.cardsOnTable2.add(this.hand2.drawCard());
+                this.cardsOnTable2.add(this.hand2.drawCard());
+                this.cardCanvas1.addCardBacks(2);
+                this.cardCanvas2.addCardBacks(2);
+                this.statusLabel.setText("Game in progress...");
+                return;
+            }
             if (this.turnButton.getLabel().equals("Next round")) {
                 this.turnButton.setLabel("Pull Cards");
                 this.statusLabel.setText("Game in progress...");
@@ -120,11 +145,13 @@ public class VisualApp {
             }
             if (this.hand1.getCardAmount() == 0) {
                 this.statusLabel.setText("Player 2 wins the game!");
+                this.cardCanvas1.clearCards();
                 this.turnButton.setEnabled(false);
                 return;
             }
             if (this.hand2.getCardAmount() == 0) {
                 this.statusLabel.setText("Player 1 wins the game!");
+                this.cardCanvas2.clearCards();
                 this.turnButton.setEnabled(false);
                 return;
             }
@@ -163,13 +190,6 @@ public class VisualApp {
                     this.statusLabel.setText("Player 1 wins the game!");
                     this.turnButton.setEnabled(false);
                 } else {
-                    this.cardsOnTable1.add(this.hand1.drawCard());
-                    this.cardsOnTable1.add(this.hand1.drawCard());
-                    this.cardsOnTable2.add(this.hand2.drawCard());
-                    this.cardsOnTable2.add(this.hand2.drawCard());
-                    this.cardCanvas1.addCardBacks(2);
-                    this.cardCanvas2.addCardBacks(2);
-
                     this.statusLabel.setText("Draw! Each player gets one more card.");
                 }
             }
@@ -177,6 +197,18 @@ public class VisualApp {
 
         } catch (Exception e) {
             System.out.println("No more cards in hand");
+            this.autoplayTimer.stop();
+            this.switchButton.setState(false);
+        }
+    }
+
+    private void autoplayAction(ItemEvent e) {
+        if (e.getStateChange() == ItemEvent.SELECTED) {
+            this.turnButton.setEnabled(false);
+            this.autoplayTimer.start();
+        } else {
+            this.turnButton.setEnabled(true);
+            this.autoplayTimer.stop();
         }
     }
 
@@ -205,6 +237,8 @@ public class VisualApp {
 
 
         this.setupButton(this.turnButton, 170, 730, 400, 50, 30, _ -> this.drawCard());
+
+        this.setupSwitchButton(this.switchButton, 50, 730, 100, 50, 20, e -> this.autoplayAction(e));
     }
 
     private void setupButton(Button button, int x, int y, int width, int height, int textSize, ActionListener actionListener) {
@@ -258,6 +292,18 @@ public class VisualApp {
                 (int) (this.settings.getSubImageHeight() * this.settings.getCardScale()) +
                         this.settings.getMaxCardsOnTable() * this.settings.getCardDistance());
         this.frame.add(cardCanvas);
+    }
+
+    private void setupSwitchButton(Checkbox switchButton, int x, int y, int width, int height, int textSize, ItemListener itemListener) {
+        switchButton.addItemListener(itemListener);
+
+        switchButton.setSize(width, height);
+        switchButton.setLocation(x, y);
+        switchButton.setFont(new Font("Arial", Font.PLAIN, textSize));
+        switchButton.setBackground(this.settings.getButtonBgColor());
+        switchButton.setForeground(this.settings.getButtonFgColor());
+
+        this.frame.add(switchButton);
     }
 
     public static void main(String[] args) {

@@ -22,23 +22,34 @@ public class CardCanvas extends Canvas {
 
     public void addCardImage(Image cardImage) {
         this.cardImages.add(cardImage);
-        this.drawBufferedImage();
+        this.draw();
     }
 
     public void addCardBacks(Integer amount) {
         for (int i = 0; i < amount; i++) {
             this.cardImages.add(cardLoader.loadCardBack());
         }
-        this.drawBufferedImage();
+        this.draw();
     }
 
     public void clearAndSetBack() {
         this.cardImages.clear();
         this.cardImages.add(cardLoader.loadCardBack());
-        this.drawBufferedImage();
+        this.draw();
     }
 
-    private void drawBufferedImage() {
+    public void clearCards() {
+        this.cardImages.clear();
+        this.draw();
+    }
+
+    private void draw() {
+        if (this.cardImages.isEmpty()){
+            Graphics g = this.getGraphics();
+            g.clearRect(0, 0, this.getWidth(), this.getHeight());
+            g.dispose();
+            return;
+        }
         this.bufferedImage = new BufferedImage(
                 this.cardImages.get(0).getWidth(null),
                 this.cardImages.get(0).getHeight(null) + (cardImages.size() - 1) * settings.getCardDistance(),
@@ -47,11 +58,10 @@ public class CardCanvas extends Canvas {
 
         Graphics bg = this.bufferedImage.getGraphics();
 
-        if (!this.cardImages.isEmpty()) {
-            for (int i = 0; i < this.cardImages.size(); i++) {
-                bg.drawImage(this.cardImages.get(i), 0, i * settings.getCardDistance(), this);
-            }
+        for (int i = 0; i < this.cardImages.size(); i++) {
+            bg.drawImage(this.cardImages.get(i), 0, i * settings.getCardDistance(), this);
         }
+
         this.repaint();
         bg.dispose();
     }
