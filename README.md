@@ -101,8 +101,11 @@
 
 ### Contains classes for visual representation of the app. Mainly it's responsible for getting cards images from one image.
 
-- ### VisualEngine.java
+- ### CardLoader.java
   Class for getting cards images from one image.
+
+- ### CardLoaderVisual.java
+  Class that was used for debugging. It is used for getting cards images from one image and drawing them on screen.
 
 ---
 
