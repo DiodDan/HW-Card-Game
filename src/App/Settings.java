@@ -12,6 +12,10 @@ public class Settings {
     private final Color buttonBgColor = new Color(188, 13, 0);
     private final Color buttonFgColor = new Color(0, 0, 0);
     private final String savePrefix = "saves/";
+    private final double cardScale = 4.4;
+    private final int subImageWidth = 40;
+    private final int subImageHeight = 66;
+    private final int maxCardsOnTable = 7;
 
     public int getWidth() {
         return this.width;
@@ -28,19 +32,40 @@ public class Settings {
     public int getCardDistance() {
         return this.cardDistance;
     }
+
     public Color getBgColor() {
         return this.bgColor;
     }
+
     public Color getTextColor() {
         return this.textColor;
     }
+
     public Color getButtonBgColor() {
         return this.buttonBgColor;
     }
+
     public Color getButtonFgColor() {
         return this.buttonFgColor;
     }
+
     public String getSavePrefix() {
         return this.savePrefix;
+    }
+
+    public double getCardScale() {
+        return this.cardScale;
+    }
+
+    public int getSubImageWidth() {
+        return this.subImageWidth;
+    }
+
+    public int getSubImageHeight() {
+        return this.subImageHeight;
+    }
+
+    public int getMaxCardsOnTable() {
+        return this.maxCardsOnTable;
     }
 }

@@ -162,7 +162,7 @@ public class VisualApp {
                 } else if (this.hand2.getCardAmount() < 3) {
                     this.statusLabel.setText("Player 1 wins the game!");
                     this.turnButton.setEnabled(false);
-                }else{
+                } else {
                     this.cardsOnTable1.add(this.hand1.drawCard());
                     this.cardsOnTable1.add(this.hand1.drawCard());
                     this.cardsOnTable2.add(this.hand2.drawCard());
@@ -194,8 +194,8 @@ public class VisualApp {
 
         this.setupLabel(handCount1, 50, 100, 200, 50, 20);
         this.setupLabel(handCount2, 550, 100, 200, 50, 20);
-        this.setupLabel(statusLabel, 200, 670, 400, 50, 20);
-        this.setupLabel(spoilerLabel, 300, 300, 200, 30, 25);
+        this.setupLabel(statusLabel, 260, 670, 400, 50, 20);
+        this.setupLabel(spoilerLabel, 300, 300, 200, 30, 19);
 
 
         this.setupButton(this.spoilerButton, 50, 40, 125, 30, 20, _ -> this.showSpoiler());
@@ -253,6 +253,10 @@ public class VisualApp {
         cardCanvas.setBackground(this.settings.getBgColor());
         cardCanvas.setLocation(x, y);
         cardCanvas.clearAndSetBack();
+        cardCanvas.setSize(
+                (int) (this.settings.getSubImageWidth() * this.settings.getCardScale()),
+                (int) (this.settings.getSubImageHeight() * this.settings.getCardScale()) +
+                        this.settings.getMaxCardsOnTable() * this.settings.getCardDistance());
         this.frame.add(cardCanvas);
     }
 
