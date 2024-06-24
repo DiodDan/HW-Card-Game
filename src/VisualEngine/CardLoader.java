@@ -22,7 +22,7 @@ public class CardLoader {
 
     public Image loadCardBack() {
         try {
-            BufferedImage img = ImageIO.read(new File("Images/cards.png"));
+            BufferedImage img = ImageIO.read(new File("Images/cards1.png"));
             return img.getSubimage(
                     12,
                     495,
@@ -39,7 +39,7 @@ public class CardLoader {
 
     public HashMap<Suit, Image[]> loadCardImages() throws RuntimeException {
         try {
-            BufferedImage img = ImageIO.read(new File("Images/cards.png"));
+            BufferedImage img = ImageIO.read(new File("Images/cards1.png"));
 
             Image[] scaledImages = new Image[this.cardsAmount];
             for (int j = 0; j < 4; j++) {
