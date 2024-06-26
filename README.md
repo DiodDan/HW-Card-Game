@@ -1,3 +1,16 @@
+[![Build Status](https://github.com/danila12315454/HW-Card-Game/actions/workflows/CI.yml/badge.svg)](https://github.com/danila12315454/HW-Card-Game/actions/workflows/CI.yml/badge.svg)
+[![Qodana Status](https://img.shields.io/badge/Qodana-Passed-green?logo=quizlet)](https://github.com/danila12315454/HW-Card-Game/actions?query=workflow%3AQodana)
+![GitHub last commit](https://img.shields.io/github/last-commit/danila12315454/HW-Card-Game?logo=git)
+![GitHub repo size](https://img.shields.io/github/repo-size/danila12315454/HW-Card-Game?logo=files)
+![Mit](https://img.shields.io/github/license/danila12315454/HW-Card-Game?logo=gitbook)
+![GitHub top language](https://img.shields.io/github/languages/top/danila12315454/HW-Card-Game?logo=openmediavault)
+![GitHub language count](https://img.shields.io/github/languages/count/danila12315454/HW-Card-Game?logo=codeium)
+![Contributors](https://img.shields.io/github/contributors/danila12315454/HW-Card-Game?logo=cyberdefenders)
+![GitHub issues](https://img.shields.io/github/issues/danila12315454/HW-Card-Game?logo=github)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/danila12315454/HW-Card-Game?logo=github)
+![GitHub pull requests closed](https://img.shields.io/github/issues-pr-closed/danila12315454/HW-Card-Game?logo=github)
+---
+
 # Table of contents
 
 ---
@@ -143,6 +156,9 @@
 - [X] Create menu buttons (Danila)
 - [X] Create Restart button (Danila)
 - [X] Create Save system (Danila)
+- [X] Create autoplay button (Danila)
+- [X] Create Test class for fast testing (Danila)
+- [X] Create CI workflow for automate testing on push (Danila)
 
 ---
 
