@@ -1,5 +1,14 @@
 package App;
 
+import Cards.Card;
+import Cards.Deck;
+import Cards.Hand;
+import CustomComponents.CardCanvas;
+import Predictor.Predictor;
+import ProgressEngine.ProgressEngine;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -8,113 +17,234 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import Cards.Deck;
-import Cards.Hand;
-import Cards.Card;
-import CustomComponents.CardCanvas;
-import Predictor.Predictor;
-import ProgressEngine.ProgressEngine;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
-
+/**
+ * This is main GUI class for the game. It contains all the game logic and GUI components.
+ *
+ * @author Danila
+ * @version 1.0
+ */
 public class VisualApp {
     // ############################### Game Logical Vars ###################################
+    /**
+     * Deck instance used for getting random hands and create cards
+     */
     private Deck deck = new Deck();
 
-    private List<Hand> hands = deck.getRandomHands();
+    private List<Hand> hands = deck.getRandomHands(); // here we are getting random hands from the deck
 
+    /**
+     * hand1 is used to store cards that first player have on table
+     */
     private Hand hand1 = hands.get(0);
+    /**
+     * hand2 is used to store cards that second user have on table
+     */
     private Hand hand2 = hands.get(hands.size() - 1);
 
-    private Settings settings = new Settings();
+    /**
+     * Settings instance is used to store game settings information
+     */
+    private final Settings settings = new Settings();
 
-    private ProgressEngine progressEngine = new ProgressEngine();
+    /**
+     * progress engine instance to save and load the game
+     */
+    private final ProgressEngine progressEngine = new ProgressEngine();
 
-    private Predictor predictor = new Predictor();
+    /**
+     * predictor instance to predict the winner and steps
+     */
+    private final Predictor predictor = new Predictor();
 
-    private List<Card> cardsOnTable1 = new ArrayList<>();
-    private List<Card> cardsOnTable2 = new ArrayList<>();
+    /**
+     * cardsOnTable1 is used to store cards that first player have on table
+     */
+    private final List<Card> cardsOnTable1 = new ArrayList<>();
+    /**
+     * cardsOnTable2 is used to store cards that second player have on table
+     */
+    private final List<Card> cardsOnTable2 = new ArrayList<>();
 
-    private Timer autoplayTimer = new Timer(1000 / settings.getAutoPlayStepsPerSecond(), new ActionListener() {
+    /**
+     * Timer instance to autoplay the game
+     */
+    private final Timer autoplayTimer = new Timer(1000 / settings.getAutoPlayStepsPerSecond(), new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            drawCard();
+            drawCard(e);
         }
     });
 
     // ############################### GUI Vars ###################################
-    private Frame frame = new Frame(settings.getTitle());
+    /**
+     * frame to hold all the components
+     */
+    private final Frame frame = new Frame(settings.getTitle());
 
-    private CardCanvas cardCanvas1 = new CardCanvas();
-    private CardCanvas cardCanvas2 = new CardCanvas();
+    /**
+     * cardCanvas1 is used to show the cards that first player have on table
+     */
+    private final CardCanvas cardCanvas1 = new CardCanvas();
+    /**
+     * cardCanvas2 is used to show the cards that second player have on table
+     */
+    private final CardCanvas cardCanvas2 = new CardCanvas();
 
-    private Label handCount1 = new Label("Player 1: " + this.hand1.getCardAmount() + " cards");
-    private Label handCount2 = new Label("Player 2: " + this.hand2.getCardAmount() + " cards");
-    private Label statusLabel = new Label("Game in progress...");
-    private Label spoilerLabel = new Label("");
+    /**
+     * label to show the amount of cards that Player1 have
+     */
+    private final Label handCount1 = new Label("Player 1: " + this.hand1.getCardAmount() + " cards");
+    /**
+     * label to show the amount of cards that Player2 have
+     */
+    private final Label handCount2 = new Label("Player 2: " + this.hand2.getCardAmount() + " cards");
+    /**
+     * label to show the status of the game
+     */
+    private final Label statusLabel = new Label("Game in progress...");
+    /**
+     * label to show the prediction of the game
+     */
+    private final Label spoilerLabel = new Label("");
 
 
-    private Button turnButton = new Button("Pull Cards");
-    private Button spoilerButton = new Button("Spoiler");
-    private Button resturtButton = new Button("Restart Game");
-    private Button saveButton = new Button("Save Game");
-    private Button loadButton = new Button("Load Game");
+    /**
+     * button to pull the cards
+     */
+    private final Button turnButton = new Button("Pull Cards");
+    /**
+     * button to show the prediction
+     */
+    private final Button spoilerButton = new Button("Spoiler");
+    /**
+     * button to restart the game
+     */
+    private final Button resturtButton = new Button("Restart Game");
+    /**
+     * button to save the game
+     */
+    private final Button saveButton = new Button("Save Game");
+    /**
+     * button to load the game
+     */
+    private final Button loadButton = new Button("Load Game");
 
-    private Checkbox switchButton = new Checkbox("Auto Play", false);
+    /**
+     * switchButton to enable/disable autoplay
+     */
+    private final Checkbox switchButton = new Checkbox("Auto Play", false);
 
 
+    /**
+     * Function used to get the last card value from the list of cards.
+     * It was created to avoid code duplication and make code cleaner.
+     *
+     * @param cards List of cards from which we want to get the last card value.
+     * @return value of last card in the list.
+     */
     private int getLastCardValue(List<Card> cards) {
         return cards.get(cards.size() - 1).getValue();
     }
 
-    private void restartGame() {
+    /**
+     * Function used to restart the game.
+     *
+     * @param event ActionEvent instance that is not used now, but it exists to match the ActionListener interface.
+     */
+    private void restartGame(ActionEvent event) {
+        // getting new hands
         this.deck = new Deck();
         this.hands = deck.getRandomHands();
         this.hand1 = hands.get(0);
         this.hand2 = hands.get(hands.size() - 1);
+
+        // clearing the cards on table. It only redraws the cards on screen
         this.cardCanvas1.clearAndSetBack();
         this.cardCanvas2.clearAndSetBack();
+
+        // clearing the cards on table
+        this.cardsOnTable1.clear();
+        this.cardsOnTable2.clear();
+
+        // resetting the labels to show real amount of cards in players hands
         this.handCount1.setText("Player 1: " + this.hand1.getCardAmount() + " cards");
         this.handCount2.setText("Player 2: " + this.hand2.getCardAmount() + " cards");
+
+        // setting the status label to show that game is in progress and action button to pull cards
         this.statusLabel.setText("Game in progress...");
         this.turnButton.setLabel("Pull Cards");
+
+        // if the game was played till the end button will be disabled, so we need to enable it
         this.turnButton.setEnabled(true);
     }
 
-    private void saveGame() {
+    /**
+     * Function used to save the game. It will ask the user to enter the name of the save.
+     *
+     * @param event ActionEvent instance that is not used now, but it exists to match the ActionListener interface.
+     */
+    private void saveGame(ActionEvent event) {
+        // getting the user input
         String userInput = JOptionPane.showInputDialog("Enter name for this save:");
+
         try {
+            // saving the game
             this.progressEngine.saveState(this.hand1, this.hand2, userInput);
         } catch (Exception e) {
             System.out.println("Error saving the game");
         }
     }
 
-    private void loadGame() {
 
+    /**
+     * Function used to load the game. It will show the user the list of available saves and ask to choose one.
+     *
+     * @param event ActionEvent instance that is not used now, but it exists to match the ActionListener interface.
+     */
+    private void loadGame(ActionEvent event) {
+        // getting save name from user input
         Object[] options = this.progressEngine.getAvailableSaves();
-        Object selectedValue = JOptionPane.showInputDialog(null, "Choose load name", "Input", JOptionPane.INFORMATION_MESSAGE, null, options, null);
+        Object selectedValue = JOptionPane.showInputDialog(
+                null,
+                "Choose load name",
+                "Input",
+                JOptionPane.INFORMATION_MESSAGE,
+                null,
+                options,
+                null);
 
         try {
+            // loading the game state(We are getting hands from the save and setting them to the current hands)
             this.hands = this.progressEngine.loadState(selectedValue.toString());
             this.hand1 = hands.get(0);
             this.hand2 = hands.get(hands.size() - 1);
+
+            // clearing the cards on table
             this.cardsOnTable1.clear();
             this.cardsOnTable2.clear();
+
+            // redrawing the cards on screen
             this.cardCanvas1.clearAndSetBack();
             this.cardCanvas2.clearAndSetBack();
-            handCount1.setText("Player 1: " + this.hand1.getCardAmount() + " cards");
-            handCount2.setText("Player 2: " + this.hand2.getCardAmount() + " cards");
+
+            // resetting labels on screen to show the real amount of cards in players hands
+            this.handCount1.setText("Player 1: " + this.hand1.getCardAmount() + " cards");
+            this.handCount2.setText("Player 2: " + this.hand2.getCardAmount() + " cards");
         } catch (Exception e) {
-//            System.out.println("Error loading the game");
             throw new RuntimeException("Error loading the game");
         }
 
 
     }
 
-    public void showSpoiler() {
+    /**
+     * Function used to show the prediction of the game. It is assigned to the {@link #spoilerButton}.
+     *
+     * @param event ActionEvent instance that is not used now, but it exists to match the {@link ActionListener} interface.
+     */
+    public void showSpoiler(ActionEvent event) {
+
         if (this.spoilerLabel.getText().isEmpty()) {
             this.spoilerLabel.setText(predictor.predictWinner(this.hand1, this.hand2).toString());
         } else {
@@ -122,50 +252,82 @@ public class VisualApp {
         }
     }
 
-    public void drawCard() {
+
+    /**
+     * Function used to draw the card. Here is all logic of the game located. It is assigned to the {@link #turnButton}.
+     *
+     * @param event ActionEvent instance that is not used now, but it exists to match the ActionListener interface.
+     */
+    public void drawCard(ActionEvent event) {
         try {
-            if (Objects.equals(this.statusLabel.getText(), "Draw! Each player gets one more card.")) {
+            // handles the case when on previous round we had a draw
+            if (Objects.equals(this.statusLabel.getText(), "Draw! Each player gets one more card.")) {  // TODO: refactor this not to use label names in the condition
+                // draw 2 cards for each player
                 this.cardsOnTable1.add(this.hand1.drawCard());
                 this.cardsOnTable1.add(this.hand1.drawCard());
                 this.cardsOnTable2.add(this.hand2.drawCard());
                 this.cardsOnTable2.add(this.hand2.drawCard());
+
+                // add card backs to the canvas to show that we have 2 cards on table
                 this.cardCanvas1.addCardBacks(2);
                 this.cardCanvas2.addCardBacks(2);
+
+                // update the status label to show that game is in progress
                 this.statusLabel.setText("Game in progress...");
+
+                // here we are returning since we do not need to do anything else on this round
                 return;
             }
-            if (this.turnButton.getLabel().equals("Next round")) {
+
+
+            // handles the case when we need to start the next round
+            if (this.turnButton.getLabel().equals("Next round")) { // TODO: refactor this not to use label names in the condition
+                // resetting the button label and status label
                 this.turnButton.setLabel("Pull Cards");
                 this.statusLabel.setText("Game in progress...");
+
+                // redraw the cards on screen
                 this.cardCanvas1.clearAndSetBack();
                 this.cardCanvas2.clearAndSetBack();
-                handCount1.setText("Player 1: " + this.hand1.getCardAmount() + " cards");
-                handCount2.setText("Player 2: " + this.hand2.getCardAmount() + " cards");
+
+                // reset labels text to show the real amount of cards in players hands
+                this.handCount1.setText("Player 1: " + this.hand1.getCardAmount() + " cards");
+                this.handCount2.setText("Player 2: " + this.hand2.getCardAmount() + " cards");
+
+                // here we are returning since we do not need to do anything else on this round
                 return;
             }
+
+            // handles the case when we need to finish the game
             if (this.hand1.getCardAmount() == 0) {
                 this.statusLabel.setText("Player 2 wins the game!");
                 this.cardCanvas1.clearCards();
                 this.turnButton.setEnabled(false);
                 return;
             }
+
+            // handles the case when we need to finish the game
             if (this.hand2.getCardAmount() == 0) {
                 this.statusLabel.setText("Player 1 wins the game!");
                 this.cardCanvas2.clearCards();
                 this.turnButton.setEnabled(false);
                 return;
             }
+
             // draw new cards
             this.cardsOnTable1.add(this.hand1.drawCard());
             this.cardsOnTable2.add(this.hand2.drawCard());
 
+            // add card images to the canvas to show the cards on table
             this.cardCanvas1.addCardImage(cardsOnTable1.get(this.cardsOnTable1.size() - 1).getImage());
             this.cardCanvas2.addCardImage(cardsOnTable2.get(this.cardsOnTable2.size() - 1).getImage());
 
-
+            // handles the case when we need to compare the cards
             if (this.getLastCardValue(this.cardsOnTable1) != this.getLastCardValue(this.cardsOnTable2)) {
+                // this is the case when 1 player wins the round
                 if (this.getLastCardValue(this.cardsOnTable1) > this.getLastCardValue(this.cardsOnTable2)) {
                     this.statusLabel.setText("Player 1 wins the round!");
+                    // putting cards from table to the winner hand
                     for (Card card : this.cardsOnTable1)
                         this.hand1.putCard(card);
                     this.cardsOnTable1.clear();
@@ -174,6 +336,7 @@ public class VisualApp {
                     this.cardsOnTable2.clear();
                 } else {
                     this.statusLabel.setText("Player 2 wins the round!");
+                    // putting cards from table to the winner hand
                     for (Card card : this.cardsOnTable1)
                         this.hand2.putCard(card);
                     this.cardsOnTable1.clear();
@@ -182,7 +345,8 @@ public class VisualApp {
                     this.cardsOnTable2.clear();
                 }
                 this.turnButton.setLabel("Next round");
-            } else {
+            } else { // this else condition is used to handle the case when we have a draw
+                // here we are checking if we have enough cards to continue the game
                 if (this.hand1.getCardAmount() < 3) {
                     this.statusLabel.setText("Player 2 wins the game!");
                     this.turnButton.setEnabled(false);
@@ -190,11 +354,12 @@ public class VisualApp {
                     this.statusLabel.setText("Player 1 wins the game!");
                     this.turnButton.setEnabled(false);
                 } else {
-                    this.statusLabel.setText("Draw! Each player gets one more card.");
+                    // if there is enough cards for both players we have a draw
+                    this.statusLabel.setText("Draw! Each player gets one more card."); // do not change this label name till TODOs are done
                 }
             }
 
-
+            // this catch block is used to handle the case when we do not have any cards in hand
         } catch (Exception e) {
             System.out.println("No more cards in hand");
             this.autoplayTimer.stop();
@@ -202,25 +367,38 @@ public class VisualApp {
         }
     }
 
+
+    /**
+     * Function used to handle the action of the switchButton. It is used to enable/disable autoplay.
+     *
+     * @param e ItemEvent instance that is used to get the state of the switchButton.
+     */
     private void autoplayAction(ItemEvent e) {
+        // if the switchButton is selected we need to start the autoplay
         if (e.getStateChange() == ItemEvent.SELECTED) {
             this.turnButton.setEnabled(false);
             this.autoplayTimer.start();
-        } else {
+        } else { // else we need to stop the autoplay
             this.turnButton.setEnabled(true);
             this.autoplayTimer.stop();
         }
     }
 
+
+    /**
+     * Function used to run the game. It is used to set up the frame and all the components.
+     */
     public void runGame() {
         // ############################### Main GUI setup ###################################
+
+        // setting up the frame
         try {
             this.setupFrame();
         } catch (IOException e) {
             System.out.println("Error setting up the frame");
         }
 
-
+        // setting up all the components
         this.setupCanvas(this.cardCanvas1, 50, 150);
         this.setupCanvas(this.cardCanvas2, 550, 150);
 
@@ -230,19 +408,31 @@ public class VisualApp {
         this.setupLabel(spoilerLabel, 300, 300, 200, 30, 19);
 
 
-        this.setupButton(this.spoilerButton, 50, 40, 125, 30, 20, e -> this.showSpoiler());
-        this.setupButton(this.resturtButton, 200, 40, 125, 30, 20, e -> this.restartGame());
-        this.setupButton(this.loadButton, 350, 40, 125, 30, 20, e -> this.loadGame());
-        this.setupButton(this.saveButton, 500, 40, 125, 30, 20, e -> this.saveGame());
+        this.setupButton(this.spoilerButton, 50, 40, 125, 30, 20, this::showSpoiler);
+        this.setupButton(this.resturtButton, 200, 40, 125, 30, 20, this::restartGame);
+        this.setupButton(this.loadButton, 350, 40, 125, 30, 20, this::loadGame);
+        this.setupButton(this.saveButton, 500, 40, 125, 30, 20, this::saveGame);
 
 
-        this.setupButton(this.turnButton, 170, 730, 400, 50, 30, e -> this.drawCard());
+        this.setupButton(this.turnButton, 170, 730, 400, 50, 30, this::drawCard);
 
-        this.setupSwitchButton(this.switchButton, 50, 730, 100, 50, 20, e -> this.autoplayAction(e));
+        this.setupSwitchButton(this.switchButton, 50, 730, 100, 50, 20, this::autoplayAction);
     }
 
+    /**
+     * Function used to set up the button. It is used to avoid code duplication and make code cleaner.
+     *
+     * @param button         Button instance that we want to set up.
+     * @param x              x coordinate of the button's left corner.
+     * @param y              y coordinate of the button's left corner.
+     * @param width          width of the button.
+     * @param height         height of the button.
+     * @param textSize       text size of the button.
+     * @param actionListener ActionListener instance that is used to handle the button action.
+     */
     private void setupButton(Button button, int x, int y, int width, int height, int textSize, ActionListener actionListener) {
-        button.setSize(width, height);
+        // setting up the button
+        button.setSize(width, height); // TODO: refactor this to use Font as a parameter and add it to settings class
         button.setLocation(x, y);
         button.setFont(new Font("Arial", Font.PLAIN, textSize));
         button.setBackground(this.settings.getButtonBgColor());
@@ -251,6 +441,11 @@ public class VisualApp {
         this.frame.add(button);
     }
 
+    /**
+     * Function used to set up the frame.
+     *
+     * @throws IOException if there is an error finding the icon file.
+     */
     private void setupFrame() throws IOException {
         // set icon for the frame
         try {
@@ -274,7 +469,19 @@ public class VisualApp {
         });
     }
 
+    /**
+     * Function used to set up the label.
+     *
+     * @param label  Label instance that we want to set up.
+     * @param x      x coordinate of the label's left corner.
+     * @param y      y coordinate of the label's left corner.
+     * @param width  width of the label.
+     * @param height height of the label.
+     * @param size   text size of the label.
+     */
     private void setupLabel(Label label, int x, int y, int width, int height, int size) {
+        // TODO: refactor this to use Font as a parameter and add it to settings class
+        // setting up the label
         label.setSize(width, height);
         label.setLocation(x, y);
         label.setFont(new Font("Yu Gothic UI", Font.PLAIN, size));
@@ -283,10 +490,19 @@ public class VisualApp {
         this.frame.add(label);
     }
 
+    /**
+     * Function used to set up the canvas.
+     *
+     * @param cardCanvas CardCanvas instance that we want to set up.
+     * @param x          x coordinate of the canvas's left corner.
+     * @param y          y coordinate of the canvas's left corner.
+     */
     private void setupCanvas(CardCanvas cardCanvas, int x, int y) {
         cardCanvas.setBackground(this.settings.getBgColor());
         cardCanvas.setLocation(x, y);
         cardCanvas.clearAndSetBack();
+
+        // here we calculate canvas size based on the card scale and its amount
         cardCanvas.setSize(
                 (int) (this.settings.getSubImageWidth() * this.settings.getCardScale()),
                 (int) (this.settings.getSubImageHeight() * this.settings.getCardScale()) +
@@ -294,18 +510,32 @@ public class VisualApp {
         this.frame.add(cardCanvas);
     }
 
+    /**
+     * Function used to set up the switchButton.
+     *
+     * @param switchButton Checkbox instance that we want to set up.
+     * @param x            x coordinate of the switchButton's left corner.
+     * @param y            y coordinate of the switchButton's left corner.
+     * @param width        width of the switchButton.
+     * @param height       height of the switchButton.
+     * @param textSize     text size of the switchButton.
+     * @param itemListener ItemListener instance that is used to handle the switchButton action.
+     */
     private void setupSwitchButton(Checkbox switchButton, int x, int y, int width, int height, int textSize, ItemListener itemListener) {
         switchButton.addItemListener(itemListener);
 
         switchButton.setSize(width, height);
         switchButton.setLocation(x, y);
-        switchButton.setFont(new Font("Arial", Font.PLAIN, textSize));
+        switchButton.setFont(new Font("Arial", Font.PLAIN, textSize));// TODO: refactor this to use Font as a parameter and add it to settings class
         switchButton.setBackground(this.settings.getButtonBgColor());
         switchButton.setForeground(this.settings.getButtonFgColor());
 
         this.frame.add(switchButton);
     }
 
+    /**
+     * Main Function used to run the game.
+     */
     public static void main(String[] args) {
         VisualApp app = new VisualApp();
         app.runGame();

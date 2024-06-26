@@ -8,6 +8,8 @@
 
 ## 3. [Task Definitions](#Task-Definitions)
 
+## 4. [Solution condition](#Solution-condition)
+
 ---
 
 # How to run
@@ -121,3 +123,27 @@
 - [X] Create menu buttons (Danila)
 - [X] Create Restart button (Danila)
 - [X] Create Save system (Danila)
+
+---
+
+# Solution condition
+- [ ] Based on OOP no static methods allowed except lambdas.
+- [ ] All variables should be private.
+- [ ] Use inheritance and abstract.
+ [Solution Link](./src/App/VisualApp.java#L50)
+- [ ] Use Array or List to save data.
+- [ ] Uses file saving to save the game progress.
+- [ ] Uses the random to shuffle and distribute the deck.
+- [ ] Use an Array or list to save the user's information.
+- [ ] Create Graphical user Interface.
+- [ ] The GUI must have a menu bar which had at least the following:
+  - (New) for the new Game
+  - (Save) for saving the Game
+  - (Open) to open the saved game.
+- [ ] Code must have comments.
+- [ ] Code must not be copied, or AI generated.
+- [ ] UTF 8 character coding.
+- [ ] Project must show your names, in the about Menu Bar.
+- [ ] All used images must be included in the Images folder, in your Project.
+- [ ] You can add sound effects if you would like to game.
+- [ ] You can download card images from the Internet or create your design.
