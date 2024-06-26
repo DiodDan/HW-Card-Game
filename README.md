@@ -22,7 +22,27 @@
 
 # Structure Definitions
 
-## Packages:
+## Project consists of directories and files:
+- ### Images
+  #### Directory in which all images are stored.
+- ### src
+  #### Directory in which all source code is stored.
+- ### .gitignore
+  #### File for ignoring files in git.
+- ### README.md
+  #### File for storing information about the project.
+- ### CODE_OF_CONDUCT.md
+  #### File for storing code of conduct for the project(It is just template from GitHub).
+- ### Makefile
+  #### File for running commands in terminal.(It is made to make it simpler to run the project)
+- ### LICENSE
+  #### File for storing license information about the project.(It is just template from GitHub)
+- ### .github
+  #### Directory for storing GitHub actions. And issue templates.
+
+---
+
+## Packages in src folder:
 
 - ### [App](#App)
 - ### [Cards](#Cards)
