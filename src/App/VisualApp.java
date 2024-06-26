@@ -384,11 +384,51 @@ public class VisualApp {
         }
     }
 
+    public void testGame(){
+        // setting up the frame
+        try {
+            Image icon = ImageIO.read(new File("Images/gameIcon.png")); // Replace with your icon file path
+            this.frame.setIconImage(icon);
+
+            // set frame settings
+            this.frame.setLayout(null);
+            this.frame.setBackground(settings.getBgColor());
+
+            // add window listener to handle window closing event
+            this.frame.addWindowListener(new WindowAdapter() {
+                public void windowClosing(WindowEvent we) {
+                    System.exit(0);
+                }
+            });
+        } catch (IOException e) {
+            System.out.println("Error setting up the frame");
+        }
+
+        // setting up all the components
+        this.setupCanvas(this.cardCanvas1, 50, 150);
+        this.setupCanvas(this.cardCanvas2, 550, 150);
+
+        this.setupLabel(handCount1, 50, 100, 200, 50, 20);
+        this.setupLabel(handCount2, 550, 100, 200, 50, 20);
+        this.setupLabel(statusLabel, 260, 670, 400, 50, 20);
+        this.setupLabel(spoilerLabel, 300, 300, 200, 30, 19);
+
+
+        this.setupButton(this.spoilerButton, 50, 40, 125, 30, 20, this::showSpoiler);
+        this.setupButton(this.resturtButton, 200, 40, 125, 30, 20, this::restartGame);
+        this.setupButton(this.loadButton, 350, 40, 125, 30, 20, this::loadGame);
+        this.setupButton(this.saveButton, 500, 40, 125, 30, 20, this::saveGame);
+
+
+        this.setupButton(this.turnButton, 170, 730, 400, 50, 30, this::drawCard);
+
+        this.setupSwitchButton(this.switchButton, 50, 730, 100, 50, 20, this::autoplayAction);
+    }
 
     /**
      * Function used to run the game. It is used to set up the frame and all the components.
      */
-    public void runGame() {
+    private void setupUI() {
         // ############################### Main GUI setup ###################################
 
         // setting up the frame
@@ -446,7 +486,7 @@ public class VisualApp {
      *
      * @throws IOException if there is an error finding the icon file.
      */
-    private void setupFrame() throws IOException {
+    public void setupFrame() throws IOException {
         // set icon for the frame
         try {
             Image icon = ImageIO.read(new File("Images/gameIcon.png")); // Replace with your icon file path
@@ -538,6 +578,6 @@ public class VisualApp {
      */
     public static void main(String[] args) {
         VisualApp app = new VisualApp();
-        app.runGame();
+        app.setupUI();
     }
 }
