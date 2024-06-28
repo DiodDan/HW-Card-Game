@@ -42,7 +42,7 @@ jobs:
 
       - name: Create custom JRE
         run: |
-          jlink --no-header-files --no-man-pages --add-modules java.base,java.desktop --output custom_jre
+          jlink --no-header-files --no-man-pages --add-modules java.base,java.desktop,jdk.jli --output custom_jre
 
       - name: Create executable
         run: |
