@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     branches:
-      - 'Dev-CI*'
+      - 'Dev*'
   pull_request:
     branches:
       - 'release*'
