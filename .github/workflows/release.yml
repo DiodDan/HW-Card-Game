@@ -28,6 +28,14 @@ jobs:
           Get-ChildItem -Path src -Include *.java -Recurse | ForEach-Object { $_.FullName } > sources.txt
           cmd /c 'javac -d bin @sources.txt'
 
+      - name: Create resources directory
+        run: mkdir -p resources
+
+      - name: Copy directories to resources
+        run: |
+          xcopy /E /I Images resources\Images
+          xcopy /E /I saves resources\saves
+
       - name: Create JAR
         run: |
           jar cvf resources/app.jar -C bin .
@@ -38,7 +46,7 @@ jobs:
 
       - name: Create executable
         run: |
-          jpackage --name Game --type app-image -i Images -i saves -i resources --main-jar app.jar --runtime-image custom_jre --main-class App.VisualApp --verbose
+          jpackage --name Game --type app-image -i resources --main-jar app.jar --runtime-image custom_jre --main-class App.VisualApp --verbose
 
       - name: Create Release
         id: create_release
