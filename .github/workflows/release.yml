@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     branches:
-      - 'Dev*'
+      - 'Dev-CI-creation'
   pull_request:
     branches:
       - 'release*'
@@ -11,7 +11,7 @@ on:
 jobs:
   build:
     runs-on: windows-latest
-    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
+    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true || github.event_name == 'push' && github.ref == 'refs/heads/Dev-CI-creation'
 
     steps:
       - name: Checkout code
