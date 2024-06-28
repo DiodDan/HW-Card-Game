@@ -46,13 +46,13 @@ jobs:
 
       - name: Create executable
         run: |
-          jpackage --name Game --type app-image -i resources --main-jar app.jar --runtime-image custom_jre --main-class App.VisualApp --verbose
+          jpackage --name Game --type app-image -i resources --main-jar app.jar --runtime-image custom_jre --main-class App.VisualApp
 
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PAT }}
         with:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
