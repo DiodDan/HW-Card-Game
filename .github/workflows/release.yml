@@ -47,7 +47,9 @@ jobs:
       - name: Create executable
         run: |
           jpackage --name Game --type app-image -i resources --main-jar app.jar --runtime-image custom_jre --main-class App.VisualApp
-
+      - name: Ls
+        run: |
+          ls -la
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -66,6 +68,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./Game.jar
+          asset_path: ./Game/Game.exe
           asset_name: Game.exe
           asset_content_type: application/executable
