@@ -38,7 +38,7 @@ jobs:
 
       - name: Create executable
         run: |
-          jpackage --name Game --type app-image --input . --main-jar app.jar --runtime-image custom_jre --win-dir-chooser --win-shortcut --main-class App.VisualApp
+          jpackage --name Game --type app-image --input . --main-jar app.jar --runtime-image custom_jre --win-shortcut --main-class App.VisualApp
 
       - name: Create Release
         id: create_release
