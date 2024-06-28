@@ -49,6 +49,9 @@ jobs:
           jpackage --name Game --type app-image -i resources --main-jar app.jar --runtime-image custom_jre --main-class App.VisualApp
         
 
+      - name: Create zip file
+        run: Compress-Archive -Path ./Game -DestinationPath Game.zip
+
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -67,6 +70,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PAT }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./Game/Game.exe
-          asset_name: Game.exe
-          asset_content_type: application/executable
+          asset_path: ./Game.zip
+          asset_name: Game.zip
+          asset_content_type: application/zip
