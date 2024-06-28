@@ -25,7 +25,7 @@ jobs:
 
       - name: Compile Java sources
         run: |
-          dir /s /b src\*.java > sources.txt
+          Get-ChildItem -Path src -Include *.java -Recurse | ForEach-Object { $_.FullName } > sources.txt
           cmd /c 'javac -d bin @sources.txt'
 
       - name: Create JAR
