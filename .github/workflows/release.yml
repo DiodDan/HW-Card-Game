@@ -30,7 +30,7 @@ jobs:
 
       - name: Create JAR
         run: |
-          jar cvf app.jar -C bin .
+          jar cvf resources/app.jar -C bin .
 
       - name: Create custom JRE
         run: |
@@ -38,7 +38,7 @@ jobs:
 
       - name: Create executable
         run: |
-          jpackage --name Game --type app-image --input Images --input saves --main-jar app.jar --runtime-image custom_jre --main-class App.VisualApp --verbose
+          jpackage --name Game --type app-image -i Images -i saves -i resources --main-jar app.jar --runtime-image custom_jre --main-class App.VisualApp --verbose
 
       - name: Create Release
         id: create_release
