@@ -44,6 +44,10 @@ jobs:
         run: |
           jlink --no-header-files --no-man-pages --add-modules ALL-MODULE-PATH --output custom_jre
 
+      - name: Check JRE version
+        run: |
+          ./custom_jre/bin/java -version
+
       - name: Create executable
         run: |
           jpackage --name Game --type app-image -i resources --main-jar app.jar --runtime-image custom_jre --main-class App.VisualApp
