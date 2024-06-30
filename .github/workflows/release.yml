@@ -27,8 +27,6 @@ jobs:
         run: |
           Get-ChildItem -Path src -Include *.java -Recurse | ForEach-Object { $_.FullName } > sources.txt
           cmd /c 'javac -d bin @sources.txt'
-          echo 'public class Launcher {public static void main(String[] args) {Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler()public void uncaughtException(Thread t, Throwable e) {e.printStackTrace();}});App.VisualApp.main(args);}}' > Launcher.java
-          javac -d bin Launcher.java
 
       - name: Create resources directory
         run: mkdir -p resources
