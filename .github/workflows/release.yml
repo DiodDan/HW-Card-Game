@@ -38,7 +38,8 @@ jobs:
 
       - name: Create JAR
         run: |
-          jar cvf resources/app.jar -C bin .
+          echo Main-Class: Launcher > resources/manifest.txt
+          jar cvfm resources/app.jar resources/manifest.txt -C bin .
 
       - name: Create custom JRE
         run: |
@@ -54,7 +55,7 @@ jobs:
 #
       - name: Create executable
         run: |
-          jpackage --name Game --type app-image -i resources --main-jar app.jar --runtime-image custom_jre --main-class Launcher --java-options "-XX:+ShowCodeDetailsInExceptionMessages"
+          jpackage --verbose --name Game --type app-image -i resources --main-jar app.jar --runtime-image custom_jre --main-class Launcher --java-options "-XX:+ShowCodeDetailsInExceptionMessages"
 
       - name: Create zip file
         run: Compress-Archive -Path ./Game -DestinationPath Game.zip
