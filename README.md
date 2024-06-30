@@ -159,6 +159,7 @@
 - [X] Create autoplay button (Danila)
 - [X] Create Test class for fast testing (Danila)
 - [X] Create CI workflow for automate testing on push (Danila)
+- [ ] Create Avatars for users (Vasiliy)
 
 ---
 

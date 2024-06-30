@@ -38,7 +38,7 @@ jobs:
 
       - name: Create JAR
         run: |
-          jar cvfm resources/app.jar manifest.txt -C bin .
+          jar cvfe resources/app.jar Launcher -C bin .
 
       - name: Create custom JRE
         run: |
