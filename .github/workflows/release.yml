@@ -38,8 +38,7 @@ jobs:
 
       - name: Create JAR
         run: |
-          echo Main-Class: Launcher > resources/manifest.txt
-          jar cvfm resources/app.jar resources/manifest.txt -C bin .
+          jar cvfm resources/app.jar manifest.txt -C bin .
 
       - name: Create custom JRE
         run: |
