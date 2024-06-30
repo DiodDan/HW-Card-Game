@@ -52,17 +52,19 @@ public class ProgressEngine {
         reader.close();
 
 
-        List<Hand> hands = new ArrayList<Hand>();
+        List<Hand> hands = new ArrayList<>();
 
         hands.add(new Hand(this.deserializeHand(hand1Serialized)));
         hands.add(new Hand(this.deserializeHand(hand2Serialized)));
 
         return hands;
     }
+
+
     public String[] getAvailableSaves(){
         File folder = new File(this.settings.getSavePrefix());
         File[] listOfFiles = folder.listFiles();
-        List<String> saves = new ArrayList<String>();
+        List<String> saves = new ArrayList<>();
         for (File file : listOfFiles) {
             if (file.isFile() && file.getName().endsWith(".txt")){
                 saves.add(file.getName().substring(0, file.getName().lastIndexOf(".")));

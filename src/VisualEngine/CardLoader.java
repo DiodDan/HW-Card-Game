@@ -20,9 +20,26 @@ public class CardLoader {
     private final int cardDistanceX = 24;
     private final int cardDistanceY = 30;
 
+    private BufferedImage getImage(String path) throws IOException {
+        try {
+            return ImageIO.read(new File(path));
+        } catch (IOException ex) {
+            try {
+                if (CardLoader.class.getResource(path) != null) {
+                    return ImageIO.read(CardLoader.class.getResource(path));
+                }
+                throw new IOException("Resource not found: " + path);
+
+            } catch (IOException e) {
+                throw new IOException(e);
+            }
+        }
+
+    }
+
     public Image loadCardBack() {
         try {
-            BufferedImage img = ImageIO.read(new File("Images/cards1.png"));
+            BufferedImage img = this.getImage("Images/cards1.png");
             return img.getSubimage(
                     12,
                     495,
@@ -39,7 +56,7 @@ public class CardLoader {
 
     public HashMap<Suit, Image[]> loadCardImages() throws RuntimeException {
         try {
-            BufferedImage img = ImageIO.read(new File("Images/cards1.png"));
+            BufferedImage img = this.getImage("Images/cards1.png");
 
             Image[] scaledImages = new Image[this.cardsAmount];
             for (int j = 0; j < 4; j++) {
