@@ -27,6 +27,8 @@ jobs:
         run: |
           Get-ChildItem -Path src -Include *.java -Recurse | ForEach-Object { $_.FullName } > sources.txt
           cmd /c 'javac -d bin @sources.txt'
+          echo 'public class Launcher { public static void main(String[] args) { App.VisualApp.main(args); } }' > Launcher.java
+          javac -d bin Launcher.java
 
       - name: Create resources directory
         run: mkdir -p resources
@@ -54,8 +56,6 @@ jobs:
 #
       - name: Create executable
         run: |
-          echo 'public class Launcher { public static void main(String[] args) { App.VisualApp.main(args); } }' > Launcher.java
-          javac -d bin Launcher.java
           jpackage --name Game --type app-image -i resources --main-jar app.jar --runtime-image custom_jre --main-class Launcher --java-options "-XX:+ShowCodeDetailsInExceptionMessages"
 
       - name: Create zip file
