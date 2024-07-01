@@ -29,16 +29,20 @@ jobs:
           cmd /c 'javac -d bin @sources.txt'
 
       - name: Create resources directory
-        run: mkdir -p resources
-
-      - name: Copy directories to resources
         run: |
-          xcopy /E /I Images resources\Images
-          xcopy /E /I saves resources\saves
+          mkdir -p resources
+          mkdir -p additional_resources
+      
+
+      #      - name: Copy directories to resources
+      #        run: |
+      #          xcopy /E /I Images resources\Images
+      #          xcopy /E /I saves resources\saves
 
       - name: Create JAR
         run: |
           jar cvfe resources/app.jar App.VisualApp -C bin .
+          jar cvf additional_resources/resources.jar Images saves
 
       - name: Create custom JRE
         run: |
@@ -48,13 +52,9 @@ jobs:
         run: |
           ./custom_jre/bin/java -version
 
-#      - name: Create executable
-#        run: |
-#          jpackage --name Game --type app-image -i resources --main-jar app.jar --runtime-image custom_jre --main-class App.VisualApp
-#
       - name: Create executable
         run: |
-          jpackage --verbose --name Game --type app-image -i resources --main-jar app.jar --runtime-image custom_jre --main-class App.VisualApp --java-options "-XX:+ShowCodeDetailsInExceptionMessages" --resource-dir resources
+          jpackage --verbose --name Game --type app-image -i resources --main-jar resources/app.jar --runtime-image custom_jre --main-class App.VisualApp --java-options "-XX:+ShowCodeDetailsInExceptionMessages" --resource-dir additional_resources
 
       - name: Create zip file
         run: Compress-Archive -Path ./Game -DestinationPath Game.zip
