@@ -8,6 +8,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 
 public class CardLoader {
@@ -22,19 +23,20 @@ public class CardLoader {
 
     private BufferedImage getImage(String path) throws IOException {
         try {
-            return ImageIO.read(new File(path));
-        } catch (IOException ex) {
-            try {
-                if (CardLoader.class.getResource(path) != null) {
-                    return ImageIO.read(CardLoader.class.getResource(path));
-                }
-                throw new IOException("Resource not found: " + path);
-
-            } catch (IOException e) {
-                throw new IOException(e);
+            File file = new File(path);
+            if (file.exists()) {
+                return ImageIO.read(file);
             }
-        }
 
+            URL resourceUrl = getClass().getResource(path);
+            if (resourceUrl != null) {
+                return ImageIO.read(resourceUrl);
+            }
+
+            throw new IOException("Resource not found: " + path);
+        } catch (IOException e) {
+            throw new IOException(e);
+        }
     }
 
     public Image loadCardBack() {
