@@ -1,0 +1,79 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - 'Dev-CI-creation'
+  pull_request:
+    branches:
+      - 'release*'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true || github.event_name == 'push' && github.ref == 'refs/heads/Dev-CI-creation'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+
+      - name: Compile Java sources
+        run: |
+          Get-ChildItem -Path src -Include *.java -Recurse | ForEach-Object { $_.FullName } > sources.txt
+          cmd /c 'javac -d bin @sources.txt'
+
+      - name: Create resources directory
+        run: mkdir -p resources
+
+      - name: Create JAR
+        run: |
+          jar cvfe resources/app.jar App.VisualApp -C bin . Images saves
+
+      - name: Create custom JRE
+        run: |
+          jlink --no-header-files --no-man-pages --add-modules java.desktop,java.base --output custom_jre
+
+      - name: Check JRE version
+        run: |
+          ./custom_jre/bin/java -version
+
+
+      - name: Create executable
+        run: |
+          jpackage --verbose --name Game --type app-image -i resources --main-jar app.jar --runtime-image custom_jre --main-class App.VisualApp --java-options "-XX:+ShowCodeDetailsInExceptionMessages"
+
+      - name: Copy directories to resources
+        run: |
+          xcopy /E /I Images Game\Images
+          xcopy /E /I saves Game\saves
+
+      - name: Create zip file
+        run: Compress-Archive -Path ./Game -DestinationPath Game.zip
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: true
+          prerelease: true
+
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./Game.zip
+          asset_name: Game.zip
+          asset_content_type: application/zip
