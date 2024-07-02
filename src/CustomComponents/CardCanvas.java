@@ -13,7 +13,7 @@ public class CardCanvas extends Canvas {
     private final List<Image> cardImages = new ArrayList<>();
     private final CardLoader cardLoader = new CardLoader();
     private BufferedImage bufferedImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
-
+    private final Image cardBack = this.cardLoader.loadCardBack();
 
     @Override
     public void paint(Graphics g) {
@@ -27,14 +27,14 @@ public class CardCanvas extends Canvas {
 
     public void addCardBacks(Integer amount) {
         for (int i = 0; i < amount; i++) {
-            this.cardImages.add(cardLoader.loadCardBack());
+            this.cardImages.add(this.cardBack);
         }
         this.draw();
     }
 
     public void clearAndSetBack() {
         this.cardImages.clear();
-        this.cardImages.add(cardLoader.loadCardBack());
+        this.cardImages.add(this.cardBack);
         this.draw();
     }
 

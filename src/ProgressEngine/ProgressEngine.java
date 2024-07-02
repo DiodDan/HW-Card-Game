@@ -11,7 +11,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
+// TODO: If you press save button and close window it will save it with name null
 public class ProgressEngine {
     Settings settings = new Settings();
     CardLoader cardLoader = new CardLoader();

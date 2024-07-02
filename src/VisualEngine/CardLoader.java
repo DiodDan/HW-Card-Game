@@ -24,11 +24,13 @@ public class CardLoader {
     private BufferedImage getImage(String path) throws IOException {
         try {
             File file = new File(path);
+
             if (file.exists()) {
                 return ImageIO.read(file);
             }
 
             URL resourceUrl = getClass().getResource(path);
+
             if (resourceUrl != null) {
                 return ImageIO.read(resourceUrl);
             }
@@ -41,7 +43,7 @@ public class CardLoader {
 
     public Image loadCardBack() {
         try {
-            BufferedImage img = this.getImage("/Images/cards1.png");
+            BufferedImage img = this.getImage("Images/cards1.png");
             return img.getSubimage(
                     12,
                     495,
@@ -58,7 +60,7 @@ public class CardLoader {
 
     public HashMap<Suit, Image[]> loadCardImages() throws RuntimeException {
         try {
-            BufferedImage img = this.getImage("/Images/cards1.png");
+            BufferedImage img = this.getImage("Images/cards1.png");
 
             Image[] scaledImages = new Image[this.cardsAmount];
             for (int j = 0; j < 4; j++) {
