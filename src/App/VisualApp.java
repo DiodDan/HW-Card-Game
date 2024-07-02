@@ -4,6 +4,7 @@ import Cards.Card;
 import Cards.Deck;
 import Cards.Hand;
 import CustomComponents.CardCanvas;
+import CustomEnums.GameState;
 import Predictor.Predictor;
 import ProgressEngine.ProgressEngine;
 
@@ -15,7 +16,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
 /**
@@ -26,49 +26,35 @@ import java.util.Objects;
  */
 public class VisualApp {
     // ############################### Game Logical Vars ###################################
-    /**
-     * Deck instance used for getting random hands and create cards
-     */
+    /** Deck instance used for getting random hands and create cards */
     private Deck deck = new Deck();
 
-    private List<Hand> hands = deck.getRandomHands(); // here we are getting random hands from the deck
+    /** here we are getting random hands from the deck */
+    private List<Hand> hands = deck.getRandomHands();
 
-    /**
-     * hand1 is used to store cards that first player have on table
-     */
+    /** hand1 is used to store cards that first player have on table */
     private Hand hand1 = hands.get(0);
-    /**
-     * hand2 is used to store cards that second user have on table
-     */
+    /** hand2 is used to store cards that second user have on table */
     private Hand hand2 = hands.get(hands.size() - 1);
 
-    /**
-     * Settings instance is used to store game settings information
-     */
+    /** gameState is used to store the current state of the game */
+    private GameState gameState = GameState.IN_PROGRESS;
+
+    /** Settings instance is used to store game settings information */
     private final Settings settings = new Settings();
 
-    /**
-     * progress engine instance to save and load the game
-     */
+    /** progress engine instance to save and load the game */
     private final ProgressEngine progressEngine = new ProgressEngine();
 
-    /**
-     * predictor instance to predict the winner and steps
-     */
+    /** predictor instance to predict the winner and steps */
     private final Predictor predictor = new Predictor();
 
-    /**
-     * cardsOnTable1 is used to store cards that first player have on table
-     */
+    /** cardsOnTable1 is used to store cards that first player have on table */
     private final List<Card> cardsOnTable1 = new ArrayList<>();
-    /**
-     * cardsOnTable2 is used to store cards that second player have on table
-     */
+    /** cardsOnTable2 is used to store cards that second player have on table */
     private final List<Card> cardsOnTable2 = new ArrayList<>();
 
-    /**
-     * Timer instance to autoplay the game
-     */
+    /** Timer instance to autoplay the game */
     private final Timer autoplayTimer = new Timer(1000 / settings.getAutoPlayStepsPerSecond(), new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -77,62 +63,36 @@ public class VisualApp {
     });
 
     // ############################### GUI Vars ###################################
-    /**
-     * frame to hold all the components
-     */
+    /** frame to hold all the components */
     private final Frame frame = new Frame(settings.getTitle());
 
-    /**
-     * cardCanvas1 is used to show the cards that first player have on table
-     */
+    /** cardCanvas1 is used to show the cards that first player have on table */
     private final CardCanvas cardCanvas1 = new CardCanvas();
-    /**
-     * cardCanvas2 is used to show the cards that second player have on table
-     */
+    /** cardCanvas2 is used to show the cards that second player have on table */
     private final CardCanvas cardCanvas2 = new CardCanvas();
 
-    /**
-     * label to show the amount of cards that Player1 have
-     */
+    /** label to show the amount of cards that Player1 have */
     private final Label handCount1 = new Label("Player 1: " + this.hand1.getCardAmount() + " cards");
-    /**
-     * label to show the amount of cards that Player2 have
-     */
+    /** label to show the amount of cards that Player2 have */
     private final Label handCount2 = new Label("Player 2: " + this.hand2.getCardAmount() + " cards");
-    /**
-     * label to show the status of the game
-     */
+    /** label to show the status of the game */
     private final Label statusLabel = new Label("Game in progress...");
-    /**
-     * label to show the prediction of the game
-     */
+    /** label to show the prediction of the game */
     private final Label spoilerLabel = new Label("");
 
 
-    /**
-     * button to pull the cards
-     */
+    /** button to pull the cards */
     private final Button turnButton = new Button("Pull Cards");
-    /**
-     * button to show the prediction
-     */
+    /** button to show the prediction */
     private final Button spoilerButton = new Button("Spoiler");
-    /**
-     * button to restart the game
-     */
+    /** button to restart the game */
     private final Button resturtButton = new Button("Restart Game");
-    /**
-     * button to save the game
-     */
+    /** button to save the game */
     private final Button saveButton = new Button("Save Game");
-    /**
-     * button to load the game
-     */
+    /** button to load the game */
     private final Button loadButton = new Button("Load Game");
 
-    /**
-     * switchButton to enable/disable autoplay
-     */
+    /** switchButton to enable/disable autoplay */
     private final Checkbox switchButton = new Checkbox("Auto Play", false);
 
 
@@ -261,7 +221,7 @@ public class VisualApp {
     public void drawCard(ActionEvent event) {
         try {
             // handles the case when on previous round we had a draw
-            if (Objects.equals(this.statusLabel.getText(), "Draw! Each player gets one more card.")) {  // TODO: refactor this not to use label names in the condition
+            if (this.gameState == GameState.DRAW) {
                 // draw 2 cards for each player
                 this.cardsOnTable1.add(this.hand1.drawCard());
                 this.cardsOnTable1.add(this.hand1.drawCard());
@@ -274,6 +234,7 @@ public class VisualApp {
 
                 // update the status label to show that game is in progress
                 this.statusLabel.setText("Game in progress...");
+                this.gameState = GameState.IN_PROGRESS;
 
                 // here we are returning since we do not need to do anything else on this round
                 return;
@@ -281,10 +242,11 @@ public class VisualApp {
 
 
             // handles the case when we need to start the next round
-            if (this.turnButton.getLabel().equals("Next round")) { // TODO: refactor this not to use label names in the condition
+            if (this.gameState == GameState.PLAYER_WIN) {
                 // resetting the button label and status label
                 this.turnButton.setLabel("Pull Cards");
                 this.statusLabel.setText("Game in progress...");
+                this.gameState = GameState.IN_PROGRESS;
 
                 // redraw the cards on screen
                 this.cardCanvas1.clearAndSetBack();
@@ -303,6 +265,7 @@ public class VisualApp {
                 this.statusLabel.setText("Player 2 wins the game!");
                 this.cardCanvas1.clearCards();
                 this.turnButton.setEnabled(false);
+                this.gameState = GameState.END;
                 return;
             }
 
@@ -311,6 +274,7 @@ public class VisualApp {
                 this.statusLabel.setText("Player 1 wins the game!");
                 this.cardCanvas2.clearCards();
                 this.turnButton.setEnabled(false);
+                this.gameState = GameState.END;
                 return;
             }
 
@@ -345,6 +309,7 @@ public class VisualApp {
                     this.cardsOnTable2.clear();
                 }
                 this.turnButton.setLabel("Next round");
+                this.gameState = GameState.PLAYER_WIN;
             } else { // this else condition is used to handle the case when we have a draw
                 // here we are checking if we have enough cards to continue the game
                 if (this.hand1.getCardAmount() < 3) {
@@ -355,7 +320,8 @@ public class VisualApp {
                     this.turnButton.setEnabled(false);
                 } else {
                     // if there is enough cards for both players we have a draw
-                    this.statusLabel.setText("Draw! Each player gets one more card."); // do not change this label name till TODOs are done
+                    this.statusLabel.setText("Draw! Each player gets one more card.");
+                    this.gameState = GameState.DRAW;
                 }
             }
 
