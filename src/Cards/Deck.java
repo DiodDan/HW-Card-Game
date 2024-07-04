@@ -10,12 +10,12 @@ import java.util.List;
 import java.util.Random;
 
 public class Deck {
-    private List<Card> cards = new ArrayList<Card>();
-    private Random rand = new Random();
+    private final List<Card> cards = new ArrayList<>();
+    private final Random rand = new Random();
 
     public Deck() {
         CardLoader cardLoader = new CardLoader();
-        HashMap<Suit, Image[]> cardImages = cardLoader.loadCardImages();
+        HashMap<Suit, Image[]> cardImages = cardLoader.loadCardImages("cards1");
         for (Suit suit : Suit.values()) {
             for (int i = 2; i < 14; i++) {
                 this.cards.add(new Card(suit, i, cardImages.get(suit)[i - 1]));
@@ -37,7 +37,7 @@ public class Deck {
     }
 
     public List<Hand> getRandomHands() {
-        List<Hand> hands = new ArrayList<Hand>();
+        List<Hand> hands = new ArrayList<>();
         hands.add(new Hand());
         hands.add(new Hand());
         for (int i = 0; i < 2; i++) {

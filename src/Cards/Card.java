@@ -9,7 +9,7 @@ import java.awt.*;
 public class Card {
     private final Suit suit;
     private final int value;
-    private final Image image;
+    private Image image;
 
     public Card(Suit name, int value, Image image) {
         this.suit = name;
@@ -31,5 +31,9 @@ public class Card {
 
     public String getCardInfo() {
         return this.getName() + " " + this.getValue();
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
     }
 }

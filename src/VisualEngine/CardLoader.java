@@ -58,9 +58,9 @@ public class CardLoader {
         }
     }
 
-    public HashMap<Suit, Image[]> loadCardImages() throws RuntimeException {
+    public HashMap<Suit, Image[]> loadCardImages(String themeName) throws RuntimeException {
         try {
-            BufferedImage img = this.getImage("Images/cards1.png");
+            BufferedImage img = this.getImage("Images/" + themeName + ".png");
 
             Image[] scaledImages = new Image[this.cardsAmount];
             for (int j = 0; j < 4; j++) {

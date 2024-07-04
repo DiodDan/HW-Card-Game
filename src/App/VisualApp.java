@@ -55,12 +55,7 @@ public class VisualApp {
     private final List<Card> cardsOnTable2 = new ArrayList<>();
 
     /** Timer instance to autoplay the game */
-    private final Timer autoplayTimer = new Timer(1000 / settings.getAutoPlayStepsPerSecond(), new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            drawCard(e);
-        }
-    });
+    private final Timer autoplayTimer = new Timer(1000 / settings.getAutoPlayStepsPerSecond(), this::drawCard);
 
     // ############################### GUI Vars ###################################
     /** frame to hold all the components */
@@ -150,6 +145,9 @@ public class VisualApp {
 
         try {
             // saving the game
+            if (userInput == null) {
+                return;
+            }
             this.progressEngine.saveState(this.hand1, this.hand2, userInput);
         } catch (Exception e) {
             System.out.println("Error saving the game");
@@ -175,6 +173,9 @@ public class VisualApp {
                 null);
 
         try {
+            if (selectedValue == null) {
+                return;
+            }
             // loading the game state(We are getting hands from the save and setting them to the current hands)
             this.hands = this.progressEngine.loadState(selectedValue.toString());
             this.hand1 = hands.get(0);
@@ -397,7 +398,7 @@ public class VisualApp {
      */
     private void setupButton(Button button, int x, int y, int width, int height, int textSize, ActionListener actionListener) {
         // setting up the button
-        button.setSize(width, height); // TODO: refactor this to use Font as a parameter and add it to settings class
+        button.setSize(width, height);
         button.setLocation(x, y);
         button.setFont(new Font("Arial", Font.PLAIN, textSize));
         button.setBackground(this.settings.getButtonBgColor());
@@ -445,7 +446,6 @@ public class VisualApp {
      * @param size   text size of the label.
      */
     private void setupLabel(Label label, int x, int y, int width, int height, int size) {
-        // TODO: refactor this to use Font as a parameter and add it to settings class
         // setting up the label
         label.setSize(width, height);
         label.setLocation(x, y);
@@ -491,7 +491,7 @@ public class VisualApp {
 
         switchButton.setSize(width, height);
         switchButton.setLocation(x, y);
-        switchButton.setFont(new Font("Arial", Font.PLAIN, textSize));// TODO: refactor this to use Font as a parameter and add it to settings class
+        switchButton.setFont(new Font("Arial", Font.PLAIN, textSize));
         switchButton.setBackground(this.settings.getButtonBgColor());
         switchButton.setForeground(this.settings.getButtonFgColor());
 

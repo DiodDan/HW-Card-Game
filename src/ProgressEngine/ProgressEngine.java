@@ -11,16 +11,16 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-// TODO: If you press save button and close window it will save it with name null
+
 public class ProgressEngine {
     Settings settings = new Settings();
     CardLoader cardLoader = new CardLoader();
-    HashMap<Suit, Image[]> cardImages = cardLoader.loadCardImages();
+    HashMap<Suit, Image[]> cardImages = cardLoader.loadCardImages("cards1");
 
 
     public void saveState(Hand hand1, Hand hand2, String saveName) throws IOException {
         // Save the state of the game
-        PrintWriter writer = new PrintWriter(new FileWriter(new File(this.settings.getSavePrefix() + saveName + ".txt")));
+        PrintWriter writer = new PrintWriter(new FileWriter(this.settings.getSavePrefix() + saveName + ".txt"));
         writer.println(hand1.serialize() + "\n" + hand2.serialize());
         writer.close();
     }
@@ -46,7 +46,7 @@ public class ProgressEngine {
 
     public List<Hand> loadState(String loadName) throws IOException {
         // Load the state of the game
-        BufferedReader reader = new BufferedReader(new FileReader(new File(this.settings.getSavePrefix() + loadName + ".txt")));
+        BufferedReader reader = new BufferedReader(new FileReader(this.settings.getSavePrefix() + loadName + ".txt"));
         String hand1Serialized = reader.readLine();
         String hand2Serialized = reader.readLine();
         reader.close();
@@ -65,6 +65,9 @@ public class ProgressEngine {
         File folder = new File(this.settings.getSavePrefix());
         File[] listOfFiles = folder.listFiles();
         List<String> saves = new ArrayList<>();
+        if (listOfFiles == null) {
+            return new String[0];
+        }
         for (File file : listOfFiles) {
             if (file.isFile() && file.getName().endsWith(".txt")){
                 saves.add(file.getName().substring(0, file.getName().lastIndexOf(".")));
