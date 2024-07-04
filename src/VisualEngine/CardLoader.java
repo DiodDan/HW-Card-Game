@@ -41,9 +41,9 @@ public class CardLoader {
         }
     }
 
-    public Image loadCardBack() {
+    public Image loadCardBack(String themeName) {
         try {
-            BufferedImage img = this.getImage("Images/cards1.png");
+            BufferedImage img = this.getImage("Images/" + themeName + ".png");
             return img.getSubimage(
                     12,
                     495,

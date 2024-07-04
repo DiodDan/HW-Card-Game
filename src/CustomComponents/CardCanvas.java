@@ -13,7 +13,7 @@ public class CardCanvas extends Canvas {
     private final List<Image> cardImages = new ArrayList<>();
     private final CardLoader cardLoader = new CardLoader();
     private BufferedImage bufferedImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
-    private final Image cardBack = this.cardLoader.loadCardBack();
+    private final Image cardBack = this.cardLoader.loadCardBack(this.settings.getThemeName());
 
     @Override
     public void paint(Graphics g) {

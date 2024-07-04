@@ -15,7 +15,7 @@ import java.util.List;
 public class ProgressEngine {
     Settings settings = new Settings();
     CardLoader cardLoader = new CardLoader();
-    HashMap<Suit, Image[]> cardImages = cardLoader.loadCardImages("cards1");
+    HashMap<Suit, Image[]> cardImages = cardLoader.loadCardImages(this.settings.getThemeName());
 
 
     public void saveState(Hand hand1, Hand hand2, String saveName) throws IOException {

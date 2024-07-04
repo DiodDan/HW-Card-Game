@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 
 public class Test {
-    private final VisualApp app = new VisualApp();
+    private final GameWindow app = new GameWindow();
     private final int testDrawsAmount = 10;
 
     private void testCardDrawing() {

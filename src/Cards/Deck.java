@@ -1,5 +1,6 @@
 package Cards;
 
+import App.Settings;
 import CustomEnums.Suit;
 import VisualEngine.CardLoader;
 
@@ -12,10 +13,11 @@ import java.util.Random;
 public class Deck {
     private final List<Card> cards = new ArrayList<>();
     private final Random rand = new Random();
+    private final Settings settings = new Settings();
 
     public Deck() {
         CardLoader cardLoader = new CardLoader();
-        HashMap<Suit, Image[]> cardImages = cardLoader.loadCardImages("cards1");
+        HashMap<Suit, Image[]> cardImages = cardLoader.loadCardImages(this.settings.getThemeName());
         for (Suit suit : Suit.values()) {
             for (int i = 2; i < 14; i++) {
                 this.cards.add(new Card(suit, i, cardImages.get(suit)[i - 1]));
