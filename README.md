@@ -161,7 +161,7 @@
 - [X] Create CI workflow for automate testing on push (Danila)
 - [X] Create CI workflow for automate exe building on pull request into release branches (Danila)
 - [ ] Create Avatars for users (Vasiliy)
-- [ ] Create Main menu (Amidah)
+- [ ] Create Main menu (Amidah.)
 - [ ] Create about bar
 - [ ] Create settings menu
 - [ ] Create sound effects
