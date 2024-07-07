@@ -1,7 +1,6 @@
 package App;
+
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.*;
 public class MainMenu extends JFrame{
 
@@ -61,21 +60,25 @@ public class MainMenu extends JFrame{
     private void startGame(boolean againstComputer) {
         if (againstComputer) {
             JOptionPane.showMessageDialog(this, "Starting game against the computer...");
-            // Code to start the game against the computer goes here
+
+
+            // Code to start the game against the computer
         } else {
             JOptionPane.showMessageDialog(this, "Starting game against other players...");
-            // Code to start the game against other players goes here
+
+            // Code to start the game against other PLAYERS
         }
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new MainMenu();
-            }
-        });
+        SwingUtilities.invokeLater(MainMenu::createAndShowGUI);
+    }
+
+    public static void createAndShowGUI() {
+        new MainMenu ();
     }
 }
+
+
 
 
