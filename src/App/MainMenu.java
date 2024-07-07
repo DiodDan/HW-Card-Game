@@ -61,12 +61,9 @@ public class MainMenu extends JFrame{
         if (againstComputer) {
             JOptionPane.showMessageDialog(this, "Starting game against the computer...");
 
-
-            // Code to start the game against the computer
         } else {
             JOptionPane.showMessageDialog(this, "Starting game against other players...");
 
-            // Code to start the game against other PLAYERS
         }
     }
 
