@@ -20,6 +20,10 @@ public class MainMenu extends JFrame{
         JButton playComputerButton = new JButton("Play Against Computer");
         JButton playPlayersButton = new JButton("Play Against Other Players");
 
+        // Action listeners using lambda expressions
+        playComputerButton.addActionListener(e -> startGame(true));
+        playPlayersButton.addActionListener(e -> startGame(false));
+
         // To Add buttons to the panel
         panel.add(playComputerButton);
         panel.add(playPlayersButton);
