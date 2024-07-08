@@ -70,11 +70,10 @@ public class MainMenu extends JFrame{
 
         }
     }
-
     public static void main(String[] args) {
-        GameWindow app = new GameWindow();
-        app.setupUI();
+        SwingUtilities.invokeLater(MainMenu::new);
     }
+
 }
 
 
