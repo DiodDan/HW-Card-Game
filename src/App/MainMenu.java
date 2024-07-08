@@ -1,8 +1,6 @@
 package App;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.*;
 public class MainMenu extends JFrame{
 
@@ -22,20 +20,9 @@ public class MainMenu extends JFrame{
         JButton playComputerButton = new JButton("Play Against Computer");
         JButton playPlayersButton = new JButton("Play Against Other Players");
 
-        // action listeners
-        playComputerButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                startGame(true);
-            }
-        });
-
-        playPlayersButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                startGame(false);
-            }
-        });
+        // action listeners using lambda expressions
+        playComputerButton.addActionListener(e -> startGame(true));
+        playPlayersButton.addActionListener(e -> startGame(false));
 
         // To Add buttons to the panel
         panel.add(playComputerButton);
@@ -86,7 +73,6 @@ public class MainMenu extends JFrame{
     public static void main(String[] args) {
         SwingUtilities.invokeLater(MainMenu::new);
     }
-
 }
 
 
