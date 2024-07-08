@@ -72,11 +72,8 @@ public class MainMenu extends JFrame{
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(MainMenu::createAndShowGUI);
-    }
-
-    public static void createAndShowGUI() {
-        new MainMenu ();
+        GameWindow app = new GameWindow();
+        app.setupUI();
     }
 }
 
