@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class IconLoader {
-    private final int subImageHeight = 15;
+    private final int subImageHeight = 26;
     private final int padding = 1;
 
     private final Map<ButtonType, Integer> buttonWidths;
@@ -50,20 +50,17 @@ public class IconLoader {
             int xOffset = 0;
 
             for (ButtonType type : ButtonType.values()) {
-                HashMap<ButtonState, Image> stateIcons = new HashMap<>();
-                int buttonWidth = buttonWidths.get(type);
+                if (buttonWidths.containsKey(type)) {
+                    HashMap<ButtonState, Image> stateIcons = new HashMap<>();
+                    int buttonWidth = buttonWidths.get(type);
 
-                if (type == ButtonType.MUTE || type == ButtonType.AUTO) {
-                    stateIcons.put(ButtonState.CHECKED, getButtonImage(img, xOffset, ButtonState.CHECKED.ordinal(), buttonWidth));
-                    stateIcons.put(ButtonState.UNCHECKED, getButtonImage(img, xOffset, ButtonState.UNCHECKED.ordinal(), buttonWidth));
-                } else {
                     stateIcons.put(ButtonState.NORMAL, getButtonImage(img, xOffset, ButtonState.NORMAL.ordinal(), buttonWidth));
                     stateIcons.put(ButtonState.HOVER, getButtonImage(img, xOffset, ButtonState.HOVER.ordinal(), buttonWidth));
                     stateIcons.put(ButtonState.PRESSED, getButtonImage(img, xOffset, ButtonState.PRESSED.ordinal(), buttonWidth));
-                }
 
-                buttonIcons.put(type, stateIcons);
-                xOffset += buttonWidth + padding;
+                    buttonIcons.put(type, stateIcons);
+                    xOffset += buttonWidth + padding;
+                }
             }
 
             return buttonIcons;
@@ -72,12 +69,12 @@ public class IconLoader {
         }
     }
 
-    
     private Image getButtonImage(BufferedImage img, int xOffset, int stateIndex, int buttonWidth) {
-        
+        int y = stateIndex * (subImageHeight + padding);
+
         return img.getSubimage(
                 xOffset,
-                stateIndex * (subImageHeight + padding),
+                y,
                 buttonWidth,
                 subImageHeight
         );
