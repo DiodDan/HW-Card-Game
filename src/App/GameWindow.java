@@ -7,6 +7,7 @@ import CustomComponents.CardCanvas;
 import CustomEnums.GameState;
 import Predictor.Predictor;
 import ProgressEngine.ProgressEngine;
+import javax.swing.JButton;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -77,18 +78,18 @@ public class GameWindow {
 
 
     /** button to pull the cards */
-    private final Button turnButton = new Button("Pull Cards");
+    private final JButton turnButton = new JButton("Pull Cards");
     /** button to show the prediction */
-    private final Button spoilerButton = new Button("Spoiler");
+    private final JButton spoilerButton = new JButton("Spoiler");
     /** button to restart the game */
-    private final Button resturtButton = new Button("Restart Game");
+    private final JButton resturtButton = new JButton("Restart Game");
     /** button to save the game */
-    private final Button saveButton = new Button("Save Game");
+    private final JButton saveButton = new JButton("Save Game");
     /** button to load the game */
-    private final Button loadButton = new Button("Load Game");
+    private final JButton loadButton = new JButton("Load Game");
 
     /** switchButton to enable/disable autoplay */
-    private final Checkbox switchButton = new Checkbox("Auto Play", false);
+    private final JCheckBox switchButton = new JCheckBox("Auto Play", false);
 
 
     /**
@@ -330,7 +331,7 @@ public class GameWindow {
         } catch (Exception e) {
             System.out.println("No more cards in hand");
             this.autoplayTimer.stop();
-            this.switchButton.setState(false);
+            this.switchButton.setSelected(false);
         }
     }
 
@@ -372,8 +373,7 @@ public class GameWindow {
         this.setupLabel(handCount2, 550, 100, 200, 50, 20);
         this.setupLabel(statusLabel, 260, 670, 400, 50, 20);
         this.setupLabel(spoilerLabel, 300, 300, 200, 30, 19);
-
-
+        
         this.setupButton(this.spoilerButton, 50, 40, 125, 30, 20, this::showSpoiler);
         this.setupButton(this.resturtButton, 200, 40, 125, 30, 20, this::restartGame);
         this.setupButton(this.loadButton, 350, 40, 125, 30, 20, this::loadGame);
@@ -383,6 +383,10 @@ public class GameWindow {
         this.setupButton(this.turnButton, 170, 730, 400, 50, 30, this::drawCard);
 
         this.setupSwitchButton(this.switchButton, 50, 730, 100, 50, 20, this::autoplayAction);
+
+        this.frame.repaint();
+
+       
     }
 
     /**
@@ -396,16 +400,22 @@ public class GameWindow {
      * @param textSize       text size of the button.
      * @param actionListener ActionListener instance that is used to handle the button action.
      */
-    private void setupButton(Button button, int x, int y, int width, int height, int textSize, ActionListener actionListener) {
+    
+    private void setupButton(JButton button, int x, int y, int width, int height, int textSize, ActionListener actionListener) {
         // setting up the button
+        
         button.setSize(width, height);
         button.setLocation(x, y);
         button.setFont(new Font("Arial", Font.PLAIN, textSize));
         button.setBackground(this.settings.getButtonBgColor());
         button.setForeground(this.settings.getButtonFgColor());
         button.addActionListener(actionListener);
+        
         this.frame.add(button);
+        
+        
     }
+    
 
     /**
      * Function used to set up the frame.
@@ -487,7 +497,7 @@ public class GameWindow {
      * @param textSize     text size of the switchButton.
      * @param itemListener ItemListener instance that is used to handle the switchButton action.
      */
-    private void setupSwitchButton(Checkbox switchButton, int x, int y, int width, int height, int textSize, ItemListener itemListener) {
+    private void setupSwitchButton(JCheckBox switchButton, int x, int y, int width, int height, int textSize, ItemListener itemListener) {
         switchButton.addItemListener(itemListener);
 
         switchButton.setSize(width, height);
