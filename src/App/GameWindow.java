@@ -7,6 +7,7 @@ import CustomComponents.CardCanvas;
 import CustomEnums.GameState;
 import Predictor.Predictor;
 import ProgressEngine.ProgressEngine;
+import SoundEngine.SoundEngine;
 
 import javax.imageio.ImageIO;
 import javax.sound.sampled.*;
@@ -29,6 +30,8 @@ public class GameWindow {
     // ############################### Game Logical Vars ###################################
     /** Deck instance used for getting random hands and create cards */
     private Deck deck = new Deck();
+    /** here we are creating an object for sounds */
+    SoundEngine playMusic = new SoundEngine();
 
     /** here we are getting random hands from the deck */
     private List<Hand> hands = deck.getRandomHands();
@@ -77,8 +80,6 @@ public class GameWindow {
     private final Label spoilerLabel = new Label("");
     /** label to show settings text */
     private final Label settingsLabel = new Label("");
-
-
     /** button to pull the cards */
     private final Button turnButton = new Button("Pull Cards");
     /** button to show the prediction */
@@ -234,6 +235,8 @@ public class GameWindow {
      */
     public void drawCard(ActionEvent event) {
         try {
+            // invokes a playMusic method to play a sound
+            playMusic.playMusic("sounds/pullSound.wav");
             // handles the case when on previous round we had a draw
             if (this.gameState == GameState.DRAW) {
                 // draw 2 cards for each player
