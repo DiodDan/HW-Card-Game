@@ -9,6 +9,7 @@ import Predictor.Predictor;
 import ProgressEngine.ProgressEngine;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -74,6 +75,8 @@ public class GameWindow {
     private final Label statusLabel = new Label("Game in progress...");
     /** label to show the prediction of the game */
     private final Label spoilerLabel = new Label("");
+    /** label to show settings text */
+    private final Label settingsLabel = new Label("");
 
 
     /** button to pull the cards */
@@ -86,6 +89,8 @@ public class GameWindow {
     private final Button saveButton = new Button("Save Game");
     /** button to load the game */
     private final Button loadButton = new Button("Load Game");
+    /** button to show settings */
+    private final Button settingButton = new Button("Settings");
 
     /** switchButton to enable/disable autoplay */
     private final Checkbox switchButton = new Checkbox("Auto Play", false);
@@ -213,6 +218,14 @@ public class GameWindow {
         }
     }
 
+    /**
+     * Function used to show the settings menu. Here user can change his sound settings
+     *
+     */
+    public void showSettings(ActionEvent event) {
+        this.settingsLabel.setText("some text");
+    }
+
 
     /**
      * Function used to draw the card. Here is all logic of the game located. It is assigned to the {@link #turnButton}.
@@ -326,11 +339,15 @@ public class GameWindow {
                 }
             }
 
+            //String filepath
+
             // this catch block is used to handle the case when we do not have any cards in hand
         } catch (Exception e) {
             System.out.println("No more cards in hand");
             this.autoplayTimer.stop();
             this.switchButton.setState(false);
+
+
         }
     }
 
@@ -378,6 +395,7 @@ public class GameWindow {
         this.setupButton(this.resturtButton, 200, 40, 125, 30, 20, this::restartGame);
         this.setupButton(this.loadButton, 350, 40, 125, 30, 20, this::loadGame);
         this.setupButton(this.saveButton, 500, 40, 125, 30, 20, this::saveGame);
+        this.setupButton(this.settingButton, 650, 40, 125, 30, 20, this::showSettings );
 
 
         this.setupButton(this.turnButton, 170, 730, 400, 50, 30, this::drawCard);
