@@ -114,6 +114,8 @@ public class GameWindow {
      * @param event ActionEvent instance that is not used now, but it exists to match the ActionListener interface.
      */
     public void restartGame(ActionEvent event) {
+        // plays a sound of dealing cards
+        playMusic.playMusic("sounds/shakeSound.wav");
         // getting new hands
         this.deck = new Deck();
         this.hands = deck.getRandomHands();
@@ -234,6 +236,7 @@ public class GameWindow {
      * @param event ActionEvent instance that is not used now, but it exists to match the ActionListener interface.
      */
     public void drawCard(ActionEvent event) {
+
         try {
             // invokes a playMusic method to play a sound
             playMusic.playMusic("sounds/pullSound.wav");
@@ -279,6 +282,7 @@ public class GameWindow {
 
             // handles the case when we need to finish the game
             if (this.hand1.getCardAmount() == 0) {
+                playMusic.playMusic("sounds/winSound.wav");
                 this.statusLabel.setText("Player 2 wins the game!");
                 this.cardCanvas1.clearCards();
                 this.turnButton.setEnabled(false);
@@ -288,6 +292,7 @@ public class GameWindow {
 
             // handles the case when we need to finish the game
             if (this.hand2.getCardAmount() == 0) {
+                playMusic.playMusic("sounds/winSound.wav");
                 this.statusLabel.setText("Player 1 wins the game!");
                 this.cardCanvas2.clearCards();
                 this.turnButton.setEnabled(false);
