@@ -4,10 +4,10 @@ public enum ButtonType {
     PLAY,
     SPOILER,
     RESTART,
+    NEXT,
     LOAD,
     SAVE,
     PULL,
-    NEXT,
     MUTE,
     AUTO
 }

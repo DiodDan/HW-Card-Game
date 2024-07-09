@@ -62,6 +62,7 @@ public class IconLoader {
                     xOffset += buttonWidth + padding;
                 }
             }
+            
 
             return buttonIcons;
         } catch (IOException e) {

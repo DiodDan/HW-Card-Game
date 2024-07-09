@@ -8,6 +8,12 @@ import CustomEnums.GameState;
 import Predictor.Predictor;
 import ProgressEngine.ProgressEngine;
 import javax.swing.JButton;
+import VisualEngine.IconLoader;
+import VisualEngine.IconLoaderVisual;
+import CustomEnums.ButtonType;
+import CustomEnums.ButtonState;
+import com.sun.source.tree.CatchTree;
+
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -16,7 +22,9 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -25,6 +33,7 @@ import java.util.List;
  * @author Danila
  * @version 1.0
  */
+
 public class GameWindow {
     // ############################### Game Logical Vars ###################################
     /** Deck instance used for getting random hands and create cards */
@@ -40,6 +49,7 @@ public class GameWindow {
 
     /** gameState is used to store the current state of the game */
     private GameState gameState = GameState.IN_PROGRESS;
+    
 
     /** Settings instance is used to store game settings information */
     private final Settings settings = new Settings();
@@ -75,10 +85,10 @@ public class GameWindow {
     private final Label statusLabel = new Label("Game in progress...");
     /** label to show the prediction of the game */
     private final Label spoilerLabel = new Label("");
-
-
+    
     /** button to pull the cards */
     private final JButton turnButton = new JButton("Pull Cards");
+    
     /** button to show the prediction */
     private final JButton spoilerButton = new JButton("Spoiler");
     /** button to restart the game */
@@ -91,6 +101,9 @@ public class GameWindow {
     /** switchButton to enable/disable autoplay */
     private final JCheckBox switchButton = new JCheckBox("Auto Play", false);
 
+    /** IconLoader instance to load icons for buttons */
+    private IconLoader iconLoader;
+    
 
     /**
      * Function used to get the last card value from the list of cards.
@@ -103,6 +116,29 @@ public class GameWindow {
         return cards.get(cards.size() - 1).getValue();
     }
 
+//    public void setButtonIcons(JButton button, ButtonType buttonType) {
+//        try {
+//            HashMap<ButtonType, HashMap<ButtonState, Image>> buttonIcons = iconLoader.loadButtonIcons("buttons");
+//
+//            if (buttonIcons != null && buttonIcons.containsKey(buttonType)) {
+//                HashMap<ButtonState, Image> icons = buttonIcons.get(buttonType);
+//
+//                if (icons != null) {
+//                    Image normalIcon = icons.get(ButtonState.NORMAL).getScaledInstance(button.getWidth(), button.getHeight(), Image.SCALE_SMOOTH);
+//                    Image hoverIcon = icons.get(ButtonState.HOVER).getScaledInstance(button.getWidth(), button.getHeight(), Image.SCALE_SMOOTH);
+//                    Image pressedIcon = icons.get(ButtonState.PRESSED).getScaledInstance(button.getWidth(), button.getHeight(), Image.SCALE_SMOOTH);
+//
+//                    button.setIcon(new ImageIcon(normalIcon));
+//                    button.setRolloverIcon(new ImageIcon(hoverIcon));
+//                    button.setPressedIcon(new ImageIcon(pressedIcon));
+//                }
+//            }
+//
+//        } catch (RuntimeException e) {
+//            e.printStackTrace();
+//        }
+//    }
+    
     /**
      * Function used to restart the game.
      *
@@ -364,6 +400,9 @@ public class GameWindow {
         } catch (IOException e) {
             System.out.println("Error setting up the frame");
         }
+        Map<ButtonType, Integer> buttonWidths = new HashMap<>();
+        buttonWidths.put(ButtonType.SPOILER, 75); // Adjusted width
+        this.iconLoader = new IconLoader(buttonWidths);
 
         // setting up all the components
         this.setupCanvas(this.cardCanvas1, 50, 150);
@@ -383,6 +422,12 @@ public class GameWindow {
         this.setupButton(this.turnButton, 170, 730, 400, 50, 30, this::drawCard);
 
         this.setupSwitchButton(this.switchButton, 50, 730, 100, 50, 20, this::autoplayAction);
+
+//        setButtonIcons(spoilerButton, ButtonType.SPOILER);
+//        setButtonIcons(turnButton, ButtonType.PLAY);
+//        setButtonIcons(resturtButton, ButtonType.RESTART);
+//        setButtonIcons(saveButton, ButtonType.SAVE);
+//        setButtonIcons(loadButton, ButtonType.LOAD);
 
         this.frame.repaint();
 
@@ -445,7 +490,9 @@ public class GameWindow {
             }
         });
     }
+    
 
+    
     /**
      * Function used to set up the label.
      *
@@ -464,6 +511,7 @@ public class GameWindow {
         label.setBackground(this.settings.getBgColor());
         label.setForeground(this.settings.getTextColor());
         this.frame.add(label);
+        
     }
 
     /**
@@ -485,6 +533,7 @@ public class GameWindow {
                         this.settings.getMaxCardsOnTable() * this.settings.getCardDistance());
         this.frame.add(cardCanvas);
     }
+    // 
 
     /**
      * Function used to set up the switchButton.

@@ -17,7 +17,7 @@ public class Settings {
     private final int subImageHeight = 66;
     private final int maxCardsOnTable = 7;
     private final int autoPlayStepsPerSecond = 10;
-    private final String themeName = "cards";
+    private final String themeName = "cards1";
 
     public int getWidth() {
         return this.width;

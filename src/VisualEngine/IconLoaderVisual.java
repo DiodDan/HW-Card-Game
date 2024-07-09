@@ -25,42 +25,61 @@ public class IconLoaderVisual {
         try {
             HashMap<ButtonType, HashMap<ButtonState, Image>> buttonIcons = iconLoader.loadButtonIcons("buttons");
 
-            JButton playButton = new JButton();
-            playButton.setIcon(new ImageIcon(buttonIcons.get(ButtonType.PLAY).get(ButtonState.NORMAL)));
-            playButton.setRolloverIcon(new ImageIcon(buttonIcons.get(ButtonType.PLAY).get(ButtonState.HOVER)));
-            playButton.setPressedIcon(new ImageIcon(buttonIcons.get(ButtonType.PLAY).get(ButtonState.PRESSED)));
+            JButton playButton = createButton(
+                    new ImageIcon(buttonIcons.get(ButtonType.PLAY).get(ButtonState.NORMAL)),
+                    new ImageIcon(buttonIcons.get(ButtonType.PLAY).get(ButtonState.HOVER)),
+                    new ImageIcon(buttonIcons.get(ButtonType.PLAY).get(ButtonState.PRESSED)),
+                    buttonWidths.get(ButtonType.PLAY),
+                    26
+            );
 
-            JButton spoilerButton = new JButton();
-            spoilerButton.setIcon(new ImageIcon(buttonIcons.get(ButtonType.SPOILER).get(ButtonState.NORMAL)));
-            spoilerButton.setRolloverIcon(new ImageIcon(buttonIcons.get(ButtonType.SPOILER).get(ButtonState.HOVER)));
-            spoilerButton.setPressedIcon(new ImageIcon(buttonIcons.get(ButtonType.SPOILER).get(ButtonState.PRESSED)));
+            JButton spoilerButton = createButton(
+                    new ImageIcon(buttonIcons.get(ButtonType.SPOILER).get(ButtonState.NORMAL)),
+                    new ImageIcon(buttonIcons.get(ButtonType.SPOILER).get(ButtonState.HOVER)),
+                    new ImageIcon(buttonIcons.get(ButtonType.SPOILER).get(ButtonState.PRESSED)),
+                    buttonWidths.get(ButtonType.SPOILER),
+                    26
+            );
 
-            JButton restartButton = new JButton();
-            restartButton.setIcon(new ImageIcon(buttonIcons.get(ButtonType.RESTART).get(ButtonState.NORMAL)));
-            restartButton.setRolloverIcon(new ImageIcon(buttonIcons.get(ButtonType.RESTART).get(ButtonState.HOVER)));
-            restartButton.setPressedIcon(new ImageIcon(buttonIcons.get(ButtonType.RESTART).get(ButtonState.PRESSED)));
-            
-            JButton nextButton = new JButton();
-            nextButton.setIcon(new ImageIcon(buttonIcons.get(ButtonType.NEXT).get(ButtonState.NORMAL)));
-            nextButton.setRolloverIcon(new ImageIcon(buttonIcons.get(ButtonType.NEXT).get(ButtonState.HOVER)));
-            nextButton.setPressedIcon(new ImageIcon(buttonIcons.get(ButtonType.NEXT).get(ButtonState.PRESSED)));
+            JButton restartButton = createButton(
+                    new ImageIcon(buttonIcons.get(ButtonType.RESTART).get(ButtonState.NORMAL)),
+                    new ImageIcon(buttonIcons.get(ButtonType.RESTART).get(ButtonState.HOVER)),
+                    new ImageIcon(buttonIcons.get(ButtonType.RESTART).get(ButtonState.PRESSED)),
+                    buttonWidths.get(ButtonType.RESTART),
+                    26
+            );
 
-            JButton loadButton = new JButton();
-            loadButton.setIcon(new ImageIcon(buttonIcons.get(ButtonType.LOAD).get(ButtonState.NORMAL)));
-            loadButton.setRolloverIcon(new ImageIcon(buttonIcons.get(ButtonType.LOAD).get(ButtonState.HOVER)));
-            loadButton.setPressedIcon(new ImageIcon(buttonIcons.get(ButtonType.LOAD).get(ButtonState.PRESSED)));
+            JButton nextButton = createButton(
+                    new ImageIcon(buttonIcons.get(ButtonType.NEXT).get(ButtonState.NORMAL)),
+                    new ImageIcon(buttonIcons.get(ButtonType.NEXT).get(ButtonState.HOVER)),
+                    new ImageIcon(buttonIcons.get(ButtonType.NEXT).get(ButtonState.PRESSED)),
+                    buttonWidths.get(ButtonType.NEXT),
+                    26
+            );
 
-            JButton saveButton = new JButton();
-            saveButton.setIcon(new ImageIcon(buttonIcons.get(ButtonType.SAVE).get(ButtonState.NORMAL)));
-            saveButton.setRolloverIcon(new ImageIcon(buttonIcons.get(ButtonType.SAVE).get(ButtonState.HOVER)));
-            saveButton.setPressedIcon(new ImageIcon(buttonIcons.get(ButtonType.SAVE).get(ButtonState.PRESSED)));
+            JButton loadButton = createButton(
+                    new ImageIcon(buttonIcons.get(ButtonType.LOAD).get(ButtonState.NORMAL)),
+                    new ImageIcon(buttonIcons.get(ButtonType.LOAD).get(ButtonState.HOVER)),
+                    new ImageIcon(buttonIcons.get(ButtonType.LOAD).get(ButtonState.PRESSED)),
+                    buttonWidths.get(ButtonType.LOAD),
+                    26
+            );
 
-            JButton pullButton = new JButton();
-            pullButton.setIcon(new ImageIcon(buttonIcons.get(ButtonType.PULL).get(ButtonState.NORMAL)));
-            pullButton.setRolloverIcon(new ImageIcon(buttonIcons.get(ButtonType.PULL).get(ButtonState.HOVER)));
-            pullButton.setPressedIcon(new ImageIcon(buttonIcons.get(ButtonType.PULL).get(ButtonState.PRESSED)));
+            JButton saveButton = createButton(
+                    new ImageIcon(buttonIcons.get(ButtonType.SAVE).get(ButtonState.NORMAL)),
+                    new ImageIcon(buttonIcons.get(ButtonType.SAVE).get(ButtonState.HOVER)),
+                    new ImageIcon(buttonIcons.get(ButtonType.SAVE).get(ButtonState.PRESSED)),
+                    buttonWidths.get(ButtonType.SAVE),
+                    26
+            );
 
-
+            JButton pullButton = createButton(
+                    new ImageIcon(buttonIcons.get(ButtonType.PULL).get(ButtonState.NORMAL)),
+                    new ImageIcon(buttonIcons.get(ButtonType.PULL).get(ButtonState.HOVER)),
+                    new ImageIcon(buttonIcons.get(ButtonType.PULL).get(ButtonState.PRESSED)),
+                    buttonWidths.get(ButtonType.PULL),
+                    26
+            );
 
             JFrame frame = new JFrame();
             frame.setLayout(new FlowLayout());
@@ -80,5 +99,16 @@ public class IconLoaderVisual {
         } catch (RuntimeException e) {
             e.printStackTrace();
         }
+    }
+
+    private static JButton createButton(ImageIcon icon, ImageIcon rolloverIcon, ImageIcon pressedIcon, int width, int height) {
+        JButton button = new JButton();
+        button.setIcon(icon);
+        button.setRolloverIcon(rolloverIcon);
+        button.setPressedIcon(pressedIcon);
+        button.setPreferredSize(new Dimension(width, height));
+        button.setBorderPainted(false);
+        button.setContentAreaFilled(false);
+        return button;
     }
 }
