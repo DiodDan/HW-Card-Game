@@ -4,18 +4,12 @@ import Cards.Card;
 import Cards.Deck;
 import Cards.Hand;
 import CustomComponents.CardCanvas;
+import CustomEnums.ButtonType;
 import CustomEnums.GameState;
 import Predictor.Predictor;
 import ProgressEngine.ProgressEngine;
-import javax.swing.JButton;
-import VisualEngine.IconLoader;
-import VisualEngine.IconLoaderVisual;
-import CustomEnums.ButtonType;
-import CustomEnums.ButtonState;
-import com.sun.source.tree.CatchTree;
-
 import SoundEngine.SoundEngine;
-
+import VisualEngine.IconLoader;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -26,7 +20,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -55,7 +48,7 @@ public class GameWindow {
 
     /** gameState is used to store the current state of the game */
     private GameState gameState = GameState.IN_PROGRESS;
-    
+
 
     /** Settings instance is used to store game settings information */
     private final Settings settings = new Settings();
@@ -124,18 +117,6 @@ public class GameWindow {
     /** label to show about text */
     private final Label aboutLabel = new Label("");
 
-    /** button to pull the cards */
-    private final JButton turnButton = new JButton("Pull Cards");
-    
-    /** button to show the prediction */
-    private final JButton spoilerButton = new JButton("Spoiler");
-    /** button to restart the game */
-    private final JButton resturtButton = new JButton("Restart Game");
-    /** button to save the game */
-    private final JButton saveButton = new JButton("Save Game");
-    /** button to load the game */
-
-    private final JButton loadButton = new JButton("Load Game");
     /** button to show About menu */
     private final JButton aboutButton = new JButton("About");
 
@@ -143,12 +124,26 @@ public class GameWindow {
     private final JButton exitButton = new JButton("Exit");
 
 
-    /** switchButton to enable/disable autoplay */
-    private final JCheckBox switchButton = new JCheckBox("Auto Play", false);
+//    /** switchButton to enable/disable autoplay */
+//    private final JCheckBox switchButton = new JCheckBox("Auto Play", false);
 
     /** IconLoader instance to load icons for buttons */
-    private IconLoader iconLoader;
-    
+    private final IconLoader iconLoader = new IconLoader();
+
+    private final HashMap<ButtonType, JButton> buttons = this.iconLoader.loadButtonIcons("buttons");
+    private final HashMap<ButtonType, JToggleButton> switches = iconLoader.loadSwitchIcons("switches");
+
+    private final JButton playButton = this.buttons.get(ButtonType.PLAY);
+    private final JButton spoilerButton = this.buttons.get(ButtonType.SPOILER);
+    private final JButton restartButton = this.buttons.get(ButtonType.RESTART);
+    private final JButton nextButton = this.buttons.get(ButtonType.NEXT);
+    private final JButton loadButton = this.buttons.get(ButtonType.LOAD);
+    private final JButton saveButton = this.buttons.get(ButtonType.SAVE);
+    private final JButton pullButton = this.buttons.get(ButtonType.PULL);
+
+
+    private final JToggleButton autoSwitch = this.switches.get(ButtonType.AUTO);
+    private final JToggleButton muteSwitch = this.switches.get(ButtonType.MUTE);
 
 
     /**
@@ -162,29 +157,6 @@ public class GameWindow {
         return cards.get(cards.size() - 1).getValue();
     }
 
-//    public void setButtonIcons(JButton button, ButtonType buttonType) {
-//        try {
-//            HashMap<ButtonType, HashMap<ButtonState, Image>> buttonIcons = iconLoader.loadButtonIcons("buttons");
-//
-//            if (buttonIcons != null && buttonIcons.containsKey(buttonType)) {
-//                HashMap<ButtonState, Image> icons = buttonIcons.get(buttonType);
-//
-//                if (icons != null) {
-//                    Image normalIcon = icons.get(ButtonState.NORMAL).getScaledInstance(button.getWidth(), button.getHeight(), Image.SCALE_SMOOTH);
-//                    Image hoverIcon = icons.get(ButtonState.HOVER).getScaledInstance(button.getWidth(), button.getHeight(), Image.SCALE_SMOOTH);
-//                    Image pressedIcon = icons.get(ButtonState.PRESSED).getScaledInstance(button.getWidth(), button.getHeight(), Image.SCALE_SMOOTH);
-//
-//                    button.setIcon(new ImageIcon(normalIcon));
-//                    button.setRolloverIcon(new ImageIcon(hoverIcon));
-//                    button.setPressedIcon(new ImageIcon(pressedIcon));
-//                }
-//            }
-//
-//        } catch (RuntimeException e) {
-//            e.printStackTrace();
-//        }
-//    }
-    
     /**
      * Function used to restart the game.
      *
@@ -213,10 +185,9 @@ public class GameWindow {
 
         // setting the status label to show that game is in progress and action button to pull cards
         this.statusLabel.setText("Game in progress...");
-        this.turnButton.setLabel("Pull Cards");
 
         // if the game was played till the end button will be disabled, so we need to enable it
-        this.turnButton.setEnabled(true);
+        this.pullButton.setEnabled(true);
     }
 
     /**
@@ -304,7 +275,7 @@ public class GameWindow {
     public void showAbout(ActionEvent event) {
         JOptionPane.showMessageDialog(null, """
                         War Card Game
-                        
+                                                
                         Authors:
                         Danila Prigulskiy,
                         Kyrylo Stoianov
@@ -312,7 +283,7 @@ public class GameWindow {
                         Vasilii Blagov,
                         Sofiya Khrapachevska,
                         Amidah Abisola Salaudeen
-                        
+                                                
                         Rules:
                         Pull cards from the deck, whose card is higher - Wins. Get all cards from your enemy""",
                 "About", JOptionPane.INFORMATION_MESSAGE);
@@ -320,7 +291,7 @@ public class GameWindow {
 
 
     /**
-     * Function used to draw the card. Here is all logic of the game located. It is assigned to the {@link #turnButton}.
+     * Function used to draw the card. Here is all logic of the game located. It is assigned to the {@link #pullButton}.
      *
      * @param event ActionEvent instance that is not used now, but it exists to match the ActionListener interface.
      */
@@ -353,7 +324,6 @@ public class GameWindow {
             // handles the case when we need to start the next round
             if (this.gameState == GameState.PLAYER_WIN) {
                 // resetting the button label and status label
-                this.turnButton.setLabel("Pull Cards");
                 this.statusLabel.setText("Game in progress...");
                 this.gameState = GameState.IN_PROGRESS;
 
@@ -374,7 +344,7 @@ public class GameWindow {
                 playMusic.winSound(0.2f);
                 this.statusLabel.setText("Player 2 wins the game!");
                 this.cardCanvas1.clearCards();
-                this.turnButton.setEnabled(false);
+                this.pullButton.setEnabled(false);
                 this.gameState = GameState.END;
                 return;
             }
@@ -384,7 +354,7 @@ public class GameWindow {
                 playMusic.winSound(0.2f);
                 this.statusLabel.setText("Player 1 wins the game!");
                 this.cardCanvas2.clearCards();
-                this.turnButton.setEnabled(false);
+                this.pullButton.setEnabled(false);
                 this.gameState = GameState.END;
                 return;
             }
@@ -419,16 +389,15 @@ public class GameWindow {
                         this.hand2.putCard(card);
                     this.cardsOnTable2.clear();
                 }
-                this.turnButton.setLabel("Next round");
                 this.gameState = GameState.PLAYER_WIN;
             } else { // this else condition is used to handle the case when we have a draw
                 // here we are checking if we have enough cards to continue the game
                 if (this.hand1.getCardAmount() < 3) {
                     this.statusLabel.setText("Player 2 wins the game!");
-                    this.turnButton.setEnabled(false);
+                    this.pullButton.setEnabled(false);
                 } else if (this.hand2.getCardAmount() < 3) {
                     this.statusLabel.setText("Player 1 wins the game!");
-                    this.turnButton.setEnabled(false);
+                    this.pullButton.setEnabled(false);
                 } else {
                     // if there is enough cards for both players we have a draw
                     this.statusLabel.setText("Draw! Each player gets one more card.");
@@ -442,7 +411,7 @@ public class GameWindow {
         } catch (Exception e) {
             System.out.println("No more cards in hand");
             this.autoplayTimer.stop();
-            this.switchButton.setSelected(false);
+            this.autoSwitch.setSelected(false);
         }
     }
 
@@ -455,10 +424,10 @@ public class GameWindow {
     public void autoplayAction(ItemEvent e) {
         // if the switchButton is selected we need to start the autoplay
         if (e.getStateChange() == ItemEvent.SELECTED) {
-            this.turnButton.setEnabled(false);
+            this.pullButton.setEnabled(false);
             this.autoplayTimer.start();
         } else { // else we need to stop the autoplay
-            this.turnButton.setEnabled(true);
+            this.pullButton.setEnabled(true);
             this.autoplayTimer.stop();
         }
     }
@@ -529,9 +498,6 @@ public class GameWindow {
         } catch (IOException e) {
             System.out.println("Error setting up the frame");
         }
-//        Map<ButtonType, Integer> buttonWidths = new HashMap<>();
-//        buttonWidths.put(ButtonType.SPOILER, 75); // Adjusted width
-//        this.iconLoader = new IconLoader(buttonWidths);
 
         // setting up all the components
         this.setupCanvas(this.cardCanvas1, 50, 150);
@@ -557,27 +523,20 @@ public class GameWindow {
         //-----------------------------------------------------------------
 
 
-        this.setupButton(this.frame, this.spoilerButton, 50, 40, 125, 30, 20, this::showSpoiler);
-        this.setupButton(this.frame, this.resturtButton, 200, 40, 125, 30, 20, this::restartGame);
-        this.setupButton(this.frame, this.loadButton, 350, 40, 125, 30, 20, this::loadGame);
-        this.setupButton(this.frame, this.saveButton, 500, 40, 125, 30, 20, this::saveGame);
+        this.setupNewButton(this.frame, this.spoilerButton, 50, 40, this::showSpoiler);
+        this.setupNewButton(this.frame, this.restartButton, 200, 40, this::restartGame);
+        this.setupNewButton(this.frame, this.loadButton, 350, 40, this::loadGame);
+        this.setupNewButton(this.frame, this.saveButton, 500, 40, this::saveGame);
         this.setupButton(this.frame, this.aboutButton, 650, 40, 125, 30, 20, this::showAbout);
         this.setupButton(this.frame, this.exitButton, 625, 740, 125, 30, 20, this::exitGame);
 
 
-        this.setupButton(this.frame, this.turnButton, 170, 730, 400, 50, 30, this::drawCard);
-
-        this.setupSwitchButton(this.switchButton, 50, 730, 100, 50, 20, this::autoplayAction);
-
-//        setButtonIcons(spoilerButton, ButtonType.SPOILER);
-//        setButtonIcons(turnButton, ButtonType.PLAY);
-//        setButtonIcons(resturtButton, ButtonType.RESTART);
-//        setButtonIcons(saveButton, ButtonType.SAVE);
-//        setButtonIcons(loadButton, ButtonType.LOAD);
+//        this.setupSwitchButton(this.autoSwitch, 50, 730, 100, 50, 20, this::autoplayAction);
+        this.setupNewButton(this.frame, this.playButton, 300, 740, this::drawCard);
 
         this.frame.repaint();
 
-       
+
     }
 
     /**
@@ -594,7 +553,7 @@ public class GameWindow {
 
     private void setupButton(Frame frame, JButton button, int x, int y, int width, int height, int textSize, ActionListener actionListener) {
         // setting up the button
-        
+
         button.setSize(width, height);
         button.setLocation(x, y);
         button.setFont(new Font("Arial", Font.PLAIN, textSize));
@@ -603,7 +562,14 @@ public class GameWindow {
         button.addActionListener(actionListener);
         frame.add(button);
     }
-    
+
+    private void setupNewButton(Frame frame, JButton button, int x, int y, ActionListener actionListener) {
+        // setting up the button
+        button.setLocation(x, y);
+        button.addActionListener(actionListener);
+        frame.add(button);
+    }
+
 
     /**
      * Function used to set up the frame.
@@ -633,9 +599,8 @@ public class GameWindow {
             }
         });
     }
-    
 
-    
+
     /**
      * Function used to set up the label.
      *

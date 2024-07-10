@@ -1,5 +1,6 @@
 package VisualEngine;
 
+import App.Settings;
 import CustomEnums.ButtonState;
 import CustomEnums.ButtonType;
 
@@ -15,18 +16,27 @@ import java.util.Map;
 
 public class IconLoader {
     private final int buttonSubImageHeight = 26;
-    private final int switchSubImageHeight = 47;
-    private final int autoSwitchHeight = 47;
     private final int padding = 1;
+    private Map<ButtonType, Integer> buttonWidths = new HashMap<>();
+    private Map<ButtonType, Integer> switchHeights = new HashMap<>();
+    private Map<ButtonType, Integer> switchWidths = new HashMap<>();
+    private Settings settings = new Settings();
 
-    private final Map<ButtonType, Integer> buttonWidths;
-    private final Map<ButtonType, Integer> switchHeights;
-    private final Map<ButtonType, Integer> switchWidths;
+    public IconLoader() {
 
-    public IconLoader(Map<ButtonType, Integer> buttonWidths, Map<ButtonType, Integer> switchHeights, Map<ButtonType, Integer> switchWidths) {
-        this.buttonWidths = buttonWidths;
-        this.switchHeights = switchHeights;
-        this.switchWidths = switchWidths;
+        this.buttonWidths.put(ButtonType.PLAY, 66);
+        this.buttonWidths.put(ButtonType.SPOILER, 75);
+        this.buttonWidths.put(ButtonType.RESTART, 90);
+        this.buttonWidths.put(ButtonType.NEXT, 123);
+        this.buttonWidths.put(ButtonType.LOAD, 61);
+        this.buttonWidths.put(ButtonType.SAVE, 62);
+        this.buttonWidths.put(ButtonType.PULL, 123);
+        
+        this.switchHeights.put(ButtonType.AUTO, 47); //height
+        this.switchHeights.put(ButtonType.MUTE, 47);
+
+        this.switchWidths.put(ButtonType.AUTO, 34); // width
+        this.switchWidths.put(ButtonType.MUTE, 26);
     }
        
     private BufferedImage getImage(String path) throws IOException {
@@ -49,23 +59,27 @@ public class IconLoader {
         }
     }
 
-    public HashMap<ButtonType, HashMap<ButtonState, ImageIcon>> loadButtonIcons(String themeName) throws RuntimeException {
+    public HashMap<ButtonType, JButton> loadButtonIcons(String themeName) throws RuntimeException {
         try {
             BufferedImage img = this.getImage("Images/" + themeName + ".png");
-            HashMap<ButtonType, HashMap<ButtonState, ImageIcon>> buttonIcons = new HashMap<>();
+            HashMap<ButtonType, JButton> buttonIcons = new HashMap<>();
 
             int xOffset = 0;
 
             for (ButtonType type : ButtonType.values()) {
                 if (this.buttonWidths.containsKey(type)) {
-                    HashMap<ButtonState, ImageIcon> stateIcons = new HashMap<>();
                     int buttonWidth = this.buttonWidths.get(type);
 
-                    stateIcons.put(ButtonState.NORMAL, getButtonImage(img, xOffset, ButtonState.NORMAL.ordinal(), buttonWidth));
-                    stateIcons.put(ButtonState.HOVER, getButtonImage(img, xOffset, ButtonState.HOVER.ordinal(), buttonWidth));
-                    stateIcons.put(ButtonState.PRESSED, getButtonImage(img, xOffset, ButtonState.PRESSED.ordinal(), buttonWidth));
 
-                    buttonIcons.put(type, stateIcons);
+                    JButton button = createButton(
+                            getButtonImage(img, xOffset, ButtonState.NORMAL.ordinal(), buttonWidth),
+                            getButtonImage(img, xOffset, ButtonState.HOVER.ordinal(), buttonWidth),
+                            getButtonImage(img, xOffset, ButtonState.PRESSED.ordinal(), buttonWidth),
+                            this.buttonWidths.get(type) * this.settings.getButtonScale(),
+                            26 * this.settings.getButtonScale()
+                    );
+
+                    buttonIcons.put(type, button);
                     xOffset += buttonWidth + this.padding;
                 }
             }
@@ -76,24 +90,26 @@ public class IconLoader {
         }
     }
 
-    public HashMap<ButtonType, HashMap<ButtonState, ImageIcon>> loadSwitchIcons(String themeName) throws RuntimeException {
+    public HashMap<ButtonType, JToggleButton> loadSwitchIcons(String themeName) throws RuntimeException {
         try {
             BufferedImage img = this.getImage("Images/" + themeName + ".png");
-            HashMap<ButtonType, HashMap<ButtonState, ImageIcon>> switchIcons = new HashMap<>();
+            HashMap<ButtonType, JToggleButton> switchIcons = new HashMap<>();
 
             int xOffset = 0;
             for (ButtonType type : ButtonType.values()) {
                 if (this.switchWidths.containsKey(type)) {
-                    HashMap<ButtonState, ImageIcon> stateIcons = new HashMap<>();
                     int switchWidth = this.switchWidths.get(type);
                     int switchHeight = this.switchHeights.get(type);
-                    System.out.println("type" + type.toString());
-                    System.out.println(xOffset);
-                    System.out.println(switchHeight);
-                    stateIcons.put(ButtonState.UNCHECKED, getSwitchImage(img, xOffset, 0, switchWidth, switchHeight));
-                    stateIcons.put(ButtonState.CHECKED, getSwitchImage(img, xOffset, 1, switchWidth, switchHeight));
 
-                    switchIcons.put(type, stateIcons);
+                    JToggleButton toggleButton = createSwitch(
+                            getSwitchImage(img, xOffset, 0, switchWidth, switchHeight),
+                            getSwitchImage(img, xOffset, 1, switchWidth, switchHeight),
+                            switchWidths.get(type) * this.settings.getButtonScale(),
+                            switchHeights.get(type) * this.settings.getButtonScale()
+                    );
+
+
+                    switchIcons.put(type, toggleButton);
                     xOffset += switchWidth + this.padding;
                 }
             }
@@ -112,18 +128,45 @@ public class IconLoader {
                 y,
                 buttonWidth,
                 this.buttonSubImageHeight
+        ).getScaledInstance(
+                buttonWidth * this.settings.getButtonScale(),
+                this.buttonSubImageHeight * this.settings.getButtonScale(),
+                Image.SCALE_SMOOTH
         ));
     }
 
     private ImageIcon getSwitchImage(BufferedImage img, int xOffset, int stateIndex, int switchWidth, int switchHeight) {
         int y = stateIndex * (switchHeight + this.padding);
-        System.out.println(y);
 
         return new ImageIcon(img.getSubimage(
                 xOffset,
                 y,
                 switchWidth,
                 switchHeight
+        ).getScaledInstance(
+                switchWidth * this.settings.getButtonScale(),
+                switchHeight * this.settings.getButtonScale(),
+                Image.SCALE_SMOOTH
         ));
+    }
+    private static JButton createButton(ImageIcon icon, ImageIcon rolloverIcon, ImageIcon pressedIcon, int width, int height) {
+        JButton button = new JButton();
+        button.setIcon(icon);
+        button.setRolloverIcon(rolloverIcon);
+        button.setPressedIcon(pressedIcon);
+        button.setSize(new Dimension(width, height));
+        button.setBorderPainted(false);
+        button.setContentAreaFilled(false);
+        return button;
+    }
+
+    private static JToggleButton createSwitch(ImageIcon uncheckedIcon, ImageIcon checkedIcon, int width, int height) {
+        JToggleButton toggleButton = new JToggleButton();
+        toggleButton.setIcon(uncheckedIcon);
+        toggleButton.setSelectedIcon(checkedIcon);
+        toggleButton.setSize(new Dimension(width, height));
+        toggleButton.setBorderPainted(false);
+        toggleButton.setContentAreaFilled(false);
+        return toggleButton;
     }
 }

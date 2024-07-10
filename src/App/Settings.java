@@ -7,7 +7,7 @@ public class Settings {
     private final int heightAvatarFrame = 500;
 
     private final int widthMainFrame = 800;
-    private final int heightMainFrame = 800;
+    private final int heightMainFrame = 840;
     private final String title = "Card Game";
     private final int cardDistance = 40;
     private final Color bgColor = new Color(30, 7, 0);
@@ -21,6 +21,8 @@ public class Settings {
     private final int maxCardsOnTable = 7;
     private final int autoPlayStepsPerSecond = 10;
     private final String themeName = "cards1";
+
+    private final int buttonScale = 3;
 
     public int getWidthAvatarFrame() {
         return this.widthAvatarFrame;
@@ -87,5 +89,9 @@ public class Settings {
 
     public String getThemeName() {
         return themeName;
+    }
+
+    public int getButtonScale() {
+        return buttonScale;
     }
 }
