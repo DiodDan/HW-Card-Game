@@ -10,7 +10,6 @@ import ProgressEngine.ProgressEngine;
 import SoundEngine.SoundEngine;
 
 import javax.imageio.ImageIO;
-import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -28,54 +27,6 @@ import java.util.List;
  */
 public class GameWindow {
     // ############################### Game Logical Vars ###################################
-
-
-    /**
-     * Radio buttons for choosing Avatar in avatar's frame
-     */
-    private JFrame frameAvatar = new JFrame("Player Icon");
-    private Panel panelImages = new Panel();
-//    private JRadioButton icon1Button, icon2Button, icon3Button;
-    /**
-     * ButtonGroup for choosing only one option
-     */
-    private ButtonGroup buttonGroup = new ButtonGroup();
-    /**
-     * Selected Avatar
-     */
-    private ImageIcon selectedAvatar;
-
-    private final ImageIcon enemyAvatar = new ImageIcon("./Images/ghost128.png");
-    private final ImageIcon icon1 = new ImageIcon("./Images/angry128.png");
-    private final ImageIcon icon2 = new ImageIcon("./Images/dancing128.png");
-    private final ImageIcon icon3 = new ImageIcon("./Images/robot128.png");
-
-    private final Label labelDescription = new Label("Choose Avatar");
-    private final JLabel icon1Label = new JLabel(icon1);
-    private final JLabel icon2Label = new JLabel(icon2);
-    private final JLabel icon3Label = new JLabel(icon3);
-    private final Panel buttonPanel = new Panel();
-
-    private final JRadioButton icon1Button = new JRadioButton("Avatar 1");
-    private final JRadioButton icon2Button = new JRadioButton("Avatar 2");
-    private final JRadioButton icon3Button = new JRadioButton("Avatar 3");
-    private final JPanel imagePanelFrame2 = new JPanel();
-
-    /**
-     * Exit button
-     */
-    private final Button exitButton = new Button("Exit");
-    /**
-     * Contunue button (transfer to the main frame)
-     */
-    private final Button mainFrameButton = new Button("Start game");
-
-    private final JLabel imageLabel = new JLabel(selectedAvatar);
-    private final JLabel enemyLabel = new JLabel(enemyAvatar);
-
-
-
-
 
 
     /** Deck instance used for getting random hands and create cards */
@@ -112,6 +63,36 @@ public class GameWindow {
     private final Timer autoplayTimer = new Timer(1000 / this.settings.getAutoPlayStepsPerSecond(), this::drawCard);
 
     // ############################### GUI Vars ###################################
+    /** Radio buttons for choosing Avatar in avatar's frame */
+    private final JFrame frameAvatar = new JFrame("Player Icon");
+    private final Panel panelImages = new Panel();
+
+    /** ButtonGroup for choosing only one option */
+    private final ButtonGroup buttonGroup = new ButtonGroup();
+    /** Selected Avatar */
+    private ImageIcon selectedAvatar;
+
+    private final ImageIcon enemyAvatar = new ImageIcon("./Images/ghost128.png");
+    private final ImageIcon icon1 = new ImageIcon("./Images/angry128.png");
+    private final ImageIcon icon2 = new ImageIcon("./Images/dancing128.png");
+    private final ImageIcon icon3 = new ImageIcon("./Images/robot128.png");
+
+    private final Label labelDescription = new Label("Choose Avatar");
+    private final JLabel icon1Label = new JLabel(icon1);
+    private final JLabel icon2Label = new JLabel(icon2);
+    private final JLabel icon3Label = new JLabel(icon3);
+    private final Panel buttonPanel = new Panel();
+
+    private final JRadioButton icon1Button = new JRadioButton("Avatar 1");
+    private final JRadioButton icon2Button = new JRadioButton("Avatar 2");
+    private final JRadioButton icon3Button = new JRadioButton("Avatar 3");
+    private final JPanel imagePanelFrame2 = new JPanel();
+
+    /** Contunue button (transfer to the main frame) */
+    private final Button mainFrameButton = new Button("Start game");
+
+    private final JLabel enemyLabel = new JLabel(enemyAvatar);
+
     /** frame to hold all the components */
     private final Frame frame = new Frame(this.settings.getTitle());
 
@@ -130,8 +111,6 @@ public class GameWindow {
     private final Label spoilerLabel = new Label("");
     /** label to show about text */
     private final Label aboutLabel = new Label("");
-    /** label to show exit button */
-    private final Label exitLabel = new Label("Exit");
     /** button to pull the cards */
     private final Button turnButton = new Button("Pull Cards");
     /** button to show the prediction */
@@ -144,6 +123,7 @@ public class GameWindow {
     private final Button loadButton = new Button("Load Game");
     /** button to show About menu */
     private final Button aboutButton = new Button("About");
+
     /** button to exit the game */
     private final Button exitButton = new Button("Exit");
 
@@ -277,23 +257,23 @@ public class GameWindow {
 
     /**
      * Function used to show the about menu
-     *
      */
     public void showAbout(ActionEvent event) {
-    JOptionPane.showMessageDialog(null, "War Card Game\n " +
-            "Authors: Danila Prigulskiy, Kyrylo Stoianov\n Egor Silakov, Vasilii Blagov\n Sofiya Khrapachevska, Amidah Abisola Salaudeen\n " +
-            "Rules: Pull cards from the deck, whose card is higher - Wins. Get all cards from your enemy",
-            "About", JOptionPane.INFORMATION_MESSAGE);
-}
-
-    /**
-     * Function used to close the game
-     *
-     */
-    public void exitGame(ActionEvent event) {
-        System.exit(0);
-}
-
+        JOptionPane.showMessageDialog(null, """
+                        War Card Game
+                        
+                        Authors:
+                        Danila Prigulskiy,
+                        Kyrylo Stoianov
+                        Egor Silakov,
+                        Vasilii Blagov,
+                        Sofiya Khrapachevska,
+                        Amidah Abisola Salaudeen
+                        
+                        Rules:
+                        Pull cards from the deck, whose card is higher - Wins. Get all cards from your enemy""",
+                "About", JOptionPane.INFORMATION_MESSAGE);
+    }
 
 
     /**
@@ -443,9 +423,12 @@ public class GameWindow {
     }
 
     /**
-     *  This method is used to draw the avatar frame and its logic also there.
+     * This method is used to draw the avatar frame and its logic also there.
      */
     public void setUpAvatarUI() {
+        // starting the music
+        this.playMusic.shakeSound(0.3f);
+        this.playMusic.gameSound(0.05f);
 
         // Setting up Avatar frame
 
@@ -454,7 +437,6 @@ public class GameWindow {
         frameAvatar.setLayout(null);
         frameAvatar.getContentPane().setBackground(this.settings.getBgColor());
 
-        // paint a label ("Choose Avatar")
         this.setupLabel(frameAvatar, labelDescription, 180, 50, 150, 30, 20);
 
         panelImages.setLayout(null);
@@ -516,8 +498,7 @@ public class GameWindow {
         this.setupLabel(this.frame, handCount2, 550, 100, 200, 50, 20);
         this.setupLabel(this.frame, statusLabel, 260, 670, 400, 50, 20);
         this.setupLabel(this.frame, spoilerLabel, 300, 300, 200, 30, 19);
-        this.setupLabel(this.aboutLabel, 250, 300, 300, 300, 20);
-
+        this.setupLabel(this.frame, this.aboutLabel, 250, 300, 300, 300, 20);
 
 
         imagePanelFrame2.setLayout(null);
@@ -536,8 +517,8 @@ public class GameWindow {
         this.setupButton(this.frame, this.resturtButton, 200, 40, 125, 30, 20, this::restartGame);
         this.setupButton(this.frame, this.loadButton, 350, 40, 125, 30, 20, this::loadGame);
         this.setupButton(this.frame, this.saveButton, 500, 40, 125, 30, 20, this::saveGame);
-        this.setupButton(this.aboutButton, 650, 40, 125, 30, 20, this::showAbout );
-        this.setupButton(this.exitButton,625, 740, 125, 30, 20, this::exitGame );
+        this.setupButton(this.frame, this.aboutButton, 650, 40, 125, 30, 20, this::showAbout);
+        this.setupButton(this.frame, this.exitButton, 625, 740, 125, 30, 20, this::exitGame);
 
 
         this.setupButton(this.frame, this.turnButton, 170, 730, 400, 50, 30, this::drawCard);
@@ -668,12 +649,12 @@ public class GameWindow {
     /**
      * Function used to set up the JButton.
      *
-     * @param jbutton         JButton instance that we want to set up.
-     * @param x              x coordinate of the button's left corner.
-     * @param y              y coordinate of the button's left corner.
-     * @param width          width of the button.
-     * @param height         height of the button.
-     * @param textSize       text size of the button.
+     * @param jbutton  JButton instance that we want to set up.
+     * @param x        x coordinate of the button's left corner.
+     * @param y        y coordinate of the button's left corner.
+     * @param width    width of the button.
+     * @param height   height of the button.
+     * @param textSize text size of the button.
      */
 
     private void setupRadiobutton(JRadioButton jbutton, int x, int y, int width, int height, int textSize) {
