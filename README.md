@@ -140,7 +140,7 @@
   Class for getting cards images from one image.
 
 - ### CardLoaderVisual.java
-  Class that was used for debugging. It is used for getting cards images from one image and drawing them on screen.
+  Class that was used for  debugging. It is used for getting cards images from one image and drawing them on screen.
 
 ---
 
