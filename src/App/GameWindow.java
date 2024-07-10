@@ -119,7 +119,7 @@ public class GameWindow {
      */
     public void restartGame(ActionEvent event) {
         // plays a sound of dealing cards
-        playMusic.playMusic("sounds/shakeSound.wav");
+        playMusic.playMusic("sounds/shakeSound.wav", 0.5f);
         // getting new hands
         this.deck = new Deck();
         this.hands = deck.getRandomHands();
@@ -252,7 +252,7 @@ public class GameWindow {
 
         try {
             // invokes a playMusic method to play a sound
-            playMusic.playMusic("sounds/pullSound.wav");
+            playMusic.playMusic("sounds/pullSound.wav", 0.5f);
             // handles the case when on previous round we had a draw
             if (this.gameState == GameState.DRAW) {
                 // draw 2 cards for each player
@@ -295,7 +295,7 @@ public class GameWindow {
 
             // handles the case when we need to finish the game
             if (this.hand1.getCardAmount() == 0) {
-                playMusic.playMusic("sounds/winSound.wav");
+                playMusic.playMusic("sounds/winSound.wav", 0.3f);
                 this.statusLabel.setText("Player 2 wins the game!");
                 this.cardCanvas1.clearCards();
                 this.turnButton.setEnabled(false);
@@ -305,7 +305,7 @@ public class GameWindow {
 
             // handles the case when we need to finish the game
             if (this.hand2.getCardAmount() == 0) {
-                playMusic.playMusic("sounds/winSound.wav");
+                playMusic.playMusic("sounds/winSound.wav", 0.3f);
                 this.statusLabel.setText("Player 1 wins the game!");
                 this.cardCanvas2.clearCards();
                 this.turnButton.setEnabled(false);
