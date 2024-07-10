@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - 'Dev-CI-creation'
+      - 'main'
   pull_request:
     branches:
       - 'release*'
