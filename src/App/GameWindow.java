@@ -101,7 +101,7 @@ public class GameWindow {
     private final JPanel imagePanelFrame2 = new JPanel();
 
     /** Contunue button (transfer to the main frame) */
-    private final Button mainFrameButton = new Button("Start game");
+    private final JButton mainFrameButton = new JButton("Start game");
 
     private final JLabel enemyLabel = new JLabel(enemyAvatar);
 
@@ -135,12 +135,12 @@ public class GameWindow {
     private final JButton saveButton = new JButton("Save Game");
     /** button to load the game */
 
-    private final Button loadButton = new Button("Load Game");
+    private final JButton loadButton = new JButton("Load Game");
     /** button to show About menu */
-    private final Button aboutButton = new Button("About");
+    private final JButton aboutButton = new JButton("About");
 
     /** button to exit the game */
-    private final Button exitButton = new Button("Exit");
+    private final JButton exitButton = new JButton("Exit");
 
 
     /** switchButton to enable/disable autoplay */
