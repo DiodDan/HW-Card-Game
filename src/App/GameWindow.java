@@ -80,6 +80,8 @@ public class GameWindow {
     private final Label spoilerLabel = new Label("");
     /** label to show about text */
     private final Label aboutLabel = new Label("");
+    /** label to show exit button */
+    private final Label exitLabel = new Label("Exit");
     /** button to pull the cards */
     private final Button turnButton = new Button("Pull Cards");
     /** button to show the prediction */
@@ -92,6 +94,8 @@ public class GameWindow {
     private final Button loadButton = new Button("Load Game");
     /** button to show About menu */
     private final Button aboutButton = new Button("About");
+    /** button to exit the game */
+    private final Button exitButton = new Button("Exit");
 
     /** switchButton to enable/disable autoplay */
     private final Checkbox switchButton = new Checkbox("Auto Play", false);
@@ -231,6 +235,10 @@ public class GameWindow {
     } else {
         this.aboutLabel.setText("");
     }
+}
+
+    public void exitGame(ActionEvent event) {
+        System.exit(0);
 }
 
 
@@ -409,6 +417,7 @@ public class GameWindow {
         this.setupButton(this.loadButton, 350, 40, 125, 30, 20, this::loadGame);
         this.setupButton(this.saveButton, 500, 40, 125, 30, 20, this::saveGame);
         this.setupButton(this.aboutButton, 650, 40, 125, 30, 20, this::showAbout );
+        this.setupButton(this.exitButton,625, 740, 125, 30, 20, this::exitGame );
 
 
         this.setupButton(this.turnButton, 170, 730, 400, 50, 30, this::drawCard);

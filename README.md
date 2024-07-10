@@ -162,9 +162,10 @@
 - [X] Create CI workflow for automate exe building on pull request into release branches (Danila)
 - [ ] Create Avatars for users (Vasiliy)
 - [ ] Create Main menu (Amidah)
-- [ ] Create about bar (Kyrylo)
+- [X] Create about bar (Kyrylo)
 - [ ] Create settings menu (Kyrylo)
-- [ ] Create sound effects (Kyrylo)
+- [X] Create sound effects (Kyrylo)
+- [X] Create exit button (Kyrylo)
 - [ ] Create animations
 - [ ] Restyle app gui
 
