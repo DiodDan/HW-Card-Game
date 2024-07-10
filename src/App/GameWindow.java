@@ -230,10 +230,16 @@ public class GameWindow {
      *
      */
     public void showAbout(ActionEvent event) {
-    JOptionPane.showMessageDialog(null, "War Card Game\n Authors: Danila Prigulskiy, Kyrylo Stoianov\n Egor Silakov, Vasilii Blagov\n Sofiya Khrapachevska, Amidah Abisola Salaudeen\n Rules: Pull cards from the deck, whose card is higher - Wins. Get all cards from your enemy", "About", JOptionPane.INFORMATION_MESSAGE);
+    JOptionPane.showMessageDialog(null, "War Card Game\n " +
+            "Authors: Danila Prigulskiy, Kyrylo Stoianov\n Egor Silakov, Vasilii Blagov\n Sofiya Khrapachevska, Amidah Abisola Salaudeen\n " +
+            "Rules: Pull cards from the deck, whose card is higher - Wins. Get all cards from your enemy",
+            "About", JOptionPane.INFORMATION_MESSAGE);
 }
 
-
+    /**
+     * Function used to close the game
+     *
+     */
     public void exitGame(ActionEvent event) {
         System.exit(0);
 }
