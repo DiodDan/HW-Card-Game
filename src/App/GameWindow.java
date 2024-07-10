@@ -541,7 +541,7 @@ public class GameWindow {
         }
 
         // set frame settings
-        this.frame.setSize(this.settings.getWidth(), this.settings.getHeight());
+        this.frame.setSize(this.settings.getWidthMainFrame(), this.settings.getHeightMainFrame());
         this.frame.setLayout(null);
         this.frame.setVisible(true);
         this.frame.setBackground(settings.getBgColor());
