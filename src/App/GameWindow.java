@@ -631,7 +631,7 @@ public class GameWindow {
         cardCanvas.setLocation(x, y);
         cardCanvas.clearAndSetBack();
 
-        // here we calculate canvas size based on the card scale and its amount
+        // here we calculate canvas size based on the card scale and it's amount
         cardCanvas.setSize(
                 (int) (this.settings.getSubImageWidth() * this.settings.getCardScale()),
                 (int) (this.settings.getSubImageHeight() * this.settings.getCardScale()) +
