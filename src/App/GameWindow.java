@@ -131,6 +131,7 @@ public class GameWindow {
     private final Checkbox switchButton = new Checkbox("Auto Play", false);
 
 
+
     /**
      * Function used to get the last card value from the list of cards.
      * It was created to avoid code duplication and make code cleaner.
@@ -432,37 +433,37 @@ public class GameWindow {
 
         // Setting up Avatar frame
 
-        frameAvatar.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frameAvatar.setSize(this.settings.getWidthAvatarFrame(), this.settings.getHeightAvatarFrame());
-        frameAvatar.setLayout(null);
-        frameAvatar.getContentPane().setBackground(this.settings.getBgColor());
+        this.frameAvatar.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.frameAvatar.setSize(this.settings.getWidthAvatarFrame(), this.settings.getHeightAvatarFrame());
+        this.frameAvatar.setLayout(null);
+        this.frameAvatar.getContentPane().setBackground(this.settings.getBgColor());
 
-        this.setupLabel(frameAvatar, labelDescription, 180, 50, 150, 30, 20);
+        this.setupLabel(this.frameAvatar, this.labelDescription, 180, 50, 150, 30, 20);
 
-        panelImages.setLayout(null);
-        panelImages.setBounds(0, 0, 500, 280);
+        this.panelImages.setLayout(null);
+        this.panelImages.setBounds(0, 0, 500, 280);
 
         // Setting up and painting 3 icons
-        this.setupIcon(icon1Label, 0, 100);
-        this.setupIcon(icon2Label, 150, 100);
-        this.setupIcon(icon3Label, 300, 100);
+        this.setupIcon(this.icon1Label, 0, 100);
+        this.setupIcon(this.icon2Label, 150, 100);
+        this.setupIcon(this.icon3Label, 300, 100);
 
         // Radio button panel
-        buttonPanel.setLayout(null);
-        buttonPanel.setBounds(0, 0, 500, 400);
+        this.buttonPanel.setLayout(null);
+        this.buttonPanel.setBounds(0, 0, 500, 400);
 
         // Radio buttons for icon selected
-        this.setupRadiobutton(icon1Button, 50, 300, 100, 50, 20);
-        this.setupRadiobutton(icon2Button, 200, 300, 100, 50, 20);
-        this.setupRadiobutton(icon3Button, 350, 300, 100, 50, 20);
+        this.setupRadiobutton(this.icon1Button, 50, 300, 100, 50, 20);
+        this.setupRadiobutton(this.icon2Button, 200, 300, 100, 50, 20);
+        this.setupRadiobutton(this.icon3Button, 350, 300, 100, 50, 20);
 
         // Add radio buttons to the panel
-        buttonPanel.add(icon1Button);
-        buttonPanel.add(icon2Button);
-        buttonPanel.add(icon3Button);
+        this.buttonPanel.add(this.icon1Button);
+        this.buttonPanel.add(this.icon2Button);
+        this.buttonPanel.add(this.icon3Button);
 
         // set the first choice Avatar by default
-        icon1Button.setSelected(true);
+        this.icon1Button.setSelected(true);
 
         // Create Exit and Start game buttons
         this.setupButton(this.frameAvatar, exitButton, 50, 400, 110, 50, 20, this::exitGame);
