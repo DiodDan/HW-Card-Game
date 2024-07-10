@@ -7,8 +7,10 @@ import CustomComponents.CardCanvas;
 import CustomEnums.GameState;
 import Predictor.Predictor;
 import ProgressEngine.ProgressEngine;
+import SoundEngine.SoundEngine;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -78,6 +80,8 @@ public class GameWindow {
 
     /** Deck instance used for getting random hands and create cards */
     private Deck deck = new Deck();
+    /** here we are creating an object for sounds */
+    SoundEngine playMusic = new SoundEngine();
 
     /** here we are getting random hands from the deck */
     private List<Hand> hands = deck.getRandomHands();
@@ -124,8 +128,10 @@ public class GameWindow {
     private final Label statusLabel = new Label("Game in progress...");
     /** label to show the prediction of the game */
     private final Label spoilerLabel = new Label("");
-
-
+    /** label to show about text */
+    private final Label aboutLabel = new Label("");
+    /** label to show exit button */
+    private final Label exitLabel = new Label("Exit");
     /** button to pull the cards */
     private final Button turnButton = new Button("Pull Cards");
     /** button to show the prediction */
@@ -136,6 +142,10 @@ public class GameWindow {
     private final Button saveButton = new Button("Save Game");
     /** button to load the game */
     private final Button loadButton = new Button("Load Game");
+    /** button to show About menu */
+    private final Button aboutButton = new Button("About");
+    /** button to exit the game */
+    private final Button exitButton = new Button("Exit");
 
     /** switchButton to enable/disable autoplay */
     private final Checkbox switchButton = new Checkbox("Auto Play", false);
@@ -158,6 +168,8 @@ public class GameWindow {
      * @param event ActionEvent instance that is not used now, but it exists to match the ActionListener interface.
      */
     public void restartGame(ActionEvent event) {
+        // plays a sound of dealing cards
+        playMusic.shakeSound(0.3f);
         // getting new hands
         this.deck = new Deck();
         this.hands = deck.getRandomHands();
@@ -263,6 +275,26 @@ public class GameWindow {
         }
     }
 
+    /**
+     * Function used to show the about menu
+     *
+     */
+    public void showAbout(ActionEvent event) {
+    JOptionPane.showMessageDialog(null, "War Card Game\n " +
+            "Authors: Danila Prigulskiy, Kyrylo Stoianov\n Egor Silakov, Vasilii Blagov\n Sofiya Khrapachevska, Amidah Abisola Salaudeen\n " +
+            "Rules: Pull cards from the deck, whose card is higher - Wins. Get all cards from your enemy",
+            "About", JOptionPane.INFORMATION_MESSAGE);
+}
+
+    /**
+     * Function used to close the game
+     *
+     */
+    public void exitGame(ActionEvent event) {
+        System.exit(0);
+}
+
+
 
     /**
      * Function used to draw the card. Here is all logic of the game located. It is assigned to the {@link #turnButton}.
@@ -270,7 +302,10 @@ public class GameWindow {
      * @param event ActionEvent instance that is not used now, but it exists to match the ActionListener interface.
      */
     public void drawCard(ActionEvent event) {
+
         try {
+            // invokes a playMusic method to play a sound
+            playMusic.pullSound(0.3f);
             // handles the case when on previous round we had a draw
             if (this.gameState == GameState.DRAW) {
                 // draw 2 cards for each player
@@ -313,6 +348,7 @@ public class GameWindow {
 
             // handles the case when we need to finish the game
             if (this.hand1.getCardAmount() == 0) {
+                playMusic.winSound(0.2f);
                 this.statusLabel.setText("Player 2 wins the game!");
                 this.cardCanvas1.clearCards();
                 this.turnButton.setEnabled(false);
@@ -322,6 +358,7 @@ public class GameWindow {
 
             // handles the case when we need to finish the game
             if (this.hand2.getCardAmount() == 0) {
+                playMusic.winSound(0.2f);
                 this.statusLabel.setText("Player 1 wins the game!");
                 this.cardCanvas2.clearCards();
                 this.turnButton.setEnabled(false);
@@ -376,11 +413,15 @@ public class GameWindow {
                 }
             }
 
+            //String filepath
+
             // this catch block is used to handle the case when we do not have any cards in hand
         } catch (Exception e) {
             System.out.println("No more cards in hand");
             this.autoplayTimer.stop();
             this.switchButton.setState(false);
+
+
         }
     }
 
@@ -470,18 +511,17 @@ public class GameWindow {
         this.setupCanvas(this.cardCanvas1, 50, 150);
         this.setupCanvas(this.cardCanvas2, 550, 150);
 
+
         this.setupLabel(this.frame, handCount1, 50, 100, 200, 50, 20);
         this.setupLabel(this.frame, handCount2, 550, 100, 200, 50, 20);
         this.setupLabel(this.frame, statusLabel, 260, 670, 400, 50, 20);
         this.setupLabel(this.frame, spoilerLabel, 300, 300, 200, 30, 19);
+        this.setupLabel(this.aboutLabel, 250, 300, 300, 300, 20);
 
-        //-----------------------------------------------------------------------
-        // Printing Avatars
 
 
         imagePanelFrame2.setLayout(null);
         imagePanelFrame2.setBounds(0, 0, 300, 200);
-//        this.setupIcon(imageLabel, 250, 300);
         JLabel imageLabel = new JLabel(selectedAvatar);
         imageLabel.setBounds(200, 120, 200, 200);
 
@@ -496,6 +536,8 @@ public class GameWindow {
         this.setupButton(this.frame, this.resturtButton, 200, 40, 125, 30, 20, this::restartGame);
         this.setupButton(this.frame, this.loadButton, 350, 40, 125, 30, 20, this::loadGame);
         this.setupButton(this.frame, this.saveButton, 500, 40, 125, 30, 20, this::saveGame);
+        this.setupButton(this.aboutButton, 650, 40, 125, 30, 20, this::showAbout );
+        this.setupButton(this.exitButton,625, 740, 125, 30, 20, this::exitGame );
 
 
         this.setupButton(this.frame, this.turnButton, 170, 730, 400, 50, 30, this::drawCard);
