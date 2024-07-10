@@ -53,7 +53,7 @@ jobs:
         run: |
           xcopy /E /I Images Game\Images
           xcopy /E /I saves Game\saves
-          xcopy /E /I saves Game\sounds
+          xcopy /E /I sounds Game\sounds
 
       - name: Create zip file
         run: Compress-Archive -Path ./Game -DestinationPath Game.zip

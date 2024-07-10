@@ -35,6 +35,8 @@
 
 # Structure Definitions
 
+![images/unldioram.png](images/unldioram.png)
+
 ## Project consists of directories and files:
 - ### Images
   #### Directory in which all images are stored.
