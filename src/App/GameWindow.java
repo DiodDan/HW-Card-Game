@@ -28,6 +28,56 @@ import java.util.List;
  */
 public class GameWindow {
     // ############################### Game Logical Vars ###################################
+
+
+    /**
+     * Radio buttons for choosing Avatar in avatar's frame
+     */
+    private JFrame frameAvatar = new JFrame("Player Icon");
+    private Panel panelImages = new Panel();
+//    private JRadioButton icon1Button, icon2Button, icon3Button;
+    /**
+     * ButtonGroup for choosing only one option
+     */
+    private ButtonGroup buttonGroup = new ButtonGroup();
+    /**
+     * Selected Avatar
+     */
+    private ImageIcon selectedAvatar;
+
+    private final ImageIcon enemyAvatar = new ImageIcon("./Images/ghost128.png");
+    private final ImageIcon icon1 = new ImageIcon("./Images/angry128.png");
+    private final ImageIcon icon2 = new ImageIcon("./Images/dancing128.png");
+    private final ImageIcon icon3 = new ImageIcon("./Images/robot128.png");
+
+    private final Label labelDescription = new Label("Choose Avatar");
+    private final JLabel icon1Label = new JLabel(icon1);
+    private final JLabel icon2Label = new JLabel(icon2);
+    private final JLabel icon3Label = new JLabel(icon3);
+    private final Panel buttonPanel = new Panel();
+
+    private final JRadioButton icon1Button = new JRadioButton("Avatar 1");
+    private final JRadioButton icon2Button = new JRadioButton("Avatar 2");
+    private final JRadioButton icon3Button = new JRadioButton("Avatar 3");
+    private final JPanel imagePanelFrame2 = new JPanel();
+
+    /**
+     * Exit button
+     */
+    private final Button exitButton = new Button("Exit");
+    /**
+     * Contunue button (transfer to the main frame)
+     */
+    private final Button mainFrameButton = new Button("Start game");
+
+    private final JLabel imageLabel = new JLabel(selectedAvatar);
+    private final JLabel enemyLabel = new JLabel(enemyAvatar);
+
+
+
+
+
+
     /** Deck instance used for getting random hands and create cards */
     private Deck deck = new Deck();
     /** here we are creating an object for sounds */
@@ -393,6 +443,58 @@ public class GameWindow {
     }
 
     /**
+     *  This method is used to draw the avatar frame and its logic also there.
+     */
+    public void setUpAvatarUI() {
+
+        // Setting up Avatar frame
+
+        frameAvatar.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frameAvatar.setSize(this.settings.getWidthAvatarFrame(), this.settings.getHeightAvatarFrame());
+        frameAvatar.setLayout(null);
+        frameAvatar.getContentPane().setBackground(this.settings.getBgColor());
+
+        // paint a label ("Choose Avatar")
+        this.setupLabel(frameAvatar, labelDescription, 180, 50, 150, 30, 20);
+
+        panelImages.setLayout(null);
+        panelImages.setBounds(0, 0, 500, 280);
+
+        // Setting up and painting 3 icons
+        this.setupIcon(icon1Label, 0, 100);
+        this.setupIcon(icon2Label, 150, 100);
+        this.setupIcon(icon3Label, 300, 100);
+
+        // Radio button panel
+        buttonPanel.setLayout(null);
+        buttonPanel.setBounds(0, 0, 500, 400);
+
+        // Radio buttons for icon selected
+        this.setupRadiobutton(icon1Button, 50, 300, 100, 50, 20);
+        this.setupRadiobutton(icon2Button, 200, 300, 100, 50, 20);
+        this.setupRadiobutton(icon3Button, 350, 300, 100, 50, 20);
+
+        // Add radio buttons to the panel
+        buttonPanel.add(icon1Button);
+        buttonPanel.add(icon2Button);
+        buttonPanel.add(icon3Button);
+
+        // set the first choice Avatar by default
+        icon1Button.setSelected(true);
+
+        // Create Exit and Start game buttons
+        this.setupButton(this.frameAvatar, exitButton, 50, 400, 110, 50, 20, this::exitGame);
+        this.setupButton(this.frameAvatar, mainFrameButton, 350, 400, 110, 50, 20, this::goToMainFrame);
+
+        // Add panelImages and Button panel to the avatar frame
+        frameAvatar.add(panelImages);
+        frameAvatar.add(buttonPanel);
+        // Make frame visible
+        frameAvatar.setVisible(true);
+    }
+
+
+    /**
      * Function used to run the game. It is used to set up the frame and all the components.
      */
     public void setupUI() {
@@ -409,21 +511,36 @@ public class GameWindow {
         this.setupCanvas(this.cardCanvas1, 50, 150);
         this.setupCanvas(this.cardCanvas2, 550, 150);
 
-        this.setupLabel(handCount1, 50, 100, 200, 50, 20);
-        this.setupLabel(handCount2, 550, 100, 200, 50, 20);
-        this.setupLabel(statusLabel, 260, 670, 400, 50, 20);
-        this.setupLabel(spoilerLabel, 300, 300, 200, 30, 19);
+
+        this.setupLabel(this.frame, handCount1, 50, 100, 200, 50, 20);
+        this.setupLabel(this.frame, handCount2, 550, 100, 200, 50, 20);
+        this.setupLabel(this.frame, statusLabel, 260, 670, 400, 50, 20);
+        this.setupLabel(this.frame, spoilerLabel, 300, 300, 200, 30, 19);
         this.setupLabel(this.aboutLabel, 250, 300, 300, 300, 20);
 
-        this.setupButton(this.spoilerButton, 50, 40, 125, 30, 20, this::showSpoiler);
-        this.setupButton(this.resturtButton, 200, 40, 125, 30, 20, this::restartGame);
-        this.setupButton(this.loadButton, 350, 40, 125, 30, 20, this::loadGame);
-        this.setupButton(this.saveButton, 500, 40, 125, 30, 20, this::saveGame);
+
+
+        imagePanelFrame2.setLayout(null);
+        imagePanelFrame2.setBounds(0, 0, 300, 200);
+        JLabel imageLabel = new JLabel(selectedAvatar);
+        imageLabel.setBounds(200, 120, 200, 200);
+
+        this.setupIcon(enemyLabel, 370, 120);
+        this.frame.add(imageLabel);
+        this.frame.add(enemyLabel);
+
+        //-----------------------------------------------------------------
+
+
+        this.setupButton(this.frame, this.spoilerButton, 50, 40, 125, 30, 20, this::showSpoiler);
+        this.setupButton(this.frame, this.resturtButton, 200, 40, 125, 30, 20, this::restartGame);
+        this.setupButton(this.frame, this.loadButton, 350, 40, 125, 30, 20, this::loadGame);
+        this.setupButton(this.frame, this.saveButton, 500, 40, 125, 30, 20, this::saveGame);
         this.setupButton(this.aboutButton, 650, 40, 125, 30, 20, this::showAbout );
         this.setupButton(this.exitButton,625, 740, 125, 30, 20, this::exitGame );
 
 
-        this.setupButton(this.turnButton, 170, 730, 400, 50, 30, this::drawCard);
+        this.setupButton(this.frame, this.turnButton, 170, 730, 400, 50, 30, this::drawCard);
 
         this.setupSwitchButton(this.switchButton, 50, 730, 100, 50, 20, this::autoplayAction);
     }
@@ -439,7 +556,7 @@ public class GameWindow {
      * @param textSize       text size of the button.
      * @param actionListener ActionListener instance that is used to handle the button action.
      */
-    private void setupButton(Button button, int x, int y, int width, int height, int textSize, ActionListener actionListener) {
+    private void setupButton(Frame frame, Button button, int x, int y, int width, int height, int textSize, ActionListener actionListener) {
         // setting up the button
         button.setSize(width, height);
         button.setLocation(x, y);
@@ -447,7 +564,7 @@ public class GameWindow {
         button.setBackground(this.settings.getButtonBgColor());
         button.setForeground(this.settings.getButtonFgColor());
         button.addActionListener(actionListener);
-        this.frame.add(button);
+        frame.add(button);
     }
 
     /**
@@ -466,7 +583,7 @@ public class GameWindow {
         }
 
         // set frame settings
-        this.frame.setSize(this.settings.getWidth(), this.settings.getHeight());
+        this.frame.setSize(this.settings.getWidthMainFrame(), this.settings.getHeightMainFrame());
         this.frame.setLayout(null);
         this.frame.setVisible(true);
         this.frame.setBackground(settings.getBgColor());
@@ -489,14 +606,14 @@ public class GameWindow {
      * @param height height of the label.
      * @param size   text size of the label.
      */
-    private void setupLabel(Label label, int x, int y, int width, int height, int size) {
+    private void setupLabel(Frame frame, Label label, int x, int y, int width, int height, int size) {
         // setting up the label
         label.setSize(width, height);
         label.setLocation(x, y);
         label.setFont(new Font("Yu Gothic UI", Font.PLAIN, size));
         label.setBackground(this.settings.getBgColor());
         label.setForeground(this.settings.getTextColor());
-        this.frame.add(label);
+        frame.add(label);
     }
 
     /**
@@ -542,13 +659,61 @@ public class GameWindow {
         this.frame.add(switchButton);
     }
 
+    // Setting up an Avatar
+    private void setupIcon(JLabel icon, int x, int y) {
+        icon.setBounds(x, y, 200, 200);
+        panelImages.add(icon);
+    }
+
+    /**
+     * Function used to set up the JButton.
+     *
+     * @param jbutton         JButton instance that we want to set up.
+     * @param x              x coordinate of the button's left corner.
+     * @param y              y coordinate of the button's left corner.
+     * @param width          width of the button.
+     * @param height         height of the button.
+     * @param textSize       text size of the button.
+     */
+
+    private void setupRadiobutton(JRadioButton jbutton, int x, int y, int width, int height, int textSize) {
+        // Setting up a radio button
+        jbutton.setSize(width, height);
+        jbutton.setLocation(x, y);
+        jbutton.setFont(new Font("Arial", Font.PLAIN, textSize));
+        jbutton.setBackground(this.settings.getBgColor()); // setting background color
+        jbutton.setForeground(this.settings.getTextColor()); // setting color of text
+        buttonGroup.add(jbutton); // Group the radio buttons (only one button can be selected at a time)
+        this.frame.add(jbutton);
+    }
+
+    // Exiting from the game
+    private void exitGame(ActionEvent event) {
+        System.exit(0);
+    }
+
+    private void goToMainFrame(ActionEvent event) {
+        // save what icon user has chosen to print an icon on the main frame
+        if (icon1Button.isSelected()) {
+            selectedAvatar = icon1;
+        } else if (icon2Button.isSelected()) {
+            selectedAvatar = icon2;
+        } else if (icon3Button.isSelected()) {
+            selectedAvatar = icon3;
+        }
+        // close Avatar frame
+        frameAvatar.dispose();
+        // go to the main frame
+        setupUI();
+    }
+
 
     /**
      * Main Function used to run the game.
      */
     public static void main(String[] args) {
         GameWindow app = new GameWindow();
-        app.setupUI();
+        app.setUpAvatarUI();
     }
 
 }
