@@ -4,7 +4,7 @@ public enum ButtonState {
     NORMAL,
     HOVER,
     PRESSED,
-//    CHECKED,
-//    UNCHECKED
+    CHECKED,
+    UNCHECKED
 }
     

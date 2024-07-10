@@ -400,9 +400,9 @@ public class GameWindow {
         } catch (IOException e) {
             System.out.println("Error setting up the frame");
         }
-        Map<ButtonType, Integer> buttonWidths = new HashMap<>();
-        buttonWidths.put(ButtonType.SPOILER, 75); // Adjusted width
-        this.iconLoader = new IconLoader(buttonWidths);
+//        Map<ButtonType, Integer> buttonWidths = new HashMap<>();
+//        buttonWidths.put(ButtonType.SPOILER, 75); // Adjusted width
+//        this.iconLoader = new IconLoader(buttonWidths);
 
         // setting up all the components
         this.setupCanvas(this.cardCanvas1, 50, 150);
