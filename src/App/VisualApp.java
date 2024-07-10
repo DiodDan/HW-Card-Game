@@ -7,7 +7,7 @@ public class VisualApp {
         GameWindow gameWindow = new GameWindow();
         gameWindow.setupUI();
         SoundEngine playMusic = new SoundEngine();
-        playMusic.playMusic("sounds/shakeSound.wav", 0.5f);
-        playMusic.playMusic("sounds/background.wav", 0.01f);
+        playMusic.shakeSound(0.3f);
+        playMusic.gameSound(0.05f);
     }
 }
