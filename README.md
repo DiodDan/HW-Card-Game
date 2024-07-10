@@ -160,35 +160,30 @@
 - [X] Create Test class for fast testing (Danila)
 - [X] Create CI workflow for automate testing on push (Danila)
 - [X] Create CI workflow for automate exe building on pull request into release branches (Danila)
-- [ ] Create Avatars for users (Vasiliy)
-- [ ] Create Main menu (Amidah)
+- [X] Create Avatars for users (Vasiliy)
 - [X] Create about bar (Kyrylo)
-- [ ] Create settings menu (Kyrylo)
 - [X] Create sound effects (Kyrylo)
 - [X] Create exit button (Kyrylo)
-- [ ] Create animations
-- [ ] Restyle app gui
 
 ---
 
 # Solution condition
-- [ ] Based on OOP no static methods allowed except lambdas.
-- [ ] All variables should be private.
-- [ ] Use inheritance and abstract.
- [Solution Link](./src/App/VisualApp.java#L50)
-- [ ] Use Array or List to save data.
-- [ ] Uses file saving to save the game progress.
-- [ ] Uses the random to shuffle and distribute the deck.
-- [ ] Use an Array or list to save the user's information.
-- [ ] Create Graphical user Interface.
-- [ ] The GUI must have a menu bar which had at least the following:
+- [X] Based on OOP no static methods allowed except lambdas.
+- [X] All variables should be private.
+- [X] Use inheritance and abstract.
+- [X] Use Array or List to save data.
+- [X] Uses file saving to save the game progress.
+- [X] Uses the random to shuffle and distribute the deck.
+- [X] Use an Array or list to save the user's information.
+- [X] Create Graphical user Interface.
+- [X] The GUI must have a menu bar which had at least the following:
   - (New) for the new Game
   - (Save) for saving the Game
   - (Open) to open the saved game.
-- [ ] Code must have comments.
-- [ ] Code must not be copied, or AI generated.
-- [ ] UTF 8 character coding.
-- [ ] Project must show your names, in the about Menu Bar.
-- [ ] All used images must be included in the Images folder, in your Project.
-- [ ] You can add sound effects if you would like to game.
-- [ ] You can download card images from the Internet or create your design.
+- [X] Code must have comments.
+- [X] Code must not be copied, or AI generated.
+- [X] UTF 8 character coding.
+- [X] Project must show your names, in the about Menu Bar.
+- [X] All used images must be included in the Images folder, in your Project.
+- [X] You can add sound effects if you would like to game.
+- [X] You can download card images from the Internet or create your design.

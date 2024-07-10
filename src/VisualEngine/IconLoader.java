@@ -17,10 +17,10 @@ import java.util.Map;
 public class IconLoader {
     private final int buttonSubImageHeight = 26;
     private final int padding = 1;
-    private Map<ButtonType, Integer> buttonWidths = new HashMap<>();
-    private Map<ButtonType, Integer> switchHeights = new HashMap<>();
-    private Map<ButtonType, Integer> switchWidths = new HashMap<>();
-    private Settings settings = new Settings();
+    private final Map<ButtonType, Integer> buttonWidths = new HashMap<>();
+    private final Map<ButtonType, Integer> switchHeights = new HashMap<>();
+    private final Map<ButtonType, Integer> switchWidths = new HashMap<>();
+    private final Settings settings = new Settings();
 
     public IconLoader() {
 
@@ -31,14 +31,14 @@ public class IconLoader {
         this.buttonWidths.put(ButtonType.LOAD, 61);
         this.buttonWidths.put(ButtonType.SAVE, 62);
         this.buttonWidths.put(ButtonType.PULL, 123);
-        
+
         this.switchHeights.put(ButtonType.AUTO, 47); //height
         this.switchHeights.put(ButtonType.MUTE, 47);
 
         this.switchWidths.put(ButtonType.AUTO, 34); // width
         this.switchWidths.put(ButtonType.MUTE, 26);
     }
-       
+
     private BufferedImage getImage(String path) throws IOException {
         try {
             File file = new File(path);
@@ -71,7 +71,7 @@ public class IconLoader {
                     int buttonWidth = this.buttonWidths.get(type);
 
 
-                    JButton button = createButton(
+                    JButton button = this.createButton(
                             getButtonImage(img, xOffset, ButtonState.NORMAL.ordinal(), buttonWidth),
                             getButtonImage(img, xOffset, ButtonState.HOVER.ordinal(), buttonWidth),
                             getButtonImage(img, xOffset, ButtonState.PRESSED.ordinal(), buttonWidth),
@@ -101,7 +101,7 @@ public class IconLoader {
                     int switchWidth = this.switchWidths.get(type);
                     int switchHeight = this.switchHeights.get(type);
 
-                    JToggleButton toggleButton = createSwitch(
+                    JToggleButton toggleButton = this.createSwitch(
                             getSwitchImage(img, xOffset, 0, switchWidth, switchHeight),
                             getSwitchImage(img, xOffset, 1, switchWidth, switchHeight),
                             switchWidths.get(type) * this.settings.getButtonScale(),
@@ -149,7 +149,8 @@ public class IconLoader {
                 Image.SCALE_SMOOTH
         ));
     }
-    private static JButton createButton(ImageIcon icon, ImageIcon rolloverIcon, ImageIcon pressedIcon, int width, int height) {
+
+    private JButton createButton(ImageIcon icon, ImageIcon rolloverIcon, ImageIcon pressedIcon, int width, int height) {
         JButton button = new JButton();
         button.setIcon(icon);
         button.setRolloverIcon(rolloverIcon);
@@ -160,7 +161,7 @@ public class IconLoader {
         return button;
     }
 
-    private static JToggleButton createSwitch(ImageIcon uncheckedIcon, ImageIcon checkedIcon, int width, int height) {
+    private JToggleButton createSwitch(ImageIcon uncheckedIcon, ImageIcon checkedIcon, int width, int height) {
         JToggleButton toggleButton = new JToggleButton();
         toggleButton.setIcon(uncheckedIcon);
         toggleButton.setSelectedIcon(checkedIcon);

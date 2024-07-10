@@ -93,7 +93,7 @@ public class GameWindow {
     private final JRadioButton icon3Button = new JRadioButton("Avatar 3");
     private final JPanel imagePanelFrame2 = new JPanel();
 
-    /** Contunue button (transfer to the main frame) */
+    /** Continue button (transfer to the main frame) */
     private final JButton mainFrameButton = new JButton("Start game");
 
     private final JLabel enemyLabel = new JLabel(enemyAvatar);
@@ -123,10 +123,6 @@ public class GameWindow {
     /** button to exit the game */
     private final JButton exitButton = new JButton("Exit");
 
-
-//    /** switchButton to enable/disable autoplay */
-//    private final JCheckBox switchButton = new JCheckBox("Auto Play", false);
-
     /** IconLoader instance to load icons for buttons */
     private final IconLoader iconLoader = new IconLoader();
 
@@ -136,7 +132,6 @@ public class GameWindow {
     private final JButton playButton = this.buttons.get(ButtonType.PLAY);
     private final JButton spoilerButton = this.buttons.get(ButtonType.SPOILER);
     private final JButton restartButton = this.buttons.get(ButtonType.RESTART);
-    private final JButton nextButton = this.buttons.get(ButtonType.NEXT);
     private final JButton loadButton = this.buttons.get(ButtonType.LOAD);
     private final JButton saveButton = this.buttons.get(ButtonType.SAVE);
     private final JButton pullButton = this.buttons.get(ButtonType.PULL);
