@@ -78,8 +78,8 @@ public class GameWindow {
     private final Label statusLabel = new Label("Game in progress...");
     /** label to show the prediction of the game */
     private final Label spoilerLabel = new Label("");
-    /** label to show settings text */
-    private final Label settingsLabel = new Label("");
+    /** label to show about text */
+    private final Label aboutLabel = new Label("");
     /** button to pull the cards */
     private final Button turnButton = new Button("Pull Cards");
     /** button to show the prediction */
@@ -90,8 +90,8 @@ public class GameWindow {
     private final Button saveButton = new Button("Save Game");
     /** button to load the game */
     private final Button loadButton = new Button("Load Game");
-    /** button to show settings */
-    private final Button settingButton = new Button("Settings");
+    /** button to show About menu */
+    private final Button aboutButton = new Button("About");
 
     /** switchButton to enable/disable autoplay */
     private final Checkbox switchButton = new Checkbox("Auto Play", false);
@@ -222,12 +222,17 @@ public class GameWindow {
     }
 
     /**
-     * Function used to show the settings menu. Here user can change his sound settings
+     * Function used to show the about menu
      *
      */
-    public void showSettings(ActionEvent event) {
-        this.settingsLabel.setText("some text");
+    public void showAbout(ActionEvent event) {
+    if (this.aboutLabel.getText().isEmpty()) {
+        this.aboutLabel.setText("<html>War Card Game<br> <br>Authors: Danila Prigulskiy, Kyrylo Stoianov,<br> Vasilii Blagov, Egor Silakov,<br> Sofiya Khrapachevska, Amidah Abisola Salaudeen</html>");
+    } else {
+        this.aboutLabel.setText("");
     }
+}
+
 
 
     /**
@@ -397,13 +402,13 @@ public class GameWindow {
         this.setupLabel(handCount2, 550, 100, 200, 50, 20);
         this.setupLabel(statusLabel, 260, 670, 400, 50, 20);
         this.setupLabel(spoilerLabel, 300, 300, 200, 30, 19);
-
+        this.setupLabel(this.aboutLabel, 250, 300, 300, 300, 20);
 
         this.setupButton(this.spoilerButton, 50, 40, 125, 30, 20, this::showSpoiler);
         this.setupButton(this.resturtButton, 200, 40, 125, 30, 20, this::restartGame);
         this.setupButton(this.loadButton, 350, 40, 125, 30, 20, this::loadGame);
         this.setupButton(this.saveButton, 500, 40, 125, 30, 20, this::saveGame);
-        this.setupButton(this.settingButton, 650, 40, 125, 30, 20, this::showSettings );
+        this.setupButton(this.aboutButton, 650, 40, 125, 30, 20, this::showAbout );
 
 
         this.setupButton(this.turnButton, 170, 730, 400, 50, 30, this::drawCard);
