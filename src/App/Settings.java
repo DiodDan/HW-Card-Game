@@ -3,8 +3,11 @@ package App;
 import java.awt.*;
 
 public class Settings {
-    private final int width = 800;
-    private final int height = 800;
+    private final int widthAvatarFrame = 500;
+    private final int heightAvatarFrame = 500;
+
+    private final int widthMainFrame = 800;
+    private final int heightMainFrame = 800;
     private final String title = "Card Game";
     private final int cardDistance = 40;
     private final Color bgColor = new Color(30, 7, 0);
@@ -19,12 +22,20 @@ public class Settings {
     private final int autoPlayStepsPerSecond = 10;
     private final String themeName = "cards1";
 
-    public int getWidth() {
-        return this.width;
+    public int getWidthAvatarFrame() {
+        return this.widthAvatarFrame;
     }
 
-    public int getHeight() {
-        return this.height;
+    public int getHeightAvatarFrame() {
+        return this.heightAvatarFrame;
+    }
+
+    public int getWidthMainFrame() {
+        return this.widthMainFrame;
+    }
+
+    public int getHeightMainFrame() {
+        return this.heightMainFrame;
     }
 
     public String getTitle() {
