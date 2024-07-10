@@ -402,6 +402,58 @@ public class GameWindow {
     }
 
     /**
+     *  This method is used to draw the avatar frame and its logic also there.
+     */
+    public void setUpAvatarUI() {
+
+        // Setting up Avatar frame
+
+        frameAvatar.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frameAvatar.setSize(this.settings.getWidthAvatarFrame(), this.settings.getHeightAvatarFrame());
+        frameAvatar.setLayout(null);
+        frameAvatar.getContentPane().setBackground(this.settings.getBgColor());
+
+        // paint a label ("Choose Avatar")
+        this.setupLabel(frameAvatar, labelDescription, 180, 50, 150, 30, 20);
+
+        panelImages.setLayout(null);
+        panelImages.setBounds(0, 0, 500, 280);
+
+        // Setting up and painting 3 icons
+        this.setupIcon(icon1Label, 0, 100);
+        this.setupIcon(icon2Label, 150, 100);
+        this.setupIcon(icon3Label, 300, 100);
+
+        // Radio button panel
+        buttonPanel.setLayout(null);
+        buttonPanel.setBounds(0, 0, 500, 400);
+
+        // Radio buttons for icon selected
+        this.setupRadiobutton(icon1Button, 50, 300, 100, 50, 20);
+        this.setupRadiobutton(icon2Button, 200, 300, 100, 50, 20);
+        this.setupRadiobutton(icon3Button, 350, 300, 100, 50, 20);
+
+        // Add radio buttons to the panel
+        buttonPanel.add(icon1Button);
+        buttonPanel.add(icon2Button);
+        buttonPanel.add(icon3Button);
+
+        // set the first choice Avatar by default
+        icon1Button.setSelected(true);
+
+        // Create Exit and Start game buttons
+        this.setupButton(this.frameAvatar, exitButton, 50, 400, 110, 50, 20, this::exitGame);
+        this.setupButton(this.frameAvatar, mainFrameButton, 350, 400, 110, 50, 20, this::goToMainFrame);
+
+        // Add panelImages and Button panel to the avatar frame
+        frameAvatar.add(panelImages);
+        frameAvatar.add(buttonPanel);
+        // Make frame visible
+        frameAvatar.setVisible(true);
+    }
+
+
+    /**
      * Function used to run the game. It is used to set up the frame and all the components.
      */
     public void setupUI() {
@@ -418,10 +470,10 @@ public class GameWindow {
         this.setupCanvas(this.cardCanvas1, 50, 150);
         this.setupCanvas(this.cardCanvas2, 550, 150);
 
-        this.setupLabel(handCount1, 50, 100, 200, 50, 20);
-        this.setupLabel(handCount2, 550, 100, 200, 50, 20);
-        this.setupLabel(statusLabel, 260, 670, 400, 50, 20);
-        this.setupLabel(spoilerLabel, 300, 300, 200, 30, 19);
+        this.setupLabel(this.frame, handCount1, 50, 100, 200, 50, 20);
+        this.setupLabel(this.frame, handCount2, 550, 100, 200, 50, 20);
+        this.setupLabel(this.frame, statusLabel, 260, 670, 400, 50, 20);
+        this.setupLabel(this.frame, spoilerLabel, 300, 300, 200, 30, 19);
 
         //-----------------------------------------------------------------------
         // Printing Avatars
