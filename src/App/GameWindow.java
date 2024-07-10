@@ -143,7 +143,6 @@ public class GameWindow {
 
 
     private final JToggleButton autoSwitch = this.switches.get(ButtonType.AUTO);
-    private final JToggleButton muteSwitch = this.switches.get(ButtonType.MUTE);
 
 
     /**
@@ -275,7 +274,7 @@ public class GameWindow {
     public void showAbout(ActionEvent event) {
         JOptionPane.showMessageDialog(null, """
                         War Card Game
-                                                
+
                         Authors:
                         Danila Prigulskiy,
                         Kyrylo Stoianov
@@ -283,7 +282,7 @@ public class GameWindow {
                         Vasilii Blagov,
                         Sofiya Khrapachevska,
                         Amidah Abisola Salaudeen
-                                                
+
                         Rules:
                         Pull cards from the deck, whose card is higher - Wins. Get all cards from your enemy""",
                 "About", JOptionPane.INFORMATION_MESSAGE);
@@ -500,13 +499,13 @@ public class GameWindow {
         }
 
         // setting up all the components
-        this.setupCanvas(this.cardCanvas1, 50, 150);
-        this.setupCanvas(this.cardCanvas2, 550, 150);
+        this.setupCanvas(this.cardCanvas1, 50, 170);
+        this.setupCanvas(this.cardCanvas2, 950, 170);
 
 
-        this.setupLabel(this.frame, handCount1, 50, 100, 200, 50, 20);
-        this.setupLabel(this.frame, handCount2, 550, 100, 200, 50, 20);
-        this.setupLabel(this.frame, statusLabel, 260, 670, 400, 50, 20);
+        this.setupLabel(this.frame, handCount1, 50, 120, 200, 50, 20);
+        this.setupLabel(this.frame, handCount2, 950, 120, 200, 50, 20);
+        this.setupLabel(this.frame, statusLabel, 460, 670, 400, 50, 20);
         this.setupLabel(this.frame, spoilerLabel, 300, 300, 200, 30, 19);
         this.setupLabel(this.frame, this.aboutLabel, 250, 300, 300, 300, 20);
 
@@ -516,23 +515,27 @@ public class GameWindow {
         JLabel imageLabel = new JLabel(selectedAvatar);
         imageLabel.setBounds(200, 120, 200, 200);
 
-        this.setupIcon(enemyLabel, 370, 120);
+        this.setupIcon(enemyLabel, 770, 120);
         this.frame.add(imageLabel);
         this.frame.add(enemyLabel);
 
         //-----------------------------------------------------------------
 
 
-        this.setupNewButton(this.frame, this.spoilerButton, 50, 40, this::showSpoiler);
-        this.setupNewButton(this.frame, this.restartButton, 200, 40, this::restartGame);
-        this.setupNewButton(this.frame, this.loadButton, 350, 40, this::loadGame);
-        this.setupNewButton(this.frame, this.saveButton, 500, 40, this::saveGame);
-        this.setupButton(this.frame, this.aboutButton, 650, 40, 125, 30, 20, this::showAbout);
-        this.setupButton(this.frame, this.exitButton, 625, 740, 125, 30, 20, this::exitGame);
+        this.setupNewButton(this.frame, this.spoilerButton, 50, 30, this::showSpoiler);
+        this.setupNewButton(this.frame, this.restartButton, 300, 30, this::restartGame);
+        this.setupNewButton(this.frame, this.loadButton, 590, 30, this::loadGame);
+        this.setupNewButton(this.frame, this.saveButton, 790, 30, this::saveGame);
+        this.setupButton(this.frame, this.aboutButton, 1000, 60, 125, 30, 20, this::showAbout);
+        this.setupButton(this.frame, this.exitButton, 925, 770, 125, 30, 20, this::exitGame);
 
 
-//        this.setupSwitchButton(this.autoSwitch, 50, 730, 100, 50, 20, this::autoplayAction);
-        this.setupNewButton(this.frame, this.playButton, 300, 740, this::drawCard);
+        this.autoSwitch.addItemListener(this::autoplayAction);
+        this.autoSwitch.setLocation(50, 735);
+        this.frame.add(this.autoSwitch);
+
+
+        this.setupNewButton(this.frame, this.playButton, 450, 740, this::drawCard);
 
         this.frame.repaint();
 
@@ -639,30 +642,6 @@ public class GameWindow {
                 (int) (this.settings.getSubImageHeight() * this.settings.getCardScale()) +
                         this.settings.getMaxCardsOnTable() * this.settings.getCardDistance());
         this.frame.add(cardCanvas);
-    }
-    // 
-
-    /**
-     * Function used to set up the switchButton.
-     *
-     * @param switchButton Checkbox instance that we want to set up.
-     * @param x            x coordinate of the switchButton's left corner.
-     * @param y            y coordinate of the switchButton's left corner.
-     * @param width        width of the switchButton.
-     * @param height       height of the switchButton.
-     * @param textSize     text size of the switchButton.
-     * @param itemListener ItemListener instance that is used to handle the switchButton action.
-     */
-    private void setupSwitchButton(JCheckBox switchButton, int x, int y, int width, int height, int textSize, ItemListener itemListener) {
-        switchButton.addItemListener(itemListener);
-
-        switchButton.setSize(width, height);
-        switchButton.setLocation(x, y);
-        switchButton.setFont(new Font("Arial", Font.PLAIN, textSize));
-        switchButton.setBackground(this.settings.getButtonBgColor());
-        switchButton.setForeground(this.settings.getButtonFgColor());
-
-        this.frame.add(switchButton);
     }
 
     // Setting up an Avatar

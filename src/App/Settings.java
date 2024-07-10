@@ -6,8 +6,8 @@ public class Settings {
     private final int widthAvatarFrame = 500;
     private final int heightAvatarFrame = 500;
 
-    private final int widthMainFrame = 800;
-    private final int heightMainFrame = 840;
+    private final int widthMainFrame = 1180;
+    private final int heightMainFrame = 890;
     private final String title = "Card Game";
     private final int cardDistance = 40;
     private final Color bgColor = new Color(30, 7, 0);
