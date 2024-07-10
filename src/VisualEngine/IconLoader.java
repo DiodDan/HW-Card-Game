@@ -4,6 +4,7 @@ import CustomEnums.ButtonState;
 import CustomEnums.ButtonType;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -48,24 +49,24 @@ public class IconLoader {
         }
     }
 
-    public HashMap<ButtonType, HashMap<ButtonState, Image>> loadButtonIcons(String themeName) throws RuntimeException {
+    public HashMap<ButtonType, HashMap<ButtonState, ImageIcon>> loadButtonIcons(String themeName) throws RuntimeException {
         try {
             BufferedImage img = this.getImage("Images/" + themeName + ".png");
-            HashMap<ButtonType, HashMap<ButtonState, Image>> buttonIcons = new HashMap<>();
+            HashMap<ButtonType, HashMap<ButtonState, ImageIcon>> buttonIcons = new HashMap<>();
 
             int xOffset = 0;
 
             for (ButtonType type : ButtonType.values()) {
-                if (buttonWidths.containsKey(type)) {
-                    HashMap<ButtonState, Image> stateIcons = new HashMap<>();
-                    int buttonWidth = buttonWidths.get(type);
+                if (this.buttonWidths.containsKey(type)) {
+                    HashMap<ButtonState, ImageIcon> stateIcons = new HashMap<>();
+                    int buttonWidth = this.buttonWidths.get(type);
 
                     stateIcons.put(ButtonState.NORMAL, getButtonImage(img, xOffset, ButtonState.NORMAL.ordinal(), buttonWidth));
                     stateIcons.put(ButtonState.HOVER, getButtonImage(img, xOffset, ButtonState.HOVER.ordinal(), buttonWidth));
                     stateIcons.put(ButtonState.PRESSED, getButtonImage(img, xOffset, ButtonState.PRESSED.ordinal(), buttonWidth));
 
                     buttonIcons.put(type, stateIcons);
-                    xOffset += buttonWidth + padding;
+                    xOffset += buttonWidth + this.padding;
                 }
             }
 
@@ -106,7 +107,7 @@ public class IconLoader {
     private ImageIcon getButtonImage(BufferedImage img, int xOffset, int stateIndex, int buttonWidth) {
         int y = stateIndex * (this.buttonSubImageHeight + this.padding);
 
-        return img.getSubimage(
+        return new ImageIcon(img.getSubimage(
                 xOffset,
                 y,
                 buttonWidth,

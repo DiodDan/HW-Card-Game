@@ -8,8 +8,8 @@ public enum ButtonType {
     LOAD,
     SAVE,
     PULL,
-    MUTE,
-    AUTO
+    AUTO,
+    MUTE
 }
 
 
