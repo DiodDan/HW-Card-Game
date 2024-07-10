@@ -7,7 +7,15 @@ import CustomComponents.CardCanvas;
 import CustomEnums.GameState;
 import Predictor.Predictor;
 import ProgressEngine.ProgressEngine;
+import javax.swing.JButton;
+import VisualEngine.IconLoader;
+import VisualEngine.IconLoaderVisual;
+import CustomEnums.ButtonType;
+import CustomEnums.ButtonState;
+import com.sun.source.tree.CatchTree;
+
 import SoundEngine.SoundEngine;
+
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -16,7 +24,9 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -25,6 +35,7 @@ import java.util.List;
  * @author Danila
  * @version 1.0
  */
+
 public class GameWindow {
     // ############################### Game Logical Vars ###################################
 
@@ -44,6 +55,7 @@ public class GameWindow {
 
     /** gameState is used to store the current state of the game */
     private GameState gameState = GameState.IN_PROGRESS;
+    
 
     /** Settings instance is used to store game settings information */
     private final Settings settings = new Settings();
@@ -111,15 +123,18 @@ public class GameWindow {
     private final Label spoilerLabel = new Label("");
     /** label to show about text */
     private final Label aboutLabel = new Label("");
+
     /** button to pull the cards */
-    private final Button turnButton = new Button("Pull Cards");
+    private final JButton turnButton = new JButton("Pull Cards");
+    
     /** button to show the prediction */
-    private final Button spoilerButton = new Button("Spoiler");
+    private final JButton spoilerButton = new JButton("Spoiler");
     /** button to restart the game */
-    private final Button resturtButton = new Button("Restart Game");
+    private final JButton resturtButton = new JButton("Restart Game");
     /** button to save the game */
-    private final Button saveButton = new Button("Save Game");
+    private final JButton saveButton = new JButton("Save Game");
     /** button to load the game */
+
     private final Button loadButton = new Button("Load Game");
     /** button to show About menu */
     private final Button aboutButton = new Button("About");
@@ -127,9 +142,13 @@ public class GameWindow {
     /** button to exit the game */
     private final Button exitButton = new Button("Exit");
 
-    /** switchButton to enable/disable autoplay */
-    private final Checkbox switchButton = new Checkbox("Auto Play", false);
 
+    /** switchButton to enable/disable autoplay */
+    private final JCheckBox switchButton = new JCheckBox("Auto Play", false);
+
+    /** IconLoader instance to load icons for buttons */
+    private IconLoader iconLoader;
+    
 
 
     /**
@@ -143,6 +162,29 @@ public class GameWindow {
         return cards.get(cards.size() - 1).getValue();
     }
 
+//    public void setButtonIcons(JButton button, ButtonType buttonType) {
+//        try {
+//            HashMap<ButtonType, HashMap<ButtonState, Image>> buttonIcons = iconLoader.loadButtonIcons("buttons");
+//
+//            if (buttonIcons != null && buttonIcons.containsKey(buttonType)) {
+//                HashMap<ButtonState, Image> icons = buttonIcons.get(buttonType);
+//
+//                if (icons != null) {
+//                    Image normalIcon = icons.get(ButtonState.NORMAL).getScaledInstance(button.getWidth(), button.getHeight(), Image.SCALE_SMOOTH);
+//                    Image hoverIcon = icons.get(ButtonState.HOVER).getScaledInstance(button.getWidth(), button.getHeight(), Image.SCALE_SMOOTH);
+//                    Image pressedIcon = icons.get(ButtonState.PRESSED).getScaledInstance(button.getWidth(), button.getHeight(), Image.SCALE_SMOOTH);
+//
+//                    button.setIcon(new ImageIcon(normalIcon));
+//                    button.setRolloverIcon(new ImageIcon(hoverIcon));
+//                    button.setPressedIcon(new ImageIcon(pressedIcon));
+//                }
+//            }
+//
+//        } catch (RuntimeException e) {
+//            e.printStackTrace();
+//        }
+//    }
+    
     /**
      * Function used to restart the game.
      *
@@ -400,9 +442,7 @@ public class GameWindow {
         } catch (Exception e) {
             System.out.println("No more cards in hand");
             this.autoplayTimer.stop();
-            this.switchButton.setState(false);
-
-
+            this.switchButton.setSelected(false);
         }
     }
 
@@ -489,6 +529,9 @@ public class GameWindow {
         } catch (IOException e) {
             System.out.println("Error setting up the frame");
         }
+//        Map<ButtonType, Integer> buttonWidths = new HashMap<>();
+//        buttonWidths.put(ButtonType.SPOILER, 75); // Adjusted width
+//        this.iconLoader = new IconLoader(buttonWidths);
 
         // setting up all the components
         this.setupCanvas(this.cardCanvas1, 50, 150);
@@ -525,6 +568,16 @@ public class GameWindow {
         this.setupButton(this.frame, this.turnButton, 170, 730, 400, 50, 30, this::drawCard);
 
         this.setupSwitchButton(this.switchButton, 50, 730, 100, 50, 20, this::autoplayAction);
+
+//        setButtonIcons(spoilerButton, ButtonType.SPOILER);
+//        setButtonIcons(turnButton, ButtonType.PLAY);
+//        setButtonIcons(resturtButton, ButtonType.RESTART);
+//        setButtonIcons(saveButton, ButtonType.SAVE);
+//        setButtonIcons(loadButton, ButtonType.LOAD);
+
+        this.frame.repaint();
+
+       
     }
 
     /**
@@ -538,8 +591,10 @@ public class GameWindow {
      * @param textSize       text size of the button.
      * @param actionListener ActionListener instance that is used to handle the button action.
      */
-    private void setupButton(Frame frame, Button button, int x, int y, int width, int height, int textSize, ActionListener actionListener) {
+
+    private void setupButton(Frame frame, JButton button, int x, int y, int width, int height, int textSize, ActionListener actionListener) {
         // setting up the button
+        
         button.setSize(width, height);
         button.setLocation(x, y);
         button.setFont(new Font("Arial", Font.PLAIN, textSize));
@@ -548,6 +603,7 @@ public class GameWindow {
         button.addActionListener(actionListener);
         frame.add(button);
     }
+    
 
     /**
      * Function used to set up the frame.
@@ -577,7 +633,9 @@ public class GameWindow {
             }
         });
     }
+    
 
+    
     /**
      * Function used to set up the label.
      *
@@ -617,6 +675,7 @@ public class GameWindow {
                         this.settings.getMaxCardsOnTable() * this.settings.getCardDistance());
         this.frame.add(cardCanvas);
     }
+    // 
 
     /**
      * Function used to set up the switchButton.
@@ -629,7 +688,7 @@ public class GameWindow {
      * @param textSize     text size of the switchButton.
      * @param itemListener ItemListener instance that is used to handle the switchButton action.
      */
-    private void setupSwitchButton(Checkbox switchButton, int x, int y, int width, int height, int textSize, ItemListener itemListener) {
+    private void setupSwitchButton(JCheckBox switchButton, int x, int y, int width, int height, int textSize, ItemListener itemListener) {
         switchButton.addItemListener(itemListener);
 
         switchButton.setSize(width, height);

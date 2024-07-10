@@ -30,8 +30,7 @@ public class CardLoaderVisual {
                 }
             }
 
-
-            // Display one of the sub images
+            
             JFrame frame = new JFrame();
             frame.getContentPane().setLayout(new FlowLayout());
             frame.setSize(1000, 800);
